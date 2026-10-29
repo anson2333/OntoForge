@@ -20,5 +20,7 @@
       "evidence_sources": ["chunk_p1_0"]
     }
   ],
-  "warnings": []
+  "warnings": [
+    "LLM extraction was unavailable; assertions were produced by the rule-based heuristic extractor."
+  ]
 }

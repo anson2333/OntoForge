@@ -3,6 +3,8 @@
  * Communicates with the OntoForge backend server
  */
 
+import { JSONRPC_URL } from './runtime_config';
+
 interface JsonRpcRequest {
   jsonrpc: '2.0';
   method: string;
@@ -21,17 +23,50 @@ interface JsonRpcResponse {
   id: number | string;
 }
 
+export const AUTH_REQUIRED_CODE = -32001;
+export const TOKEN_STORAGE_KEY = 'ontoforge-session-token';
+
+export class SSPError extends Error {
+  code?: number;
+
+  constructor(message: string, code?: number) {
+    super(message);
+    this.name = 'SSPError';
+    this.code = code;
+  }
+}
+
 class SSPClient {
   private baseUrl: string;
   private requestId: number;
+  private token: string | null;
 
-  constructor(baseUrl: string = 'http://localhost:8765/jsonrpc') {
+  constructor(baseUrl: string = JSONRPC_URL) {
     this.baseUrl = baseUrl;
     this.requestId = 0;
+    this.token = typeof window !== 'undefined'
+      ? window.localStorage.getItem(TOKEN_STORAGE_KEY)
+      : null;
   }
 
   private getNextId(): number {
     return ++this.requestId;
+  }
+
+  getToken(): string | null {
+    return this.token;
+  }
+
+  setToken(token: string | null): void {
+    this.token = token;
+    if (typeof window === 'undefined') {
+      return;
+    }
+    if (token) {
+      window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
+    } else {
+      window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+    }
   }
 
   async request(method: string, params?: any): Promise<any> {
@@ -42,23 +77,34 @@ class SSPClient {
       id: this.getNextId()
     };
 
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
     try {
       const response = await fetch(this.baseUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers,
         body: JSON.stringify(request)
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new SSPError(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const jsonResponse: JsonRpcResponse = await response.json();
 
       if (jsonResponse.error) {
-        throw new Error(`JSON-RPC Error ${jsonResponse.error.code}: ${jsonResponse.error.message}`);
+        if (jsonResponse.error.code === AUTH_REQUIRED_CODE) {
+          this.setToken(null);
+        }
+        throw new SSPError(
+          jsonResponse.error.message || 'JSON-RPC request failed',
+          jsonResponse.error.code
+        );
       }
 
       return jsonResponse.result;
@@ -66,6 +112,55 @@ class SSPClient {
       console.error('SSP request failed:', error);
       throw error;
     }
+  }
+
+  // Authentication
+
+  async register(username: string, password: string, displayName?: string): Promise<any> {
+    return this.request('authRegister', {
+      username,
+      password,
+      display_name: displayName
+    });
+  }
+
+  async login(username: string, password: string): Promise<any> {
+    return this.request('authLogin', { username, password });
+  }
+
+  async logout(): Promise<any> {
+    try {
+      return await this.request('authLogout', {});
+    } finally {
+      this.setToken(null);
+    }
+  }
+
+  async authStatus(): Promise<any> {
+    return this.request('authStatus', {});
+  }
+
+  async listWorkspaceMembers(workspaceId: string): Promise<any> {
+    return this.request('listWorkspaceMembers', { workspace_id: workspaceId });
+  }
+
+  async addWorkspaceMember(
+    workspaceId: string,
+    username: string,
+    role: 'viewer' | 'editor'
+  ): Promise<any> {
+    return this.request('addWorkspaceMember', {
+      workspace_id: workspaceId,
+      username,
+      role
+    });
+  }
+
+  async removeWorkspaceMember(workspaceId: string, userId: string): Promise<any> {
+    return this.request('removeWorkspaceMember', {
+      workspace_id: workspaceId,
+      user_id: userId
+    });
   }
 
   // SSP Protocol Methods
@@ -203,7 +298,33 @@ class SSPClient {
       tags?: string[];
     };
   }): Promise<any> {
-    return this.request('textDocument/sspVerifyEvidence', params);
+    return this.request('sspVerifyNode', {
+      params: {
+        node_id: params.evidence_id,
+        action: 'approve',
+        verified_by: 'session'
+      }
+    });
+  }
+
+  /**
+   * Move evidence into the review queue without approving it.
+   */
+  async requestEvidenceReview(params: {
+    evidence_id: string;
+    intent_metadata: {
+      intent_type: 'correction';
+      intent_scope: 'local';
+      tags?: string[];
+    };
+  }): Promise<any> {
+    return this.request('sspUpdateNode', {
+      params: {
+        node_id: params.evidence_id,
+        updates: {},
+        modified_by: 'session'
+      }
+    });
   }
 
   /**
@@ -217,6 +338,7 @@ class SSPClient {
       change_notes?: string;
     };
     new_status: 'pending_verification' | 'verified';
+    evidence_type: 'chunk' | 'formula';
     intent_metadata: {
       intent_type: 'correction';
       intent_scope: 'local';
@@ -224,7 +346,25 @@ class SSPClient {
       tags?: string[];
     };
   }): Promise<any> {
-    return this.request('textDocument/sspCorrectEvidence', params);
+    const field = params.evidence_type === 'formula' ? 'latex_string' : 'raw_text';
+    const updated = await this.request('sspUpdateNode', {
+      params: {
+        node_id: params.evidence_id,
+        updates: { [field]: params.modifications.new_text },
+        modified_by: 'session'
+      }
+    });
+    if (params.new_status === 'verified') {
+      return this.request('sspVerifyNode', {
+        params: {
+          node_id: params.evidence_id,
+          action: 'approve',
+          verified_by: 'session',
+          notes: params.modifications.change_notes
+        }
+      });
+    }
+    return updated;
   }
 
   /**
@@ -239,7 +379,14 @@ class SSPClient {
       tags?: string[];
     };
   }): Promise<any> {
-    return this.request('textDocument/sspRejectEvidence', params);
+    return this.request('sspVerifyNode', {
+      params: {
+        node_id: params.evidence_id,
+        action: 'reject',
+        verified_by: 'session',
+        notes: params.reason
+      }
+    });
   }
 
   /**
@@ -253,7 +400,10 @@ class SSPClient {
       tags?: string[];
     };
   }): Promise<any> {
-    return this.request('textDocument/sspBatchVerifyEvidence', params);
+    return Promise.all(params.evidence_ids.map(evidenceId => this.verifyEvidence({
+      evidence_id: evidenceId,
+      intent_metadata: params.intent_metadata
+    })));
   }
 
   /**
@@ -268,7 +418,11 @@ class SSPClient {
       tags?: string[];
     };
   }): Promise<any> {
-    return this.request('textDocument/sspBatchRejectEvidence', params);
+    return Promise.all(params.evidence_ids.map(evidenceId => this.rejectEvidence({
+      evidence_id: evidenceId,
+      reason: params.reason,
+      intent_metadata: params.intent_metadata
+    })));
   }
 
   /**
@@ -296,7 +450,14 @@ class SSPClient {
       tags?: string[];
     };
   }): Promise<any> {
-    return this.request('textDocument/sspRestoreEvidence', params);
+    return this.request('sspVerifyNode', {
+      params: {
+        node_id: params.evidence_id,
+        action: 'request_changes',
+        verified_by: 'session',
+        notes: 'Restored for correction'
+      }
+    });
   }
 
   /**
@@ -373,6 +534,40 @@ class SSPClient {
     proposal_text: string;
   }): Promise<any> {
     return this.request('bootstrapDomainPack', params);
+  }
+
+  /**
+   * List domain packs configured on the backend
+   */
+  async listDomainPacks(): Promise<any> {
+    return this.request('listDomainPacks', {});
+  }
+
+  /**
+   * Get the chunks/formulas supporting one paper-metric assertion
+   */
+  async getEvidence(params: {
+    workspace_id: string;
+    paper_id: string;
+    metric_name: string;
+    owner_id?: string;
+  }): Promise<any> {
+    return this.request('getEvidence', params);
+  }
+
+  /**
+   * Method × scenario × metric coverage report with ranked gaps
+   */
+  async getCoverageAnalysis(params: {
+    workspace_id: string;
+    domain_pack_namespace?: string;
+    methods?: string[];
+    scenarios?: string[];
+    metrics?: string[];
+    gap_limit?: number;
+    owner_id?: string;
+  }): Promise<any> {
+    return this.request('getCoverageAnalysis', params);
   }
 
   /**

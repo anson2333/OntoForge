@@ -34,7 +34,7 @@ interface GraphViewProps {
 }
 
 export default function GraphView({ onPaperClick }: GraphViewProps) {
-  const { workspace, domainPacks, papers, activeDomainPackNamespaces, metrics } = useWorkspaceStore();
+  const { workspace, domainPacks, papers, activeDomainPackNamespaces, cellData } = useWorkspaceStore();
   const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
   const [filterNodeType, setFilterNodeType] = useState<string>('all');
@@ -45,7 +45,7 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
   // Build graph data from workspace state
   useEffect(() => {
     buildGraphData();
-  }, [workspace, domainPacks, papers, activeDomainPackNamespaces, metrics]);
+  }, [workspace, domainPacks, papers, activeDomainPackNamespaces, cellData]);
 
   const buildGraphData = () => {
     const nodes: GraphNode[] = [];
@@ -149,32 +149,31 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
       }
     });
 
-    // Add some assertion nodes (sample - in real implementation, fetch from backend)
-    // For now, just show a few mock assertions for demonstration
-    if (metrics && Array.isArray(metrics)) {
-      metrics.slice(0, 5).forEach((metric, idx) => {
-        if (!metric || !metric.full_name || !metric.name) return;
-        const assertionId = `assertion_${metric.full_name}_${idx}`;
-        nodes.push({
-          id: assertionId,
-          label: metric.name,
-          type: 'assertion',
-          namespace: metric.namespace,
-          color: '#dc3545',
-          size: 8
-        });
+    // Add assertion nodes for metric values actually recorded in the matrix
+    const seenAssertions = new Set<string>();
+    cellData.forEach(cell => {
+      if (!cell.value || seenAssertions.has(cell.metricName)) return;
+      const paper = filteredPapers.find(candidate => candidate.id === cell.paperId);
+      if (!paper) return;
+      seenAssertions.add(cell.metricName);
 
-        // Link assertions to random papers (mock)
-        if (filteredPapers && filteredPapers.length > 0 && filteredPapers[idx % filteredPapers.length]) {
-          links.push({
-            source: filteredPapers[idx % filteredPapers.length].id,
-            target: assertionId,
-            type: 'evidenced_by',
-            label: 'claims'
-          });
-        }
+      const assertionId = `assertion_${cell.metricName}`;
+      nodes.push({
+        id: assertionId,
+        label: cell.metricName.replace(/.*:/, ''),
+        type: 'assertion',
+        namespace: cell.metricName.split(':')[0],
+        color: '#dc3545',
+        size: 8
       });
-    }
+
+      links.push({
+        source: paper.id,
+        target: assertionId,
+        type: 'evidenced_by',
+        label: 'claims'
+      });
+    });
 
     setGraphData({ nodes, links });
   };

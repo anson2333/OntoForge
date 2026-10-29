@@ -6,7 +6,7 @@
 import { ReactNode } from 'react';
 import './TabBar.css';
 
-export type TabId = 'matrix' | 'graph' | 'timeline';
+export type TabId = 'matrix' | 'graph' | 'coverage';
 
 interface Tab {
   id: TabId;
@@ -28,7 +28,7 @@ export default function TabBar({ activeTab, onTabChange, title, subtitle, meta, 
   const tabs: Tab[] = [
     { id: 'graph', label: 'Graph', icon: '🕸️' },
     { id: 'matrix', label: 'Matrix', icon: '📊' },
-    { id: 'timeline', label: 'Timeline', icon: '📅', disabled: true },
+    { id: 'coverage', label: 'Coverage' },
   ];
 
   return (

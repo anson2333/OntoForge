@@ -300,6 +300,48 @@ async def test_extract_assertions_filters_invalid_metrics(
 
 
 @pytest.mark.asyncio
+async def test_extract_assertions_normalizes_aliases_and_units(
+    sample_domain_pack_config, sample_chunks, sample_formulas
+):
+    """Alias metric names and unit synonyms are normalized to the domain pack form."""
+    config = LLMProviderConfig(provider="mock", model="test-model", enabled=True)
+
+    class AliasMockProvider(MockLLMProvider):
+        async def invoke_structured(self, request):
+            return type('Result', (), {
+                'structured_output': {
+                    'assertions': [
+                        {
+                            'metric_name': 'switching_time',
+                            'predicate': 'equals',
+                            'value': '12.5',
+                            'unit': 'milliseconds',
+                            'context_conditions': {},
+                            'confidence': 0.9,
+                            'reasoning': 'Alias of reconfiguration_delay',
+                            'source_chunk_ids': ['chunk_0'],
+                            'source_formula_ids': [],
+                        }
+                    ],
+                    'warnings': [],
+                }
+            })()
+
+    extractor = SemanticExtractor(llm_provider=AliasMockProvider(config))
+
+    assertions = await extractor.extract_assertions(
+        chunks=sample_chunks,
+        formulas=sample_formulas,
+        config=sample_domain_pack_config,
+        domain_pack_namespace="optical",
+    )
+
+    assert len(assertions) == 1
+    assert assertions[0].subject == "optical:reconfiguration_delay"
+    assert assertions[0].unit == "ms"
+
+
+@pytest.mark.asyncio
 async def test_extract_assertions_handles_llm_failure(
     sample_domain_pack_config, sample_chunks, sample_formulas
 ):

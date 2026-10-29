@@ -17,8 +17,8 @@ sys.path.insert(0, str(backend_dir.parent))
 from backend.database import init_db, close_db, get_db
 from backend.database.node_repository import NodeRepository
 from backend.database.edge_repository import EdgeRepository
-from backend.schemas.nodes import PaperNode, AssertionNode, WorkspaceNode
-from backend.schemas.edges import ContainsEdge
+from backend.schemas.nodes import PaperNode, AssertionNode, ChunkNode, WorkspaceNode
+from backend.schemas.edges import ContainsEdge, EvidencedByEdge
 
 
 # Default workspace for mock data (fixed UUID for consistency)
@@ -272,6 +272,42 @@ METRICS = {
 }
 
 
+# Deterministic mock context per domain pack: each mock paper is labelled with one
+# method and one scenario so the coverage matrix has a realistic distribution.
+# These are synthetic labels for the demo dataset, not extracted values.
+CONTEXT_POOLS = {
+    'optical': {
+        'methods': ['wdm', 'optical_packet', 'burst_switching', 'circuit_switching', 'hybrid'],
+        'scenarios': [
+            'mesh',
+            'ring',
+            'star',
+            'point_to_point',
+            'free_space',
+            'data_center',
+            'metro_network',
+            'long_haul',
+            'access_network',
+            'satellite',
+        ],
+    },
+    'wireless': {
+        'methods': ['beamforming', 'mimo', 'ofdm', 'full_duplex'],
+        'scenarios': ['access_network', 'backhaul', 'data_center', 'satellite'],
+    },
+}
+
+
+def mock_context_for(namespace: str, paper_index: int) -> dict:
+    pools = CONTEXT_POOLS.get(namespace)
+    if not pools:
+        return {}
+    return {
+        'method': pools['methods'][paper_index % len(pools['methods'])],
+        'scenario': pools['scenarios'][paper_index % len(pools['scenarios'])],
+    }
+
+
 def hash_code(s: str) -> int:
     """Simple hash function to generate deterministic 'random' numbers from a string."""
     hash_val = 0
@@ -301,9 +337,30 @@ def clear_database(db):
     print("✅ Database cleared")
 
 
+def resolve_mock_owner_id():
+    """Pick the account that should own the mock workspace.
+
+    Prefers ``ONTOFORGE_MOCK_OWNER_ID``; otherwise looks up the seeded demo
+    account so the data is visible after signing in to the desktop app.
+    """
+    configured = os.getenv("ONTOFORGE_MOCK_OWNER_ID", "").strip()
+    if configured:
+        return configured
+
+    from backend.services.auth_service import find_user_by_username
+
+    demo_user = find_user_by_username(os.getenv("ONTOFORGE_MOCK_OWNER", "demo"))
+    return demo_user["user_id"] if demo_user else None
+
+
 def create_workspace(node_repo: NodeRepository) -> str:
     """Create a workspace node for organizing data."""
     print(f"🏢 Creating workspace: {WORKSPACE_NAME}...")
+    owner_id = resolve_mock_owner_id()
+    if owner_id:
+        print(f"  ✓ Workspace owner: {owner_id}")
+    else:
+        print("  ⚠️  No demo user found; workspace will be readable by any signed-in user")
     
     workspace = WorkspaceNode(
         id=WORKSPACE_ID,
@@ -313,7 +370,7 @@ def create_workspace(node_repo: NodeRepository) -> str:
         created_at=datetime.now(timezone.utc),
         last_modified_at=datetime.now(timezone.utc),
         status="active",
-        owner_id="local-dev-user",
+        owner_id=owner_id,
         metadata={"type": "demo"}
     )
     
@@ -386,11 +443,16 @@ def load_assertions(node_repo: NodeRepository, edge_repo: EdgeRepository, worksp
     
     assertion_count = 0
     edge_count = 0
-    
+    namespace_paper_index: dict[str, int] = {}
+
     for paper_data in MOCK_PAPERS:
         paper_id = paper_data['id']
         namespace = paper_data['domain_pack_namespace']
-        
+
+        paper_index = namespace_paper_index.get(namespace, 0)
+        namespace_paper_index[namespace] = paper_index + 1
+        mock_context = mock_context_for(namespace, paper_index)
+
         # Get metrics for this paper's domain pack
         metrics = METRICS.get(namespace, [])
         
@@ -436,7 +498,8 @@ def load_assertions(node_repo: NodeRepository, edge_repo: EdgeRepository, worksp
                     domain_pack_namespace=namespace,
                     context_conditions={
                         'paper_id': paper_id,
-                        'confidence': round(0.7 + rand4 * 0.3, 2)
+                        'confidence': round(0.7 + rand4 * 0.3, 2),
+                        **mock_context,
                     },
                     status=status,
                     workspace_id=workspace_id
@@ -454,6 +517,32 @@ def load_assertions(node_repo: NodeRepository, edge_repo: EdgeRepository, worksp
                     )
                     edge_repo.create_contains_edge(contains_edge)
                     edge_count += 1
+
+                    # Attach one supporting chunk so the evidence viewer has content
+                    chunk_id = f"chunk_{assertion_id}"
+                    chunk = ChunkNode(
+                        id=chunk_id,
+                        raw_text=(
+                            f"{paper_data['title']} reports {metric_full_name.replace(':', ' ')} "
+                            f"of {value} {metric['unit']} for the tested configuration."
+                        ),
+                        bounding_box={
+                            "page": 1 + seed % 8,
+                            "x": 80,
+                            "y": 120,
+                            "width": 400,
+                            "height": 60
+                        },
+                        verification_status="raw"
+                    )
+                    node_repo.create_chunk_node(chunk)
+                    edge_repo.create_evidenced_by_edge(
+                        EvidencedByEdge(
+                            from_node_id=chunk_id,
+                            to_node_id=assertion_id,
+                            confidence_score=round(0.7 + rand4 * 0.3, 2)
+                        )
+                    )
                     
                 except Exception as e:
                     print(f"  ✗ Failed to load assertion {assertion_id}: {e}")

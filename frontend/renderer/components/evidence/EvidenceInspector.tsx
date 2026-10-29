@@ -326,9 +326,24 @@ export default function EvidenceInspector({
         <EvidenceHistory
           evidence={viewingHistoryEvidence}
           onClose={() => setViewingHistoryId(null)}
-          onRestore={(version) => {
-            // TODO: Implement restore to specific version
-            console.log('Restore to version:', version);
+          onRestore={async (revision, restoredText) => {
+            const currentText = viewingHistoryEvidence.type === 'chunk'
+              ? viewingHistoryEvidence.raw_text || ''
+              : viewingHistoryEvidence.latex_string || '';
+            await onCorrect(
+              viewingHistoryEvidence.id,
+              {
+                old_text: currentText,
+                new_text: restoredText,
+                change_notes: `Restored from revision v${revision.version}`
+              },
+              {
+                intent_type: 'correction',
+                intent_scope: 'local',
+                tags: ['history_restore']
+              }
+            );
+            setViewingHistoryId(null);
           }}
         />
       )}

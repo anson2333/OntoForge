@@ -58,104 +58,12 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
   const loadDomainPack = async () => {
     setIsLoading(true);
     try {
-      // Try to fetch from backend
-      const result = await sspClient.call('textDocument/sspGetDomainPack', {});
-      setConfig(result.config);
+      const result = await sspClient.listDomainPacks();
+      const firstPack = result?.domain_packs?.[0];
+      setConfig(firstPack?.config ?? null);
     } catch (error) {
-      console.warn('Backend not available, using mock domain pack');
-      // Mock domain pack for development
-      const mockConfig: DomainPackConfig = {
-        schema_version: '1.0',
-        domain: {
-          id: 'domain.networking.optical',
-          name: 'Optical Access Networks',
-          taxonomy_tree: [
-            {
-              name: 'topology',
-              values: ['mesh', 'ring', 'star', 'free_space'],
-              subdomain_map: {
-                'free_space': 'domain.networking.optical.fso',
-                'mesh': 'domain.networking.optical.access'
-              },
-              description: 'Network topology types'
-            },
-            {
-              name: 'switching_mechanism',
-              values: ['wdm', 'optical_packet', 'burst_switching', 'circuit_switching'],
-              subdomain_map: {
-                'wdm': 'domain.networking.optical.wdm',
-                'optical_packet': 'domain.networking.optical.ops'
-              },
-              description: 'Switching technologies'
-            },
-            {
-              name: 'performance_metrics',
-              values: ['latency', 'throughput', 'reliability', 'scalability'],
-              description: 'Performance characteristics'
-            }
-          ]
-        },
-        core_metrics: [
-          {
-            name: 'reconfiguration_delay',
-            expected_unit: 'ms',
-            aliases: ['switching_delay', 'matrix_latency', 'reconfiguration_time'],
-            value_type: 'float'
-          },
-          {
-            name: 'cross_talk',
-            expected_unit: 'dB',
-            aliases: ['crosstalk', 'channel_isolation'],
-            value_type: 'float'
-          },
-          {
-            name: 'insertion_loss',
-            expected_unit: 'dB',
-            aliases: ['optical_loss', 'path_loss'],
-            value_type: 'float'
-          },
-          {
-            name: 'extinction_ratio',
-            expected_unit: 'dB',
-            aliases: ['ER', 'on_off_ratio'],
-            value_type: 'float'
-          },
-          {
-            name: 'bit_error_rate',
-            expected_unit: 'unitless',
-            aliases: ['BER', 'error_rate'],
-            value_type: 'float'
-          },
-          {
-            name: 'power_consumption',
-            expected_unit: 'W',
-            aliases: ['energy_consumption', 'power_draw'],
-            value_type: 'float'
-          },
-          {
-            name: 'port_count',
-            expected_unit: 'ports',
-            aliases: ['num_ports', 'switch_size'],
-            value_type: 'int'
-          },
-          {
-            name: 'wavelength_range',
-            expected_unit: 'nm',
-            aliases: ['spectral_range', 'operating_wavelength'],
-            value_type: 'string'
-          }
-        ],
-        validation: {
-          required_context_keys: ['network_load', 'topology', 'temperature'],
-          unit_normalization: {
-            'ms': ['ms', 'millisecond', 'milliseconds', 'msec'],
-            'dB': ['dB', 'db', 'decibel', 'decibels'],
-            'W': ['W', 'watt', 'watts', 'w'],
-            'ports': ['ports', 'port', 'channels', 'channel']
-          }
-        }
-      };
-      setConfig(mockConfig);
+      console.error('Failed to load domain pack from backend:', error);
+      setConfig(null);
     } finally {
       setIsLoading(false);
     }

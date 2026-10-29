@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { BACKEND_URL, JSONRPC_URL } from './runtime_config';
 
 export interface ServiceStatus {
   status: 'online' | 'offline' | 'degraded' | 'unknown';
@@ -17,8 +18,6 @@ export interface LLMStatus extends ServiceStatus {
   configured: boolean;
 }
 
-const BACKEND_URL = 'http://localhost:8765';
-const JSONRPC_URL = `${BACKEND_URL}/jsonrpc`;
 const CHECK_INTERVAL = 10000; // Check every 10 seconds
 
 export function useServiceStatus() {

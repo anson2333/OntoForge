@@ -107,20 +107,19 @@
   font-family: monospace;
 }
 
-.pdf-mock-image {
+.source-evidence-text {
   margin-top: 20px;
-  min-height: 300px;
-  background: white;
-  border: 1px dashed #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mock-crop {
-  padding: 20px;
-  color: #999;
-  text-align: center;
+  min-height: 180px;
+  padding: 16px;
+  overflow: auto;
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--primary-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-wrap;
 }
 
 .confidence-display {
@@ -374,7 +373,7 @@
 
 .editor-content,
 .pdf-placeholder,
-.mock-crop,
+.source-evidence-text,
 .editor-metadata,
 .change-preview,
 .tag-btn {

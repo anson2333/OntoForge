@@ -9,6 +9,8 @@ import { useWorkspaceStore } from '../../services/workspace';
 import { DomainPackNode } from './DomainPackNode';
 import { AddDomainPackModal } from './AddDomainPackModal';
 import { CreateWorkspaceModal } from './CreateWorkspaceModal';
+import { WorkspaceMembersModal } from './WorkspaceMembersModal';
+import { useAuthStore } from '../../services/auth';
 import { TaxonomyDimension } from '../domain/DomainPackPanel';
 import './WorkspaceSidebar.css';
 
@@ -50,6 +52,8 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
   const [isResizing, setIsResizing] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
+  const [membersWorkspaceId, setMembersWorkspaceId] = useState<string | null>(null);
+  const currentUserId = useAuthStore(state => state.user?.user_id);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const workspaceMenuRef = useRef<HTMLDivElement>(null);
 
@@ -299,6 +303,17 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
 
                 {isMenuOpen && (
                   <div className="workspace-menu" role="menu">
+                    <button
+                      className="workspace-menu-item"
+                      onClick={() => {
+                        setMembersWorkspaceId(item.id);
+                        setWorkspaceMenuOpen(null);
+                      }}
+                      role="menuitem"
+                    >
+                      <span className="menu-item-icon">◎</span>
+                      <span>Manage access</span>
+                    </button>
                     <button 
                       className="workspace-menu-item danger" 
                       onClick={() => handleDeleteWorkspace(item.id, item.name)} 
@@ -441,6 +456,18 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
           onCreateWorkspace={createWorkspace}
         />
       )}
+
+      {membersWorkspaceId && (() => {
+        const selected = workspaces.find(item => item.id === membersWorkspaceId);
+        return selected ? (
+          <WorkspaceMembersModal
+            workspaceId={selected.id}
+            workspaceName={selected.name}
+            canManage={selected.owner_id === currentUserId}
+            onClose={() => setMembersWorkspaceId(null)}
+          />
+        ) : null;
+      })()}
     </div>
   );
 };

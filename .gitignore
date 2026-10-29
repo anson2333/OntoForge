@@ -37,3 +37,10 @@ venv/
 .tmp/
 tmp/
 temp/
+
+# Local user store created by the backend at runtime
+backend/data/
+
+# One-command demo runtime state and generated screenshots
+.demo/
+frontend/demo-screenshots/

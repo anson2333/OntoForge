@@ -494,6 +494,9 @@ class TestPdfIngestionServices:
                 self.formulas = []
                 self.assertions = []
 
+            def get_node_by_id(self, node_id, node_label):
+                return None
+
             def create_paper_node(self, node):
                 self.papers.append(node)
                 return node.model_dump()

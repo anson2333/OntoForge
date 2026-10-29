@@ -5,7 +5,7 @@ Tests database operations with actual Neo4j instance using testcontainers.
 
 import pytest
 import os
-from testcontainers.neo4j import Neo4jContainer
+from testcontainers.community.neo4j import Neo4jContainer
 from backend.database import Neo4jConnection, NodeRepository, EdgeRepository, init_db, close_db, get_db
 from backend.schemas.nodes import DomainNode, PaperNode, ChunkNode, FormulaNode, AssertionNode, HumanArbitratorNode
 from backend.schemas.edges import BelongsToEdge, ContainsEdge, CitesEdge, LocksEdge, ApprovesEdge
@@ -15,18 +15,37 @@ from backend.config import DomainPackLoader
 @pytest.fixture(scope="module")
 def neo4j_container():
     """
-    Start a Neo4j test container for integration tests.
-    
-    This fixture is module-scoped to reuse the container across all tests.
+    Provide a Neo4j instance for integration tests.
+
+    If ``ONTOFORGE_TEST_NEO4J_URI`` (or ``NEO4J_URI``) points at a running
+    instance it is used directly, otherwise a Docker test container is started.
+    Integration tests are skipped when neither is available.
     """
-    with Neo4jContainer("neo4j:5") as container:
-        # Set environment variables for tests to connect
-        # Use the container's connection details
+    external_uri = os.getenv("ONTOFORGE_TEST_NEO4J_URI") or os.getenv("NEO4J_URI")
+    if external_uri:
+        os.environ["NEO4J_URI"] = external_uri
+        os.environ.setdefault("NEO4J_USER", "neo4j")
+        os.environ.setdefault("NEO4J_PASSWORD", "password")
+        yield None
+        return
+
+    try:
+        container = Neo4jContainer("neo4j:5")
+        container.start()
+    except Exception as exc:  # Docker not available
+        if os.getenv("ONTOFORGE_REQUIRE_INTEGRATION", "false").lower() in {
+            "1", "true", "yes", "on"
+        }:
+            pytest.fail(f"Neo4j integration tests are required but unavailable: {exc}")
+        pytest.skip(f"Neo4j unavailable (no Docker daemon and no NEO4J_URI): {exc}")
+
+    try:
         os.environ["NEO4J_URI"] = container.get_connection_url()
-        os.environ["NEO4J_USER"] = container.username  # Default: neo4j
-        os.environ["NEO4J_PASSWORD"] = container.password  # Default: password from container
-        
+        os.environ["NEO4J_USER"] = container.username
+        os.environ["NEO4J_PASSWORD"] = container.password
         yield container
+    finally:
+        container.stop()
 
 
 @pytest.fixture

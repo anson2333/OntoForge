@@ -158,6 +158,7 @@ interface WorkspaceState {
   confidenceThreshold: number;
   
   // Actions
+  setCurrentUser: (userId: string) => void;
   loadWorkspaces: () => Promise<void>;
   loadWorkspace: (workspaceId: string) => Promise<void>;
   switchWorkspace: (workspaceId: string) => Promise<void>;
@@ -196,18 +197,6 @@ interface WorkspaceState {
   setConfidenceThreshold: (threshold: number) => void;
 }
 
-// Local workspace metadata until the backend exposes workspace/domain-pack endpoints
-const MOCK_WORKSPACE: WorkspaceInfo = {
-  id: 'workspace_5g_backhaul_2026',
-  name: '5G Backhaul Comparison Study',
-  description: 'Comparing optical and wireless backhaul technologies for 5G networks',
-  root: 'file:///Users/scholar/research/5g_backhaul_study',
-  created_at: '2026-05-24T00:00:00Z',
-  status: 'active',
-  owner_id: 'local-dev-user'
-};
-
-const DEFAULT_OWNER_ID = 'local-dev-user';
 const PAPER_REGISTRY_STORAGE_KEY = 'ontoforge-paper-registry-v1';
 const DOMAIN_PACK_REGISTRY_KEY = 'ontoforge-domain-pack-registry-v1';
 const PAPER_INGESTION_TIMESTAMPS_KEY = 'ontoforge-paper-ingestion-timestamps-v1';
@@ -475,7 +464,11 @@ function persistWorkspacePaperImports(workspaceId: string, paperImports: PaperIm
     ...current,
     paperImportsByWorkspace: {
       ...current.paperImportsByWorkspace,
-      [workspaceId]: paperImports.map(({ local_file, ...entry }) => entry)
+      [workspaceId]: paperImports.map(item => {
+        const persisted = { ...item };
+        delete persisted.local_file;
+        return persisted;
+      })
     }
   }));
 }
@@ -557,189 +550,46 @@ function createPaperImportEntry(
   };
 }
 
-// Load all available domain packs (mock + bootstrapped)
-function createMockDomainPacks(): LoadedDomainPack[] {
-  // Load bootstrapped configs from localStorage
-  const bootstrappedState = loadBootstrappedDomainPacks();
-  const bootstrappedPacks: LoadedDomainPack[] = Object.entries(bootstrappedState.configsByNamespace).map(([namespace, config]) => {
-    const metrics = config.core_metrics.map(m => ({
-      name: m.name,
-      full_name: `${namespace}:${m.name}`,
-      namespace: namespace,
-      unit: m.expected_unit,
-      aliases: m.aliases || [],
-      value_type: m.value_type
-    }));
-    
-    return {
-      namespace,
-      config,
-      enabled: true,
-      metrics
-    };
-  });
-  
-  // Create mock hardcoded packs
-  const opticalConfig: DomainPackConfig = {
-    schema_version: '1.0',
-    domain: {
-      id: 'domain.networking.optical',
-      name: 'Optical Access Networks',
-      taxonomy_tree: [
-        {
-          name: 'topology',
-          values: ['mesh', 'ring', 'star', 'free_space'],
-          subdomain_map: {
-            'free_space': 'domain.networking.optical.fso',
-            'mesh': 'domain.networking.optical.access'
-          },
-          description: 'Network topology types'
-        },
-        {
-          name: 'switching_mechanism',
-          values: ['wdm', 'optical_packet', 'burst_switching'],
-          subdomain_map: {
-            'wdm': 'domain.networking.optical.wdm',
-            'optical_packet': 'domain.networking.optical.ops'
-          },
-          description: 'Switching technologies'
-        }
-      ]
-    },
-    core_metrics: [
-      {
-        name: 'reconfiguration_delay',
-        expected_unit: 'ms',
-        aliases: ['switching_delay', 'matrix_latency'],
-        value_type: 'float'
-      },
-      {
-        name: 'cross_talk',
-        expected_unit: 'dB',
-        aliases: ['crosstalk', 'channel_isolation'],
-        value_type: 'float'
-      },
-      {
-        name: 'insertion_loss',
-        expected_unit: 'dB',
-        aliases: ['optical_loss'],
-        value_type: 'float'
-      },
-      {
-        name: 'power_consumption',
-        expected_unit: 'W',
-        aliases: ['energy_consumption'],
-        value_type: 'float'
-      }
-    ],
-    validation: {
-      required_context_keys: ['network_load', 'topology'],
-      unit_normalization: {
-        'ms': ['ms', 'millisecond'],
-        'dB': ['dB', 'db'],
-        'W': ['W', 'watt']
-      }
-    }
-  };
-
-  const wirelessConfig: DomainPackConfig = {
-    schema_version: '1.0',
-    domain: {
-      id: 'domain.networking.wireless',
-      name: 'Wireless Communications',
-      taxonomy_tree: [
-        {
-          name: 'frequency_band',
-          values: ['mmWave', 'sub_6ghz', 'terahertz'],
-          subdomain_map: {
-            'mmWave': 'domain.networking.wireless.mmwave',
-            'sub_6ghz': 'domain.networking.wireless.sub6'
-          },
-          description: 'Frequency bands'
-        }
-      ]
-    },
-    core_metrics: [
-      {
-        name: 'throughput',
-        expected_unit: 'Gbps',
-        aliases: ['data_rate', 'bandwidth'],
-        value_type: 'float'
-      },
-      {
-        name: 'latency',
-        expected_unit: 'ms',
-        aliases: ['delay', 'response_time'],
-        value_type: 'float'
-      },
-      {
-        name: 'coverage_radius',
-        expected_unit: 'km',
-        aliases: ['range', 'reach'],
-        value_type: 'float'
-      },
-      {
-        name: 'energy_efficiency',
-        expected_unit: 'bits/J',
-        aliases: ['power_efficiency'],
-        value_type: 'float'
-      }
-    ],
-    validation: {
-      required_context_keys: ['frequency', 'antenna_config'],
-      unit_normalization: {
-        'Gbps': ['Gbps', 'Gbit/s'],
-        'ms': ['ms', 'millisecond'],
-        'km': ['km', 'kilometer']
-      }
-    }
-  };
-
-  const opticalMetrics: Metric[] = opticalConfig.core_metrics.map(m => ({
+function toLoadedDomainPack(namespace: string, config: DomainPackConfig): LoadedDomainPack {
+  const metrics: Metric[] = config.core_metrics.map(m => ({
     name: m.name,
-    full_name: `optical:${m.name}`,
-    namespace: 'optical',
+    full_name: `${namespace}:${m.name}`,
+    namespace,
     unit: m.expected_unit,
-    aliases: m.aliases,
+    aliases: m.aliases || [],
     value_type: m.value_type
   }));
 
-  const wirelessMetrics: Metric[] = wirelessConfig.core_metrics.map(m => ({
-    name: m.name,
-    full_name: `wireless:${m.name}`,
-    namespace: 'wireless',
-    unit: m.expected_unit,
-    aliases: m.aliases,
-    value_type: m.value_type
-  }));
+  return { namespace, config, enabled: true, metrics };
+}
 
-  const mockPacks = [
-    {
-      namespace: 'optical',
-      config: opticalConfig,
-      enabled: true,
-      metrics: opticalMetrics
-    },
-    {
-      namespace: 'wireless',
-      config: wirelessConfig,
-      enabled: true,
-      metrics: wirelessMetrics
-    }
-  ];
-  
-  // Combine bootstrapped and mock packs, prioritizing bootstrapped
-  const allPacks = [...bootstrappedPacks];
-  const bootstrappedNamespaces = new Set(bootstrappedPacks.map(p => p.namespace));
-  
-  // Add mock packs only if they haven't been bootstrapped
-  for (const pack of mockPacks) {
-    if (!bootstrappedNamespaces.has(pack.namespace)) {
-      allPacks.push(pack);
-    }
+// Domain packs currently available: backend configs plus packs bootstrapped
+// during this browser session (persisted in localStorage).
+let availableDomainPacks: LoadedDomainPack[] = [];
+
+async function loadAvailableDomainPacks(): Promise<LoadedDomainPack[]> {
+  const packsByNamespace = new Map<string, LoadedDomainPack>();
+
+  try {
+    const response = await sspClient.listDomainPacks();
+    const backendPacks = response?.domain_packs || [];
+    backendPacks.forEach((entry: { namespace?: string; config?: DomainPackConfig }) => {
+      if (!entry?.namespace || !entry?.config) {
+        return;
+      }
+      packsByNamespace.set(entry.namespace, toLoadedDomainPack(entry.namespace, entry.config));
+    });
+  } catch (error) {
+    console.warn('Failed to load domain packs from backend:', error);
   }
-  
-  return allPacks;
+
+  const bootstrappedState = loadBootstrappedDomainPacks();
+  Object.entries(bootstrappedState.configsByNamespace).forEach(([namespace, config]) => {
+    packsByNamespace.set(namespace, toLoadedDomainPack(namespace, config));
+  });
+
+  availableDomainPacks = Array.from(packsByNamespace.values());
+  return availableDomainPacks;
 }
 
 async function fetchCellDataFromBackend(): Promise<Map<string, CellData>> {
@@ -755,7 +605,10 @@ async function fetchCellDataForWorkspace(
   const cellData = new Map<string, CellData>();
   
   try {
-    const response = await sspClient.getAssertions({ workspace_id: workspaceId, owner_id: ownerId });
+    const response = await sspClient.getAssertions({
+      workspace_id: workspaceId,
+      owner_id: ownerId || undefined
+    });
     if (response && response.assertions) {
       response.assertions.forEach((assertion: any) => {
         const key = `${assertion.paperId}:${assertion.metricName}`;
@@ -783,7 +636,13 @@ function deriveWorkspaceDomainPacks(papers: Paper[], paperImports: PaperImportEn
   activeNamespaces: string[];
   metrics: Metric[];
 } {
-  const availablePacks = createMockDomainPacks();
+  // Overlay locally bootstrapped/edited configs on top of the backend packs
+  const packsByNamespace = new Map(availableDomainPacks.map(pack => [pack.namespace, pack]));
+  const bootstrappedState = loadBootstrappedDomainPacks();
+  Object.entries(bootstrappedState.configsByNamespace).forEach(([namespace, config]) => {
+    packsByNamespace.set(namespace, toLoadedDomainPack(namespace, config));
+  });
+  const availablePacks = Array.from(packsByNamespace.values());
   
   // Get explicitly added domain packs for this workspace
   const registry = loadDomainPackRegistryState();
@@ -844,9 +703,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
   return {
     // Workspace info
     workspaces: [],
-    workspace: MOCK_WORKSPACE,
-    currentOwnerId: DEFAULT_OWNER_ID,
-    currentWorkspaceId: '550e8400-e29b-41d4-a716-446655440000',  // Default workspace UUID for data isolation
+    workspace: null,
+    currentOwnerId: '',
+    currentWorkspaceId: '',
     
     // Multi-domain-pack state
     domainPacks: [],
@@ -874,6 +733,34 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
     userIntentProfile: null,
     learnedPatterns: [],
     confidenceThreshold: 0.8,
+
+    setCurrentUser: (userId: string) => {
+      if (get().currentOwnerId === userId) {
+        return;
+      }
+      set({
+        currentOwnerId: userId,
+        workspaces: [],
+        workspace: null,
+        currentWorkspaceId: '',
+        domainPacks: [],
+        activeDomainPackNamespaces: [],
+        papers: [],
+        paperImports: [],
+        selectedRootView: true,
+        selectedWorkspaceViewId: null,
+        selectedDomainPackNamespace: null,
+        selectedPaperId: null,
+        selectedPaperImportId: null,
+        selectedMetricsNamespace: null,
+        selectedMetricsMode: 'registry',
+        selectedMetricFullName: null,
+        selectedSubdomain: null,
+        metrics: [],
+        allCellData: new Map<string, CellData>(),
+        cellData: new Map<string, CellData>()
+      });
+    },
 
     loadWorkspaces: async () => {
       try {
@@ -946,7 +833,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
         }
         
         const paperImports = getWorkspacePaperImports(workspaceId);
-        
+
+        await loadAvailableDomainPacks();
         const { domainPacks, activeNamespaces, metrics } = deriveWorkspaceDomainPacks(papers, paperImports, workspaceId);
         
         console.time('[loadWorkspace] fetchCellDataForWorkspace');
@@ -961,7 +849,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
           workspaces: workspaceInfo
             ? get().workspaces.map(item => item.id === workspaceInfo!.id ? workspaceInfo! : item)
             : get().workspaces,
-          workspace: workspaceInfo || get().workspace || MOCK_WORKSPACE,
+          workspace: workspaceInfo || get().workspace,
           currentWorkspaceId: workspaceId,
           domainPacks,
           activeDomainPackNamespaces: activeNamespaces,
@@ -1083,6 +971,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
         const paperImports = getWorkspacePaperImports(get().currentWorkspaceId);
         
         // Derive domain packs from papers and imports
+        await loadAvailableDomainPacks();
         const { domainPacks, activeNamespaces, metrics } = deriveWorkspaceDomainPacks(papers, paperImports, get().currentWorkspaceId);
         
         let cellData = new Map<string, CellData>();
@@ -1444,86 +1333,46 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
     },
     
     getEvidence: async (paperId: string, metricName: string) => {
-      // TODO: Call SSP textDocument/sspRetrieveEvidence
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
-      // Get the actual cell data to show relevant evidence
-      const cellData = get().getCellData(paperId, metricName);
-      const paper = get().papers.find(p => p.id === paperId);
-      
-      if (!cellData) {
+      const { currentWorkspaceId, currentOwnerId } = get();
+      if (!currentWorkspaceId) {
         return [];
       }
-      
-      // Generate cell-specific evidence matching the evidenceCount
-      const metricDisplay = metricName.replace(/.*:/, '').replace(/_/g, ' ');
-      const value = cellData.value || 'N/A';
-      const unit = cellData.unit || '';
-      const targetCount = cellData.evidenceCount;
-      
-      // Use hash of paperId + metricName to generate consistent but varied data
-      const hash = (paperId + metricName).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      const seed = hash % 100;
-      
-      const mockEvidence: Evidence[] = [];
-      
-      // Generate chunks (at least 1, up to targetCount - 1 to leave room for formula if needed)
-      const hasFormula = (metricDisplay.includes('delay') || metricDisplay.includes('latency') || 
-                          metricDisplay.includes('throughput') || metricDisplay.includes('loss'));
-      const chunkCount = hasFormula ? Math.max(1, targetCount - 1) : targetCount;
-      
-      // Chunk templates with more realistic content
-      const chunkTemplates = [
-        `In our experiments, we systematically measured the ${metricDisplay} across various operating conditions. The system consistently achieved ${value} ${unit}, which represents a significant improvement over the baseline configuration. These measurements were conducted using industry-standard test equipment with a measurement uncertainty of ±2%. The experimental setup followed IEEE 802.3 testing guidelines, ensuring reproducibility and comparability with previous studies in the field.`,
-        
-        `${paper?.title || 'The paper'} presents comprehensive analysis showing that ${metricDisplay} values of ${value} ${unit} were consistently achieved across multiple test runs spanning ${3 + (seed % 5)} weeks of continuous operation. The methodology is described in detail in Section ${2 + (seed % 3)}, where we outline the calibration procedures and validation against reference standards. Statistical analysis revealed a standard deviation of less than 5%, indicating high stability and reliability of the measured values.`,
-        
-        `The measured ${metricDisplay} of ${value} ${unit} represents a ${10 + (seed % 30)}% improvement over the baseline performance reported in prior work. These results were validated through independent verification by an external laboratory, which confirmed our findings within a ${2 + (seed % 3)}% margin. The improvement is attributed to our novel optimization algorithm described in Algorithm ${1 + (seed % 2)}, which dynamically adjusts system parameters based on real-time feedback. This approach has proven effective across diverse deployment scenarios.`,
-        
-        `Under peak load conditions with ${70 + (seed % 30)}% utilization, we recorded ${metricDisplay} at ${value} ${unit}, demonstrating the system's robustness and reliability even under stress. The test environment simulated real-world traffic patterns including bursty transmissions and variable packet sizes ranging from 64 to 1518 bytes. Performance remained stable throughout the ${24 + (seed % 48)}-hour test period, with no significant degradation observed. These findings validate our architectural design choices and confirm scalability to production deployments.`,
-        
-        `Table ${1 + (seed % 5)} in Section ${3 + (seed % 4)} summarizes the ${metricDisplay} measurements across different experimental configurations. The average value of ${value} ${unit} was observed, with individual measurements ranging from ${(parseFloat(value) * 0.95).toFixed(1)} to ${(parseFloat(value) * 1.05).toFixed(1)} ${unit}. The variance in measurements can be attributed to environmental factors such as temperature fluctuations (±3°C) and power supply variations. Statistical t-tests confirmed that our improvements are statistically significant at p < 0.01 confidence level compared to baseline methods.`
-      ];
-      
-      // Add chunks
-      for (let i = 0; i < chunkCount; i++) {
-        mockEvidence.push({
-          type: 'chunk',
-          id: `${paperId}_${metricName}_chunk_${i + 1}`,
-          text: chunkTemplates[i % chunkTemplates.length],
-          confidence: 0.70 + ((seed + i * 7) % 25) / 100,
-          boundingBox: { 
-            page: 1 + ((seed + i) % 3), 
-            x: 80 + ((seed + i * 13) % 50), 
-            y: 150 + ((seed + i * 19) % 200), 
-            width: 380, 
-            height: 45 
-          }
+
+      try {
+        const response = await sspClient.getEvidence({
+          workspace_id: currentWorkspaceId,
+          paper_id: paperId,
+          metric_name: metricName,
+          owner_id: currentOwnerId || undefined
         });
-      }
-      
-      // Add formula if appropriate and we haven't reached target count
-      if (hasFormula && mockEvidence.length < targetCount) {
-        mockEvidence.push({
-          type: 'formula',
-          id: `${paperId}_${metricName}_formula_1`,
-          text: metricDisplay.includes('delay') || metricDisplay.includes('latency') 
-            ? `τ_{${metricDisplay.split(' ')[0]}} = ${value}\\text{ ${unit}}`
-            : metricDisplay.includes('loss')
-            ? `L_{${metricDisplay.split(' ')[0]}} = ${value}\\text{ ${unit}}`
-            : `R = ${value}\\text{ ${unit}}`,
-          confidence: 0.88 + (seed % 10) / 100,
-          boundingBox: { 
-            page: 1 + (seed % 3), 
-            x: 120 + (seed % 30), 
-            y: 400 + (seed % 100), 
-            width: 280, 
-            height: 35 
-          }
+
+        return (response?.evidence || []).map((item: any): Evidence => {
+          const location = item.bounding_box && typeof item.bounding_box === 'object'
+            ? item.bounding_box
+            : null;
+          const coords = Array.isArray(location?.coords) && location.coords.length === 4
+            ? location.coords.map(Number)
+            : null;
+          return {
+            type: item.type === 'formula' ? 'formula' : 'chunk',
+            id: item.id,
+            text: item.text || '',
+            confidence: item.confidence ?? 0,
+            boundingBox: location
+              ? {
+                  page: Number(location.page ?? 0),
+                  x: coords ? coords[0] : Number(location.x ?? 0),
+                  y: coords ? coords[1] : Number(location.y ?? 0),
+                  width: coords ? Math.max(0, coords[2] - coords[0]) : Number(location.width ?? 0),
+                  height: coords ? Math.max(0, coords[3] - coords[1]) : Number(location.height ?? 0)
+                }
+              : undefined
+          };
         });
+      } catch (error) {
+        console.warn('Failed to fetch evidence from backend:', error);
+        return [];
       }
-      
-      return mockEvidence;
     },
 
     addMetric: (namespace: string, metric: MetricInput) => {

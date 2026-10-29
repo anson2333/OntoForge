@@ -4,7 +4,9 @@ Provides CRUD operations for all graph node types.
 """
 
 from typing import Dict, Any, List, Optional
+from datetime import date, datetime
 import json
+import re
 from backend.database.connection import Neo4jConnection
 from backend.schemas.nodes import (
     WorkspaceNode,
@@ -20,6 +22,18 @@ from backend.schemas.nodes import (
 
 class NodeRepository:
     """Repository for node CRUD operations."""
+
+    NODE_LABELS = {
+        "WorkspaceNode",
+        "DomainNode",
+        "PaperNode",
+        "ChunkNode",
+        "FormulaNode",
+        "AssertionNode",
+        "HumanArbitratorNode",
+        "IntentBranchNode",
+    }
+    PROPERTY_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
     def __init__(self, db: Neo4jConnection):
         """
@@ -129,11 +143,20 @@ class NodeRepository:
         Returns:
             True if deletion was successful
         """
+        # Delete only nodes owned through this workspace's paper hierarchy.
+        # An unrestricted undirected path can cross citation/shared-domain edges
+        # and erase data belonging to another workspace.
         query = """
         MATCH (w:WorkspaceNode {id: $workspace_id})
-        OPTIONAL MATCH (w)-[r1*]-(related)
-        DETACH DELETE w, related
-        RETURN count(w) as deleted_count
+        OPTIONAL MATCH (w)-[:CONTAINS_PAPER]->(p:PaperNode)
+        OPTIONAL MATCH (p)-[:CONTAINS]->(owned)
+        WITH w,
+             [node IN collect(DISTINCT owned) WHERE node IS NOT NULL] AS owned_nodes,
+             [node IN collect(DISTINCT p) WHERE node IS NOT NULL] AS papers
+        FOREACH (node IN owned_nodes | DETACH DELETE node)
+        FOREACH (paper IN papers | DETACH DELETE paper)
+        DETACH DELETE w
+        RETURN 1 AS deleted_count
         """
         result = self.db.execute_query(query, {"workspace_id": workspace_id})
         return result[0]["deleted_count"] > 0 if result else False
@@ -328,7 +351,23 @@ class NodeRepository:
             arbitrator["declaration_constraints"] = json.loads(arbitrator["declaration_constraints"])
         return arbitrator
 
-    def get_node_by_id(self, node_id: str, node_label: str) -> Optional[Dict[str, Any]]:
+    @classmethod
+    def _validate_label(cls, node_label: str) -> str:
+        if node_label not in cls.NODE_LABELS:
+            raise ValueError(f"Unsupported node label: {node_label}")
+        return node_label
+
+    @staticmethod
+    def _property_value(value: Any) -> Any:
+        if isinstance(value, dict):
+            return json.dumps(value)
+        if isinstance(value, (datetime, date)):
+            return value.isoformat()
+        return value
+
+    def get_node_by_id(
+        self, node_id: str, node_label: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
         """
         Retrieve a node by its ID.
 
@@ -339,15 +378,24 @@ class NodeRepository:
         Returns:
             Node data if found, None otherwise
         """
+        label_clause = f":{self._validate_label(node_label)}" if node_label else ""
         query = f"""
-        MATCH (n:{node_label} {{id: $node_id}})
+        MATCH (n{label_clause} {{id: $node_id}})
+        WHERE any(label IN labels(n) WHERE label IN $allowed_labels)
         RETURN n
+        LIMIT 1
         """
-        result = self.db.execute_query(query, {"node_id": node_id})
+        result = self.db.execute_query(
+            query,
+            {"node_id": node_id, "allowed_labels": sorted(self.NODE_LABELS)},
+        )
         return result[0]["n"] if result else None
 
     def update_node(
-        self, node_id: str, node_label: str, updates: Dict[str, Any]
+        self,
+        node_id: str,
+        node_label: str | Dict[str, Any],
+        updates: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Update node properties.
@@ -360,16 +408,37 @@ class NodeRepository:
         Returns:
             Updated node data
         """
-        # Build SET clause dynamically
+        # Older SSP handlers pass (node_id, updates); retain that form while
+        # constraining the match to known graph labels.
+        if updates is None:
+            if not isinstance(node_label, dict):
+                raise TypeError("updates are required")
+            updates = node_label
+            resolved_label: Optional[str] = None
+        else:
+            resolved_label = self._validate_label(str(node_label))
+        if not updates:
+            raise ValueError("At least one update is required")
+        invalid_keys = [key for key in updates if not self.PROPERTY_NAME.match(key)]
+        if invalid_keys:
+            raise ValueError(f"Invalid property names: {', '.join(invalid_keys)}")
+
         set_clauses = [f"n.{key} = ${key}" for key in updates.keys()]
         set_clause = ", ".join(set_clauses)
+        label_clause = f":{resolved_label}" if resolved_label else ""
 
         query = f"""
-        MATCH (n:{node_label} {{id: $node_id}})
+        MATCH (n{label_clause} {{id: $node_id}})
+        WHERE any(label IN labels(n) WHERE label IN $allowed_labels)
         SET {set_clause}
         RETURN n
+        LIMIT 1
         """
-        params = {"node_id": node_id, **updates}
+        params = {
+            "node_id": node_id,
+            "allowed_labels": sorted(self.NODE_LABELS),
+            **{key: self._property_value(value) for key, value in updates.items()},
+        }
         result = self.db.execute_query(query, params)
         return result[0]["n"] if result else {}
 

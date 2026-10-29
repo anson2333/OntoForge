@@ -264,10 +264,12 @@ class TestIntentProtocols:
         """Test SSPSuggestReviewQueueParams schema."""
         params = SSPSuggestReviewQueueParams(
             strategy="intent_aligned",
-            limit=20
+            limit=20,
+            workspace_id="workspace_test",
         )
         assert params.strategy == "intent_aligned"
         assert params.limit == 20
+        assert params.workspace_id == "workspace_test"
 
     def test_ssp_apply_intent_pattern_params(self):
         """Test SSPApplyIntentPatternParams schema."""

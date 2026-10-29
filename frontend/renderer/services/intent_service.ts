@@ -222,9 +222,18 @@ class IntentService {
     overrides?: Record<string, any>;
   }): Promise<{ branch_id: string; status: string; created_at: string }> {
     const result = await sspClient.call('sspCreateIntentBranch', params);
-    // Optionally auto-switch to new branch
     if (result.branch_id) {
       await this.switchIntentContext(result.branch_id);
+      this.currentBranch = {
+        branch_id: result.branch_id,
+        branch_name: params.branch_name,
+        description: params.description,
+        user_id: 'current_user',
+        parent_branch_id: params.inherit_from,
+        created_at: result.created_at,
+        status: result.status,
+        overrides: params.overrides || {}
+      };
     }
     return result;
   }
@@ -250,86 +259,18 @@ class IntentService {
     return result;
   }
 
+  async clearIntentContext(): Promise<void> {
+    await sspClient.call('sspSwitchIntentContext', { branch_id: '' });
+    this.currentBranch = null;
+  }
+
   /**
    * Query user intent profile
    */
   async queryIntentProfile(user_id: string, detail_level: 'summary' | 'full' = 'full'): Promise<UserIntentProfile> {
-    try {
-      const result = await sspClient.call('sspQueryIntentProfile', { user_id, detail_level });
-      this.userProfile = this.mergeDeclaredIntents(result.profile);
-      return this.userProfile;
-    } catch (error) {
-      console.warn('Backend not available, using mock intent profile');
-      // Return mock data for development/testing
-      const mockProfile: UserIntentProfile = {
-        user_id,
-        learned_priorities: {
-          'peer_review': 0.95,
-          'expert_opinion': 0.85,
-          'author_statement': 0.75
-        },
-        preferred_units: {
-          'temperature': 'celsius',
-          'length': 'millimeters',
-          'mass': 'grams'
-        },
-        evidence_ranking: ['peer_review', 'expert_opinion', 'author_statement', 'implicit_assumption'],
-        active_goals: [
-          {
-            goal_id: 'goal_001',
-            description: 'Prioritize findings from peer-reviewed sources',
-            constraints: { min_confidence: 0.8 },
-            active_from: '2026-01-01T00:00:00Z',
-            status: 'active'
-          },
-          {
-            goal_id: 'goal_002',
-            description: 'Prefer metric units over imperial',
-            constraints: { unit_system: 'metric' },
-            active_from: '2026-02-15T00:00:00Z',
-            status: 'active'
-          }
-        ],
-        subdomain_focus: ['materials_science', 'nanotechnology', 'crystallography'],
-        temporal_preferences: {
-          prefer_recent: true,
-          min_year: 2015
-        },
-        confidence_threshold: 0.8,
-        total_intents_captured: 47,
-        learned_patterns: [
-          {
-            pattern_id: 'pattern_001',
-            confidence: 0.92,
-            applications: 23,
-            last_used: '2026-05-20T14:30:00Z',
-            intent_type: 'preference',
-            description: 'Prefer peer-reviewed evidence over author statements',
-            matched_arbitrator_ids: ['arb_ev_001', 'arb_ev_003']
-          },
-          {
-            pattern_id: 'pattern_002',
-            confidence: 0.87,
-            applications: 15,
-            last_used: '2026-05-19T09:15:00Z',
-            intent_type: 'correction',
-            description: 'Always convert temperature to Celsius',
-            matched_arbitrator_ids: ['arb_unit_002']
-          },
-          {
-            pattern_id: 'pattern_003',
-            confidence: 0.78,
-            applications: 8,
-            last_used: '2026-05-18T16:45:00Z',
-            intent_type: 'priority',
-            description: 'Prioritize subdomain "nanotechnology" over general materials',
-            matched_arbitrator_ids: ['arb_class_001']
-          }
-        ]
-      };
-      this.userProfile = this.mergeDeclaredIntents(mockProfile);
-      return this.userProfile;
-    }
+    const result = await sspClient.call('sspQueryIntentProfile', { user_id, detail_level });
+    this.userProfile = this.mergeDeclaredIntents(result.profile);
+    return this.userProfile;
   }
 
   /**
@@ -350,12 +291,14 @@ class IntentService {
    * Get smart review queue prioritized by intent
    */
   async getSuggestedReviewQueue(params: {
+    workspace_id: string;
     strategy?: 'intent_aligned' | 'confidence_based' | 'temporal';
     limit?: number;
-  } = {}): Promise<{ review_items: any[]; total_pending: number; estimated_total_time: string }> {
+  }): Promise<{ review_items: any[]; total_pending: number; estimated_total_time: string }> {
     return sspClient.call('sspSuggestReviewQueue', {
       strategy: params.strategy || 'intent_aligned',
-      limit: params.limit || 10
+      limit: params.limit || 10,
+      workspace_id: params.workspace_id
     });
   }
 
@@ -381,10 +324,12 @@ class IntentService {
   async queryByIntent(params: {
     query: string;
     intent_context?: string;
+    workspace_id?: string;
   }): Promise<{ papers: any[]; summary: string }> {
     return sspClient.call('sspQueryByIntent', {
       query: params.query,
-      intent_context: params.intent_context || this.currentBranch?.branch_id
+      intent_context: params.intent_context || this.currentBranch?.branch_id,
+      workspace_id: params.workspace_id
     });
   }
 
@@ -427,8 +372,11 @@ class IntentService {
     if (changed) {
       this.persistDeclaredIntents();
     }
-    // Would call backend API to remove pattern
-    console.log('Deleting pattern:', pattern_id);
+  }
+
+  canDeletePattern(patternId: string): boolean {
+    return Array.from(this.declaredIntentsByUserId.values())
+      .some(intents => intents.some(intent => intent.intent_id === patternId));
   }
 }
 

@@ -191,5 +191,61 @@ def build_server_capability_registry() -> CapabilityRegistry:
             tags=["pdf", "ingestion", "llm"],
         )
     )
+    registry.register(
+        CapabilityDefinition(
+            name="getCoverageAnalysis",
+            description="Report method × scenario × metric coverage for a workspace and rank candidate gaps.",
+            execution_scope="server",
+            mutability="read",
+            confirmation_policy="auto",
+            input_schema={
+                "type": "object",
+                "required": ["workspace_id"],
+                "properties": {
+                    "workspace_id": {"type": "string"},
+                    "domain_pack_namespace": {"type": ["string", "null"]},
+                    "methods": {"type": ["array", "null"]},
+                    "scenarios": {"type": ["array", "null"]},
+                    "metrics": {"type": ["array", "null"]},
+                    "gap_limit": {"type": "integer"},
+                },
+            },
+            output_schema={
+                "type": "object",
+                "properties": {"coverage": {"type": "object"}},
+            },
+            tags=["analysis", "coverage", "read"],
+        )
+    )
+    registry.register(
+        CapabilityDefinition(
+            name="getGapCandidates",
+            description="Return ranked candidate knowledge gaps for a workspace.",
+            execution_scope="server",
+            mutability="read",
+            confirmation_policy="auto",
+            input_schema={
+                "type": "object",
+                "required": ["workspace_id"],
+                "properties": {
+                    "workspace_id": {"type": "string"},
+                    "domain_pack_namespace": {"type": ["string", "null"]},
+                    "methods": {"type": ["array", "null"]},
+                    "scenarios": {"type": ["array", "null"]},
+                    "metrics": {"type": ["array", "null"]},
+                    "limit": {"type": "integer"},
+                },
+            },
+            output_schema={
+                "type": "object",
+                "properties": {
+                    "gaps": {"type": "array"},
+                    "gap_count": {"type": "integer"},
+                    "coverage": {"type": "object"},
+                },
+            },
+            tags=["analysis", "coverage", "read"],
+        )
+    )
 
     return registry

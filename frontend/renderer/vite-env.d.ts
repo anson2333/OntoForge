@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 // Type declarations for CSS module imports
 declare module '*.css' {
   const content: { [className: string]: string };

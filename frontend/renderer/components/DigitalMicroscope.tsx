@@ -37,7 +37,7 @@ function convertToInspectorEvidence(
         verificationStatus = index === wsEvidence.length - 1 ? 'pending_verification' : 'verified';
         modificationCount = index === wsEvidence.length - 1 ? 0 : Math.floor(Math.random() * 2);
         break;
-      case 'conflict':
+      case 'conflict': {
         // Conflict = mix of states including corrections and rejections
         const conflictStates: InspectorEvidence['verification_status'][] = [
           'under_correction', 'rejected', 'pending_verification', 'verified'
@@ -45,6 +45,7 @@ function convertToInspectorEvidence(
         verificationStatus = conflictStates[index % conflictStates.length];
         modificationCount = verificationStatus === 'under_correction' ? Math.floor(Math.random() * 3) + 1 : 0;
         break;
+      }
       case 'pending':
       default:
         // Pending = raw or pending verification
@@ -104,14 +105,33 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
   // SSP Protocol Handlers
   const handleVerify = async (evidenceId: string, metadata: IntentMetadata) => {
     try {
-      await sspClient.verifyEvidence({
-        evidence_id: evidenceId,
-        confidence_override: metadata.confidence_override,
-        intent_metadata: metadata
-      });
+      const isRestore = metadata.tags?.includes('restore') ?? false;
+      const isReviewRequest = metadata.tags?.includes('review_request') ?? false;
+      let nextStatus: InspectorEvidence['verification_status'] = 'verified';
+
+      if (isRestore) {
+        await sspClient.restoreEvidence({
+          evidence_id: evidenceId,
+          intent_metadata: metadata
+        });
+        nextStatus = 'under_correction';
+      } else if (isReviewRequest) {
+        await sspClient.requestEvidenceReview({
+          evidence_id: evidenceId,
+          intent_metadata: metadata
+        });
+        nextStatus = 'pending_verification';
+      } else {
+        await sspClient.verifyEvidence({
+          evidence_id: evidenceId,
+          confidence_override: metadata.confidence_override,
+          intent_metadata: metadata
+        });
+      }
+
       // Update local state
       setEvidence(prev => prev.map(ev => 
-        ev.id === evidenceId ? { ...ev, verification_status: 'verified' } : ev
+        ev.id === evidenceId ? { ...ev, verification_status: nextStatus } : ev
       ));
     } catch (error) {
       console.error('Failed to verify evidence:', error);
@@ -130,17 +150,21 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
     metadata: IntentMetadata
   ) => {
     try {
+      const nextStatus: InspectorEvidence['verification_status'] = metadata.tags?.includes('review_request')
+        ? 'pending_verification'
+        : 'verified';
       await sspClient.correctEvidence({
         evidence_id: evidenceId,
         modifications,
-        new_status: 'verified',
+        new_status: nextStatus,
+        evidence_type: evidence.find(item => item.id === evidenceId)?.type || 'chunk',
         intent_metadata: metadata
       });
       // Update local state
       setEvidence(prev => prev.map(ev => 
         ev.id === evidenceId ? { 
           ...ev, 
-          verification_status: 'verified',
+          verification_status: nextStatus,
           modification_count: ev.modification_count + 1,
           raw_text: ev.type === 'chunk' ? modifications.new_text : ev.raw_text,
           latex_string: ev.type === 'formula' ? modifications.new_text : ev.latex_string

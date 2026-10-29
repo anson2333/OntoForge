@@ -15,6 +15,11 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
 }) => {
   const [currentBranch, setCurrentBranch] = useState<IntentBranch | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [branchName, setBranchName] = useState('');
+  const [branchDescription, setBranchDescription] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  const [createError, setCreateError] = useState('');
 
   useEffect(() => {
     const branch = intentService.getCurrentBranch();
@@ -22,10 +27,40 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
   }, []);
 
   const handleClearContext = async () => {
-    setCurrentBranch(null);
-    setIsExpanded(false);
-    if (onBranchChange) {
-      onBranchChange(null);
+    try {
+      await intentService.clearIntentContext();
+      setCurrentBranch(null);
+      setIsExpanded(false);
+      onBranchChange?.(null);
+    } catch (error) {
+      console.error('Failed to clear intent context:', error);
+    }
+  };
+
+  const handleCreateBranch = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const name = branchName.trim();
+    if (!name) return;
+
+    setIsCreating(true);
+    setCreateError('');
+    try {
+      await intentService.createIntentBranch({
+        branch_name: name,
+        description: branchDescription.trim(),
+        inherit_from: currentBranch?.branch_id
+      });
+      const branch = intentService.getCurrentBranch();
+      setCurrentBranch(branch);
+      setBranchName('');
+      setBranchDescription('');
+      setShowCreateForm(false);
+      setIsExpanded(false);
+      onBranchChange?.(branch);
+    } catch (error) {
+      setCreateError(error instanceof Error ? error.message : 'Failed to create branch');
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -79,13 +114,64 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
             <button
               className="create-branch-btn"
               onClick={() => {
-                // Would open IntentBranchCreationModal
-                console.log('Create new branch');
+                setShowCreateForm(true);
+                setIsExpanded(false);
               }}
             >
               + Create New Branch
             </button>
           </div>
+        </div>
+      )}
+
+      {showCreateForm && (
+        <div className="branch-modal-backdrop" role="presentation">
+          <form className="branch-modal" onSubmit={handleCreateBranch}>
+            <div className="branch-modal-header">
+              <h3>Create Intent Branch</h3>
+              <button
+                type="button"
+                className="branch-modal-close"
+                onClick={() => setShowCreateForm(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <label>
+              Name
+              <input
+                autoFocus
+                value={branchName}
+                onChange={(event) => setBranchName(event.target.value)}
+                maxLength={80}
+                required
+              />
+            </label>
+            <label>
+              Description
+              <textarea
+                value={branchDescription}
+                onChange={(event) => setBranchDescription(event.target.value)}
+                rows={4}
+                maxLength={500}
+              />
+            </label>
+            {currentBranch && (
+              <div className="branch-parent-note">
+                Inherits from {currentBranch.branch_name}
+              </div>
+            )}
+            {createError && <div className="branch-create-error">{createError}</div>}
+            <div className="branch-modal-actions">
+              <button type="button" onClick={() => setShowCreateForm(false)} disabled={isCreating}>
+                Cancel
+              </button>
+              <button type="submit" disabled={isCreating || !branchName.trim()}>
+                {isCreating ? 'Creating...' : 'Create & Switch'}
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
@@ -229,6 +315,102 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
 
         .create-branch-btn:hover {
           background: var(--primary-hover);
+        }
+
+        .branch-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 1000;
+          display: grid;
+          place-items: center;
+          background: rgba(0, 0, 0, 0.58);
+        }
+
+        .branch-modal {
+          width: min(420px, calc(100vw - 32px));
+          padding: 20px;
+          background: var(--panel-bg-elevated);
+          border: 1px solid var(--border-color);
+          border-radius: 6px;
+          box-shadow: 0 12px 32px var(--shadow-color);
+        }
+
+        .branch-modal-header,
+        .branch-modal-actions {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+        }
+
+        .branch-modal-header h3 {
+          margin: 0;
+          font-size: 17px;
+        }
+
+        .branch-modal-close {
+          border: 0;
+          background: transparent;
+          color: var(--text-secondary);
+          font-size: 24px;
+          cursor: pointer;
+        }
+
+        .branch-modal label {
+          display: grid;
+          gap: 6px;
+          margin-top: 16px;
+          color: var(--text-secondary);
+          font-size: 13px;
+        }
+
+        .branch-modal input,
+        .branch-modal textarea {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 9px 10px;
+          border: 1px solid var(--border-strong);
+          border-radius: 4px;
+          background: var(--surface-bg);
+          color: var(--text-primary);
+          font: inherit;
+        }
+
+        .branch-parent-note,
+        .branch-create-error {
+          margin-top: 12px;
+          font-size: 12px;
+          color: var(--text-secondary);
+        }
+
+        .branch-create-error {
+          color: var(--danger-color, #e45858);
+        }
+
+        .branch-modal-actions {
+          justify-content: flex-end;
+          margin-top: 20px;
+        }
+
+        .branch-modal-actions button {
+          min-width: 96px;
+          padding: 8px 12px;
+          border: 1px solid var(--border-strong);
+          border-radius: 4px;
+          background: var(--surface-bg);
+          color: var(--text-primary);
+          cursor: pointer;
+        }
+
+        .branch-modal-actions button[type='submit'] {
+          border-color: var(--primary-color);
+          background: var(--primary-color);
+          color: var(--primary-text);
+        }
+
+        .branch-modal-actions button:disabled {
+          cursor: not-allowed;
+          opacity: 0.55;
         }
       `}</style>
     </div>

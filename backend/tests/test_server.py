@@ -7,16 +7,69 @@ import base64
 from unittest.mock import AsyncMock
 
 import pytest
-from fastapi.testclient import TestClient
 from pypdf import PdfWriter
 from backend.server.app import app
+from backend.services import auth_service
 from backend.schemas.protocol import ParseUserIntentResponse, ParsedIntentResult
+from backend.tests.conftest import SyncASGIClient
+
+
+AUTH_USERNAME = "pytest_user"
+AUTH_PASSWORD = "pytest-pass-123"
 
 
 @pytest.fixture
 def client():
     """Create a test client for the FastAPI app."""
-    return TestClient(app)
+    return SyncASGIClient(app)
+
+
+@pytest.fixture
+def auth_headers(client):
+    """Register a throwaway account and return its bearer-auth header."""
+    client.post(
+        "/jsonrpc",
+        json={
+            "jsonrpc": "2.0",
+            "method": "authRegister",
+            "params": {"username": AUTH_USERNAME, "password": AUTH_PASSWORD},
+            "id": 900,
+        },
+    )
+    response = client.post(
+        "/jsonrpc",
+        json={
+            "jsonrpc": "2.0",
+            "method": "authLogin",
+            "params": {"username": AUTH_USERNAME, "password": AUTH_PASSWORD},
+            "id": 901,
+        },
+    )
+    token = response.json()["result"]["token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture
+def authorized_workspace_db(monkeypatch, auth_headers):
+    """Provide the owned workspace needed by upload authorization tests."""
+    token = auth_headers["Authorization"].removeprefix("Bearer ")
+    identity = auth_service.resolve_session(token)
+
+    class FakeDB:
+        def execute_query(self, query, parameters=None, database="neo4j"):
+            if "MATCH (w:WorkspaceNode {id: $workspace_id})" in query:
+                return [{
+                    "w": {
+                        "id": "workspace_test",
+                        "name": "Test Workspace",
+                        "owner_id": identity.user_id,
+                        "metadata": {},
+                    }
+                }]
+            return []
+
+    monkeypatch.setattr("backend.server.jsonrpc_methods.get_db", lambda: FakeDB())
+    return auth_headers
 
 
 class TestServerEndpoints:
@@ -154,7 +207,7 @@ class TestJSONRPCMethods:
         assert response.status_code == 200
         # Response structure depends on DB availability
 
-    def test_jsonrpc_upload_pdf_valid_request(self, client):
+    def test_jsonrpc_upload_pdf_valid_request(self, client, authorized_workspace_db):
         """Test uploadPdf with a valid PDF payload."""
         writer = PdfWriter()
         writer.add_blank_page(width=300, height=300)
@@ -179,6 +232,7 @@ class TestJSONRPCMethods:
                 },
                 "id": 21,
             },
+            headers=authorized_workspace_db,
         )
         assert response.status_code == 200
         data = response.json()
@@ -186,7 +240,7 @@ class TestJSONRPCMethods:
         assert data["result"]["upload_id"].startswith("upload_")
         assert data["result"]["file_name"] == "upload_test.pdf"
 
-    def test_jsonrpc_parse_pdf_with_upload_id(self, client):
+    def test_jsonrpc_parse_pdf_with_upload_id(self, client, authorized_workspace_db):
         """Test parsePdfWithDomainPack using a previously uploaded PDF."""
         writer = PdfWriter()
         writer.add_blank_page(width=300, height=300)
@@ -208,6 +262,7 @@ class TestJSONRPCMethods:
                 },
                 "id": 22,
             },
+            headers=authorized_workspace_db,
         )
         upload_id = upload_response.json()["result"]["upload_id"]
 
@@ -223,6 +278,7 @@ class TestJSONRPCMethods:
                 },
                 "id": 23,
             },
+            headers=authorized_workspace_db,
         )
         assert response.status_code == 200
         data = response.json()
@@ -354,7 +410,7 @@ class TestJSONRPCMethods:
         assert "provider" in data["result"]
         assert "configured" in data["result"]
 
-    def test_jsonrpc_list_agent_capabilities(self, client):
+    def test_jsonrpc_list_agent_capabilities(self, client, auth_headers):
         """Test Phase 1 capability-discovery endpoint."""
         response = client.post(
             "/jsonrpc",
@@ -364,6 +420,7 @@ class TestJSONRPCMethods:
                 "params": {"tags": ["llm"]},
                 "id": 11,
             },
+            headers=auth_headers,
         )
         assert response.status_code == 200
         data = response.json()
@@ -372,7 +429,7 @@ class TestJSONRPCMethods:
         assert "parseUserIntent" in capability_names
         assert "processChatMessage" in capability_names
 
-    def test_jsonrpc_parse_user_intent(self, client, monkeypatch):
+    def test_jsonrpc_parse_user_intent(self, client, monkeypatch, auth_headers):
         mocked = AsyncMock(
             return_value=ParseUserIntentResponse(
                 workspace_id="workspace_test",
@@ -401,13 +458,14 @@ class TestJSONRPCMethods:
                 },
                 "id": 12,
             },
+            headers=auth_headers,
         )
         assert response.status_code == 200
         data = response.json()
         assert data["result"]["workspace_id"] == "workspace_test"
         assert data["result"]["parsed_intent"]["intent_type"] == "constraint"
 
-    def test_jsonrpc_ssp_declare_intent(self, client):
+    def test_jsonrpc_ssp_declare_intent(self, client, auth_headers):
         response = client.post(
             "/jsonrpc",
             json={
@@ -422,6 +480,7 @@ class TestJSONRPCMethods:
                 },
                 "id": 13,
             },
+            headers=auth_headers,
         )
         assert response.status_code == 200
         data = response.json()
@@ -429,7 +488,7 @@ class TestJSONRPCMethods:
         assert data["result"]["status"] == "active"
         assert data["result"]["intent_id"].startswith("intent_constraint_")
 
-    def test_jsonrpc_declared_intent_survives_profile_refresh(self, client, monkeypatch):
+    def test_jsonrpc_declared_intent_survives_profile_refresh(self, client, monkeypatch, auth_headers):
         class FakeDB:
             def __init__(self):
                 self.arbitrators = []
@@ -500,6 +559,7 @@ class TestJSONRPCMethods:
                 },
                 "id": 14,
             },
+            headers=auth_headers,
         )
         assert declare_response.status_code == 200
         declare_data = declare_response.json()
@@ -516,6 +576,7 @@ class TestJSONRPCMethods:
                 },
                 "id": 15,
             },
+            headers=auth_headers,
         )
         assert profile_response.status_code == 200
         profile_data = profile_response.json()

@@ -70,7 +70,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
     try {
       const parsedIntent = await intentService.parseUserIntent({
         workspace_id: workspace.currentWorkspaceId,
-        user_id: 'current_user',
+        user_id: workspace.currentOwnerId,
         message: trimmedMessage,
         owner_id: workspace.currentOwnerId,
         intent_context: workspace.activeIntentBranch?.branch_id,
@@ -103,6 +103,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
     try {
       const constraintsObj = JSON.parse(constraints);
       const result = await intentService.declareIntent({
+        user_id: workspace.currentOwnerId,
         intent_type: intentType,
         intent_scope: intentScope,
         description,

@@ -3,6 +3,11 @@ SSP JSON-RPC 2.0 Server Implementation
 Handles Scientific Service Protocol methods.
 """
 
+import functools
+import json
+import os
+import re
+from pathlib import Path
 from typing import Any, Dict, Optional
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -56,7 +61,29 @@ from backend.schemas.edges import BelongsToEdge, CitesEdge, ContainsEdge, LocksE
 from backend.schemas.intent import IntentGoal, IntentBranchOverrides, ReviewItem
 from backend.services.intent_learning_engine import IntentLearningEngine
 from backend.services.llm import build_server_capability_registry, get_default_provider, parse_user_intent
-from backend.services.pdf_ingestion_service import commit_parsed_pdf, parse_pdf_with_domain_pack, store_pdf_upload
+from backend.services.pdf_ingestion_service import (
+    commit_parsed_pdf,
+    load_pdf_upload,
+    parse_pdf_with_domain_pack,
+    store_pdf_upload,
+)
+from backend.services import auth_service
+from backend.services.coverage_analysis import analyze_workspace_coverage
+from backend.services.auth_service import (
+    AuthError,
+    CODE_AUTH_REQUIRED,
+    CODE_FORBIDDEN,
+    ROLE_OWNER,
+    authenticate as auth_authenticate,
+    auth_required,
+    authorize_workspace,
+    create_session,
+    get_current_identity,
+    register_user,
+    revoke_session,
+    set_session_intent_branch,
+    workspace_role,
+)
 
 
 # Global state
@@ -79,8 +106,47 @@ def _serialize_workspace(workspace: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _workspace_is_accessible(workspace: Dict[str, Any], owner_id: Optional[str]) -> bool:
+def _authenticated(func):
+    """Bind the request identity to ``owner_id`` and reject anonymous callers.
+
+    The client-supplied ``owner_id`` is never trusted: it is overwritten with the
+    authenticated user id, and a mismatch is reported as a permission error.
+    """
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        identity = get_current_identity()
+        requested_owner = kwargs.get("owner_id")
+        if identity is None:
+            if auth_required():
+                raise AuthError(CODE_AUTH_REQUIRED, "Authentication required")
+            return func(*args, **kwargs)
+        if requested_owner is not None and requested_owner != identity.user_id:
+            raise AuthError(
+                CODE_FORBIDDEN,
+                "owner_id does not match the authenticated user",
+            )
+        kwargs["owner_id"] = identity.user_id
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def _workspace_is_accessible(
+    workspace: Dict[str, Any], owner_id: Optional[str] = None, write: bool = False
+) -> bool:
     if not workspace:
+        return False
+    identity = get_current_identity()
+    if identity is not None:
+        role = workspace_role(workspace, identity)
+        if role is None:
+            return False
+        if write and role not in {ROLE_OWNER, "editor"}:
+            return False
+        return True
+    # Legacy/dev fallback when authentication is explicitly disabled.
+    if auth_required():
         return False
     if owner_id is None:
         return True
@@ -88,11 +154,235 @@ def _workspace_is_accessible(workspace: Dict[str, Any], owner_id: Optional[str])
     return workspace_owner is None or workspace_owner == owner_id
 
 
-def _get_accessible_workspace(node_repo: NodeRepository, workspace_id: str, owner_id: Optional[str]) -> Optional[Dict[str, Any]]:
+def _get_accessible_workspace(
+    node_repo: NodeRepository,
+    workspace_id: str,
+    owner_id: Optional[str],
+    write: bool = False,
+) -> Optional[Dict[str, Any]]:
     workspace = node_repo.get_workspace_node(workspace_id)
-    if not _workspace_is_accessible(workspace, owner_id):
+    if not _workspace_is_accessible(workspace, owner_id, write=write):
         return None
     return workspace
+
+
+def _authorize_workspace(workspace: Dict[str, Any], write: bool = False) -> None:
+    """Raise a JsonRpcError-compatible AuthError when access is denied."""
+    authorize_workspace(workspace, get_current_identity(), write=write)
+
+
+def _require_identity():
+    """Return the current identity or raise when authentication is required."""
+    identity = get_current_identity()
+    if identity is None and auth_required():
+        raise AuthError(CODE_AUTH_REQUIRED, "Authentication required")
+    return identity
+
+
+def _authorize_evidence_node(db: Any, node_id: str, write: bool = False) -> None:
+    """Authorize a paper/chunk/formula/assertion through its owning workspace."""
+    if not auth_required():
+        return
+    records = db.execute_query(
+        """
+        MATCH (w:WorkspaceNode)-[:CONTAINS_PAPER]->(p:PaperNode)
+        OPTIONAL MATCH (p)-[:CONTAINS]->(n)
+        WITH w, p, n
+        WHERE p.id = $node_id OR n.id = $node_id
+        RETURN w
+        LIMIT 1
+        """,
+        {"node_id": node_id},
+    )
+    if not records or "w" not in records[0]:
+        raise AuthError(CODE_FORBIDDEN, "Node not found or not accessible")
+    authorize_workspace(dict(records[0]["w"]), get_current_identity(), write=write)
+
+
+_READ_ONLY_CYPHER_FORBIDDEN = (
+    "CREATE",
+    "MERGE",
+    "DELETE",
+    "DETACH",
+    "SET",
+    "REMOVE",
+    "DROP",
+    "LOAD",
+    "CALL",
+    "FOREACH",
+)
+
+
+def _ensure_read_only_cypher(query: str) -> None:
+    """Reject Cypher statements that would mutate the graph."""
+    normalized = query.upper()
+    for keyword in _READ_ONLY_CYPHER_FORBIDDEN:
+        if re.search(rf"\b{keyword}\b", normalized):
+            raise AuthError(
+                CODE_FORBIDDEN,
+                f"Read-only query required: '{keyword}' is not allowed via sspQuery",
+            )
+
+
+# ---------------------------------------------------------------------------
+# Authentication
+# ---------------------------------------------------------------------------
+
+
+@method
+def authRegister(
+    username: str,
+    password: str,
+    display_name: Optional[str] = None,
+) -> Result:
+    """Create a local account. Passwords are stored as PBKDF2 hashes."""
+    try:
+        user = register_user(username, password, display_name=display_name)
+        return Success({"user": user})
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to register user: {str(e)}")
+
+
+@method
+def authLogin(username: str, password: str) -> Result:
+    """Verify credentials and issue a session token."""
+    try:
+        user = auth_authenticate(username, password)
+        session = create_session(user)
+        return Success(session)
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to log in: {str(e)}")
+
+
+@method
+def authLogout() -> Result:
+    """Revoke the current session token."""
+    identity = get_current_identity()
+    if identity is None or not identity.token:
+        return Success({"logged_out": False})
+    return Success({"logged_out": revoke_session(identity.token)})
+
+
+@method
+def authStatus() -> Result:
+    """Return the identity bound to the current session."""
+    identity = get_current_identity()
+    if identity is None:
+        return Success({"authenticated": False, "user": None})
+    return Success(
+        {
+            "authenticated": True,
+            "user": {
+                "user_id": identity.user_id,
+                "username": identity.username,
+                "display_name": identity.display_name,
+                "roles": list(identity.roles),
+            },
+        }
+    )
+
+
+@method
+@_authenticated
+def listWorkspaceMembers(workspace_id: str, owner_id: Optional[str] = None) -> Result:
+    """List members and their roles for a workspace."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        metadata = workspace.get("metadata") or {}
+        members = dict(metadata.get("members") or {})
+        result = []
+        if workspace.get("owner_id"):
+            owner = auth_service.get_user(workspace["owner_id"])
+            result.append(
+                {
+                    "user_id": workspace["owner_id"],
+                    "username": owner.get("username") if owner else None,
+                    "display_name": owner.get("display_name") if owner else None,
+                    "role": ROLE_OWNER,
+                }
+            )
+        for user_id, role in members.items():
+            user = auth_service.get_user(user_id)
+            result.append(
+                {
+                    "user_id": user_id,
+                    "username": user.get("username") if user else None,
+                    "display_name": user.get("display_name") if user else None,
+                    "role": role,
+                }
+            )
+        return Success({"workspace_id": workspace_id, "members": result})
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to list workspace members: {str(e)}")
+
+
+@method
+@_authenticated
+def addWorkspaceMember(
+    workspace_id: str,
+    user_id: Optional[str] = None,
+    username: Optional[str] = None,
+    role: str = "viewer",
+    owner_id: Optional[str] = None,
+) -> Result:
+    """Grant a user read/write access to a workspace (owner only)."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        identity = get_current_identity()
+        if workspace_role(workspace, identity) != ROLE_OWNER:
+            raise AuthError(CODE_FORBIDDEN, "Only the workspace owner can manage members")
+        if not user_id and username:
+            user = auth_service.find_user_by_username(username)
+            user_id = user.get("user_id") if user else None
+        if not user_id:
+            raise AuthError(CODE_INVALID_REQUEST, "Unknown username or user_id")
+        metadata = auth_service.add_workspace_member(workspace, user_id, role)
+        node_repo.update_node(workspace_id, "WorkspaceNode", {"metadata": metadata})
+        return Success(
+            {"workspace_id": workspace_id, "user_id": user_id, "role": role}
+        )
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to add workspace member: {str(e)}")
+
+
+@method
+@_authenticated
+def removeWorkspaceMember(
+    workspace_id: str, user_id: str, owner_id: Optional[str] = None
+) -> Result:
+    """Revoke a user's workspace access (owner only)."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        identity = get_current_identity()
+        if workspace_role(workspace, identity) != ROLE_OWNER:
+            raise AuthError(CODE_FORBIDDEN, "Only the workspace owner can manage members")
+        metadata = auth_service.remove_workspace_member(workspace, user_id)
+        node_repo.update_node(workspace_id, "WorkspaceNode", {"metadata": metadata})
+        return Success({"workspace_id": workspace_id, "user_id": user_id, "removed": True})
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to remove workspace member: {str(e)}")
 
 
 @method
@@ -128,6 +418,12 @@ async def parseUserIntent(
     intent_context: Optional[str] = None,
 ) -> Result:
     try:
+        identity = _require_identity()
+        if identity is not None:
+            # The authenticated identity always wins over client-supplied ids.
+            user_id = identity.user_id
+            owner_id = identity.user_id
+
         request = ParseUserIntentParams(
             workspace_id=workspace_id,
             user_id=user_id,
@@ -137,11 +433,14 @@ async def parseUserIntent(
         )
         response = await parse_user_intent(request)
         return Success(response.model_dump())
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to parse user intent: {str(e)}")
 
 
 @method
+@_authenticated
 def uploadPdf(
     file_name: str,
     content_base64: str,
@@ -150,6 +449,13 @@ def uploadPdf(
     owner_id: Optional[str] = None,
 ) -> Result:
     try:
+        if workspace_id:
+            db = get_db()
+            workspace = _get_accessible_workspace(
+                NodeRepository(db), workspace_id, owner_id, write=True
+            )
+            if not workspace:
+                raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
         request = UploadPdfParams(
             file_name=file_name,
             content_base64=content_base64,
@@ -159,11 +465,14 @@ def uploadPdf(
         )
         response = store_pdf_upload(request)
         return Success(response.model_dump())
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to upload PDF: {str(e)}")
 
 
 @method
+@_authenticated
 def parsePdfWithDomainPack(
     workspace_id: str,
     domain_pack_namespace: str,
@@ -175,6 +484,31 @@ def parsePdfWithDomainPack(
     parse_options: Optional[Dict[str, Any]] = None,
 ) -> Result:
     try:
+        identity = get_current_identity()
+        db = get_db()
+        workspace = _get_accessible_workspace(
+            NodeRepository(db), workspace_id, owner_id, write=True
+        )
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        if upload_id and identity is not None:
+            upload = load_pdf_upload(upload_id)
+            if upload.owner_id and upload.owner_id != identity.user_id:
+                raise AuthError(CODE_FORBIDDEN, "Upload belongs to another user")
+            if upload.workspace_id and upload.workspace_id != workspace_id:
+                raise AuthError(CODE_FORBIDDEN, "Upload belongs to another workspace")
+        if paper_uri:
+            allow_local = os.getenv("ONTOFORGE_ALLOW_LOCAL_PAPER_URI", "false").lower() in {
+                "1", "true", "yes", "on"
+            }
+            allowed_root = os.getenv("ONTOFORGE_LOCAL_PAPER_ROOT", "").strip()
+            if not allow_local or not allowed_root:
+                raise AuthError(CODE_FORBIDDEN, "Server-local paper_uri access is disabled")
+            candidate = Path(paper_uri).expanduser().resolve()
+            root = Path(allowed_root).expanduser().resolve()
+            if candidate != root and root not in candidate.parents:
+                raise AuthError(CODE_FORBIDDEN, "paper_uri is outside the allowed root")
+
         request = ParsePdfWithDomainPackParams(
             workspace_id=workspace_id,
             domain_pack_namespace=domain_pack_namespace,
@@ -187,11 +521,14 @@ def parsePdfWithDomainPack(
         )
         response = parse_pdf_with_domain_pack(request)
         return Success(response.model_dump())
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to parse PDF: {str(e)}")
 
 
 @method
+@_authenticated
 def commitParsedPdf(
     workspace_id: str,
     domain_pack_namespace: str,
@@ -211,17 +548,20 @@ def commitParsedPdf(
         db = get_db()
         node_repo = NodeRepository(db)
         edge_repo = EdgeRepository(db)
-        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id, write=True)
         if not workspace:
-            return Error(code=-32602, message="Workspace not found or not accessible")
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
 
         response = commit_parsed_pdf(request, node_repo=node_repo, edge_repo=edge_repo, workspace_exists=True)
         return Success(response.model_dump())
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to commit parsed PDF: {str(e)}")
 
 
 @method
+@_authenticated
 def listWorkspaces(owner_id: Optional[str] = None, include_archived: bool = False) -> Result:
     try:
         db = get_db()
@@ -239,19 +579,23 @@ def listWorkspaces(owner_id: Optional[str] = None, include_archived: bool = Fals
 
 
 @method
+@_authenticated
 def getWorkspace(workspace_id: str, owner_id: Optional[str] = None) -> Result:
     try:
         db = get_db()
         node_repo = NodeRepository(db)
         workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
         if not workspace:
-            return Error(code=-32602, message="Workspace not found or not accessible")
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
         return Success({"workspace": _serialize_workspace(workspace)})
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to fetch workspace: {str(e)}")
 
 
 @method
+@_authenticated
 def createWorkspace(
     name: str,
     root: Optional[str] = None,
@@ -290,6 +634,7 @@ def createWorkspace(
 
 
 @method
+@_authenticated
 def deleteWorkspace(workspace_id: str, owner_id: Optional[str] = None) -> Result:
     try:
         if not workspace_id:
@@ -299,9 +644,12 @@ def deleteWorkspace(workspace_id: str, owner_id: Optional[str] = None) -> Result
         node_repo = NodeRepository(db)
         
         # Check if workspace exists and is accessible
-        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id, write=True)
         if not workspace:
-            return Error(code=-32602, message="Workspace not found or not accessible")
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        identity = get_current_identity()
+        if identity is not None and workspace_role(workspace, identity) != ROLE_OWNER:
+            raise AuthError(CODE_FORBIDDEN, "Only the workspace owner can delete it")
         
         # Delete the workspace and all related data
         deleted = node_repo.delete_workspace_node(workspace_id)
@@ -309,6 +657,8 @@ def deleteWorkspace(workspace_id: str, owner_id: Optional[str] = None) -> Result
             return Error(code=-32603, message="Failed to delete workspace")
         
         return Success({"deleted": True, "workspace_id": workspace_id})
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to delete workspace: {str(e)}")
 
@@ -523,6 +873,15 @@ def sspQuery(params: Dict[str, Any]) -> Result:
     try:
         # Validate request
         request = SSPQueryParams(**params)
+        _require_identity()
+        if os.getenv("ONTOFORGE_ENABLE_RAW_CYPHER", "false").lower() not in {
+            "1", "true", "yes", "on"
+        }:
+            raise AuthError(
+                CODE_FORBIDDEN,
+            "Raw Cypher is disabled; use Read-only workspace-scoped query methods",
+            )
+        _ensure_read_only_cypher(request.query)
 
         db = get_db()
 
@@ -558,6 +917,8 @@ def sspQuery(params: Dict[str, Any]) -> Result:
 
         return Success(response.model_dump())
 
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -580,9 +941,13 @@ def sspLockNode(params: Dict[str, Any]) -> Result:
         SSPLockNodeResult with updated status
     """
     try:
+        identity = _require_identity()
         request = SSPLockNodeParams(**params)
+        if identity is not None:
+            request.locked_by = identity.user_id
         
         db = get_db()
+        _authorize_evidence_node(db, request.node_id, write=True)
         node_repo = NodeRepository(db)
         
         # Update node to under_correction status
@@ -603,6 +968,8 @@ def sspLockNode(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -621,13 +988,19 @@ def sspUpdateNode(params: Dict[str, Any]) -> Result:
         SSPUpdateNodeResult with updated status and modification count
     """
     try:
+        identity = _require_identity()
         request = SSPUpdateNodeParams(**params)
+        if identity is not None:
+            request.modified_by = identity.user_id
         
         db = get_db()
+        _authorize_evidence_node(db, request.node_id, write=True)
         node_repo = NodeRepository(db)
         
         # Get current node to increment modification count
         current_node = node_repo.get_node_by_id(request.node_id)
+        if current_node is None:
+            raise AuthError(CODE_FORBIDDEN, "Node not found or not accessible")
         current_count = current_node.get("modification_count", 0)
         
         # Prepare updates with audit trail
@@ -651,6 +1024,8 @@ def sspUpdateNode(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -669,9 +1044,13 @@ def sspVerifyNode(params: Dict[str, Any]) -> Result:
         SSPVerifyNodeResult with final verification status
     """
     try:
+        identity = _require_identity()
         request = SSPVerifyNodeParams(**params)
+        if identity is not None:
+            request.verified_by = identity.user_id
         
         db = get_db()
+        _authorize_evidence_node(db, request.node_id, write=True)
         node_repo = NodeRepository(db)
         
         # Map action to verification status
@@ -703,6 +1082,8 @@ def sspVerifyNode(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -818,6 +1199,7 @@ def sspDeclareIntent(
         SSPDeclareIntentResponse with intent ID and affected systems
     """
     try:
+        identity = _require_identity()
         request = SSPDeclareIntentParams(
             intent_type=intent_type,
             intent_scope=intent_scope,
@@ -831,7 +1213,7 @@ def sspDeclareIntent(
 
         declaration = HumanArbitratorNode(
             id=intent_id,
-            user_id="current_user",
+            user_id=identity.user_id if identity else "current_user",
             timestamp=datetime.now(timezone.utc),
             arbitration_notes=request.description,
             lock_type="permanent_human_lock",
@@ -866,6 +1248,8 @@ def sspDeclareIntent(
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -882,6 +1266,7 @@ def sspCreateIntentBranch(params: Dict[str, Any]) -> Result:
         SSPCreateIntentBranchResponse with branch ID
     """
     try:
+        identity = _require_identity()
         request = SSPCreateIntentBranchParams(**params)
         
         db = get_db()
@@ -889,13 +1274,19 @@ def sspCreateIntentBranch(params: Dict[str, Any]) -> Result:
         edge_repo = EdgeRepository(db)
         
         # Create IntentBranchNode
-        branch_id = f"intent_{request.branch_name.lower().replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}"
+        branch_slug = re.sub(r"[^a-z0-9]+", "_", request.branch_name.lower()).strip("_")
+        branch_id = f"intent_{branch_slug}_{uuid4().hex[:10]}"
+
+        if request.inherit_from:
+            parent = node_repo.get_intent_branch(request.inherit_from)
+            if not parent or parent.get("user_id") != identity.user_id:
+                raise AuthError(CODE_FORBIDDEN, "Parent intent branch is not accessible")
         
         branch_node = IntentBranchNode(
             id=branch_id,
             branch_name=request.branch_name,
             description=request.description,
-            user_id="default_user",  # Would come from auth context
+            user_id=identity.user_id,
             parent_branch_id=request.inherit_from,
             created_at=datetime.now(timezone.utc),
             active_until=None,
@@ -921,6 +1312,8 @@ def sspCreateIntentBranch(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -937,7 +1330,18 @@ def sspSwitchIntentContext(params: Dict[str, Any]) -> Result:
         SSPSwitchIntentContextResponse with applied overrides
     """
     try:
+        identity = _require_identity()
         request = SSPSwitchIntentContextParams(**params)
+
+        if not request.branch_id.strip():
+            previous_branch_id = set_session_intent_branch(identity, None)
+            return Success(
+                SSPSwitchIntentContextResponse(
+                    previous_branch_id=previous_branch_id,
+                    current_branch_id="",
+                    overrides_applied={},
+                ).model_dump()
+            )
         
         db = get_db()
         node_repo = NodeRepository(db)
@@ -947,9 +1351,10 @@ def sspSwitchIntentContext(params: Dict[str, Any]) -> Result:
         
         if not branch:
             return Error(code=-32602, message=f"Intent branch not found: {request.branch_id}")
+        if branch.get("user_id") != identity.user_id:
+            raise AuthError(CODE_FORBIDDEN, "Intent branch is not accessible")
         
-        # Simulate context switch (would update session state)
-        previous_branch_id = None  # Would retrieve from session
+        previous_branch_id = set_session_intent_branch(identity, request.branch_id)
         
         response = SSPSwitchIntentContextResponse(
             previous_branch_id=previous_branch_id,
@@ -959,6 +1364,8 @@ def sspSwitchIntentContext(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -975,6 +1382,7 @@ def sspQueryByIntent(params: Dict[str, Any]) -> Result:
         SSPQueryByIntentResponse with ranked papers
     """
     try:
+        identity = _require_identity()
         request = SSPQueryByIntentParams(**params)
         
         db = get_db()
@@ -984,19 +1392,65 @@ def sspQueryByIntent(params: Dict[str, Any]) -> Result:
         context_overrides = {}
         if request.intent_context:
             branch = node_repo.get_intent_branch(request.intent_context)
-            if branch:
-                context_overrides = branch.get("overrides", {})
-        
-        # Simulate intent-aware search (would use vector embeddings + intent filtering)
-        # For now, basic Cypher query
+            if not branch or branch.get("user_id") != identity.user_id:
+                raise AuthError(CODE_FORBIDDEN, "Intent branch is not accessible")
+            context_overrides = branch.get("overrides", {})
+            if isinstance(context_overrides, str):
+                context_overrides = json.loads(context_overrides)
+
+        accessible_workspaces = [
+            workspace
+            for workspace in node_repo.list_workspace_nodes()
+            if _workspace_is_accessible(workspace, identity.user_id if identity else None)
+        ]
+        if request.workspace_id:
+            accessible_workspaces = [
+                workspace for workspace in accessible_workspaces
+                if workspace.get("id") == request.workspace_id
+            ]
+        workspace_ids = [workspace["id"] for workspace in accessible_workspaces]
+        if not workspace_ids:
+            return Success(
+                SSPQueryByIntentResponse(papers=[], summary="No accessible workspace matches the query scope").model_dump()
+            )
+
+        terms = [term.lower() for term in re.findall(r"[\w.-]+", request.query) if len(term) > 1]
+        if not terms:
+            return Error(code=-32602, message="Query must contain a searchable term")
+
+        temporal_filter = context_overrides.get("temporal_filter", {})
+        min_year = temporal_filter.get("min_year")
+        max_year = temporal_filter.get("max_year")
+        excluded_papers = context_overrides.get("excluded_papers", [])
+        focus_subdomains = context_overrides.get("focus_subdomains", [])
         query = """
-        MATCH (p:PaperNode)
-        WHERE toLower(p.title) CONTAINS toLower($query_term)
-        RETURN p
+        MATCH (w:WorkspaceNode)-[:CONTAINS_PAPER]->(p:PaperNode)
+        OPTIONAL MATCH (p)-[:BELONGS_TO]->(d:DomainNode)
+        WHERE w.id IN $workspace_ids
+          AND any(term IN $terms WHERE
+              toLower(coalesce(p.title, '')) CONTAINS term OR
+              toLower(coalesce(p.venue, '')) CONTAINS term OR
+              any(author IN coalesce(p.authors, []) WHERE toLower(author) CONTAINS term))
+          AND NOT p.id IN $excluded_papers
+          AND ($min_year IS NULL OR p.year >= $min_year)
+          AND ($max_year IS NULL OR p.year <= $max_year)
+          AND (size($focus_subdomains) = 0 OR d.id IN $focus_subdomains)
+        RETURN DISTINCT p
+        ORDER BY p.year DESC, p.title ASC
         LIMIT 10
         """
-        
-        results = node_repo.execute_query(query, {"query_term": request.query})
+
+        results = node_repo.execute_query(
+            query,
+            {
+                "workspace_ids": workspace_ids,
+                "terms": terms,
+                "excluded_papers": excluded_papers,
+                "min_year": min_year,
+                "max_year": max_year,
+                "focus_subdomains": focus_subdomains,
+            },
+        )
         
         papers = [record["p"] for record in results]
         
@@ -1007,6 +1461,8 @@ def sspQueryByIntent(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -1023,31 +1479,52 @@ def sspSuggestReviewQueue(params: Dict[str, Any]) -> Result:
         SSPSuggestReviewQueueResponse with prioritized review items
     """
     try:
+        identity = _require_identity()
         request = SSPSuggestReviewQueueParams(**params)
         
         db = get_db()
         node_repo = NodeRepository(db)
-        
+        workspace = _get_accessible_workspace(
+            node_repo,
+            request.workspace_id,
+            identity.user_id if identity else None,
+        )
+        if workspace is None:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+
         # Get unresolved conflicts
         query = """
         MATCH (a1:AssertionNode)-[c:CONTRADICTS]->(a2:AssertionNode)
-        WHERE NOT EXISTS((a1)<-[:LOCKS]-(:HumanArbitratorNode))
+        WHERE a1.workspace_id = $workspace_id
+          AND a2.workspace_id = $workspace_id
+          AND NOT EXISTS((a1)<-[:LOCKS]-(:HumanArbitratorNode))
         RETURN a1, a2, c
         LIMIT $limit
         """
-        
-        results = node_repo.execute_query(query, {"limit": request.limit})
+
+        results = node_repo.execute_query(
+            query,
+            {"workspace_id": request.workspace_id, "limit": request.limit},
+        )
         
         # Create ReviewItem for each conflict
         review_items = []
         for i, record in enumerate(results):
+            assertion_a = dict(record["a1"])
+            assertion_b = dict(record["a2"])
+            conflict = dict(record["c"])
+            relevance = 0.9 if request.strategy == "intent_aligned" else 0.75
             item = ReviewItem(
-                item_id=f"conflict_{i}",
-                item_type="conflict",
-                title=f"Conflict between assertions",
-                intent_relevance=0.8,  # Would compute based on intent patterns
+                item_id=conflict.get("conflict_id") or f"conflict_{i}",
+                item_type="conflicting_assertions",
+                reason=(
+                    f"Conflicting values for {assertion_a.get('subject', 'the same metric')}: "
+                    f"{assertion_a.get('object', 'unknown')} vs "
+                    f"{assertion_b.get('object', 'unknown')}"
+                ),
+                intent_relevance=relevance,
                 estimated_time="5 minutes",
-                priority=1.0 - (i * 0.1)
+                priority="high" if relevance >= 0.85 else "medium",
             )
             review_items.append(item)
         
@@ -1061,6 +1538,8 @@ def sspSuggestReviewQueue(params: Dict[str, Any]) -> Result:
         
         return Success(response.model_dump())
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -1077,33 +1556,69 @@ def sspApplyIntentPattern(params: Dict[str, Any]) -> Result:
         SSPApplyIntentPatternResponse with resolution stats
     """
     try:
+        identity = _require_identity()
         request = SSPApplyIntentPatternParams(**params)
-        
+
+        workspace_id = request.scope.get("workspace_id")
+        if not isinstance(workspace_id, str) or not workspace_id.strip():
+            return Error(code=-32602, message="scope.workspace_id is required")
+        if not request.dry_run:
+            return Error(
+                code=-32602,
+                message=(
+                    "Automatic conflict resolution requires explicit assertion selections; "
+                    "preview the pattern with dry_run=true"
+                ),
+            )
+
         db = get_db()
         node_repo = NodeRepository(db)
         edge_repo = EdgeRepository(db)
-        
-        # Get pattern from learning engine
+        workspace = _get_accessible_workspace(
+            node_repo,
+            workspace_id,
+            identity.user_id if identity else None,
+        )
+        if workspace is None:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+
         learning_engine = IntentLearningEngine(node_repo, edge_repo)
-        
-        # Simulate pattern application (would match conflicts and auto-resolve)
-        conflicts_resolved = 0
-        assertions_locked = 0
-        pattern_confidence = 0.85
-        
-        if not request.dry_run:
-            # Would apply pattern to matching conflicts
-            pass
+        profile = learning_engine.build_user_intent_profile_sync(
+            identity.user_id if identity else "current_user"
+        )
+        pattern = next(
+            (item for item in profile.learned_patterns if item.pattern_id == request.pattern_id),
+            None,
+        )
+        if pattern is None:
+            return Error(code=-32602, message=f"Intent pattern not found: {request.pattern_id}")
+
+        matches = node_repo.execute_query(
+            """
+            MATCH (a1:AssertionNode)-[c:CONTRADICTS]->(a2:AssertionNode)
+            WHERE a1.workspace_id = $workspace_id
+              AND a2.workspace_id = $workspace_id
+              AND NOT EXISTS((a1)<-[:LOCKS]-(:HumanArbitratorNode))
+              AND NOT EXISTS((a2)<-[:LOCKS]-(:HumanArbitratorNode))
+            RETURN count(c) AS conflict_count
+            """,
+            {"workspace_id": workspace_id},
+        )
+        conflict_count = int(matches[0]["conflict_count"]) if matches else 0
+        pattern_confidence = pattern.confidence
         
         response = SSPApplyIntentPatternResponse(
-            conflicts_resolved=conflicts_resolved,
-            assertions_locked=assertions_locked,
+            # In dry-run mode these fields report the projected impact.
+            conflicts_resolved=conflict_count,
+            assertions_locked=conflict_count,
             pattern_confidence=pattern_confidence,
             user_review_recommended=pattern_confidence < 0.8
         )
         
         return Success(response.model_dump())
-        
+
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -1120,6 +1635,9 @@ def sspQueryIntentProfile(user_id: str, detail_level: str = "full") -> Result:
         SSPQueryIntentProfileResponse with user profile
     """
     try:
+        identity = _require_identity()
+        if identity is not None:
+            user_id = identity.user_id
         request = SSPQueryIntentProfileParams(user_id=user_id, detail_level=detail_level)
         
         db = get_db()
@@ -1137,6 +1655,8 @@ def sspQueryIntentProfile(user_id: str, detail_level: str = "full") -> Result:
         
         return Success(response.model_dump(mode="json"))
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Internal error: {str(e)}")
 
@@ -1360,6 +1880,7 @@ def validateDomainPack(content: str, format: str = 'yaml') -> Result:
 
 
 @method
+@_authenticated
 def getPapers(workspace_id: str, domain_pack_namespace: Optional[str] = None, owner_id: Optional[str] = None) -> Result:
     """
     Get all papers from the database.
@@ -1376,7 +1897,7 @@ def getPapers(workspace_id: str, domain_pack_namespace: Optional[str] = None, ow
         node_repo = NodeRepository(db)
         workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
         if not workspace:
-            return Error(code=-32602, message="Workspace not found or not accessible")
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
         
         # Build query with workspace filter
         if domain_pack_namespace:
@@ -1414,11 +1935,14 @@ def getPapers(workspace_id: str, domain_pack_namespace: Optional[str] = None, ow
         
         return Success({'papers': papers})
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to fetch papers: {str(e)}")
 
 
 @method
+@_authenticated
 def getAssertions(workspace_id: str, paper_id: Optional[str] = None, metric_name: Optional[str] = None, domain_pack_namespace: Optional[str] = None, owner_id: Optional[str] = None) -> Result:
     """
     Get assertions from the database with optional filters.
@@ -1437,7 +1961,7 @@ def getAssertions(workspace_id: str, paper_id: Optional[str] = None, metric_name
         node_repo = NodeRepository(db)
         workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
         if not workspace:
-            return Error(code=-32602, message="Workspace not found or not accessible")
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
         
         # Build query with workspace filter
         conditions = ["a.workspace_id = $workspace_id"]
@@ -1472,7 +1996,7 @@ def getAssertions(workspace_id: str, paper_id: Optional[str] = None, metric_name
         if len(conditions) > 1:
             query += " AND " + " AND ".join(conditions[1:])
         
-        query += "\nRETURN p.id as paper_id, a"
+        query += "\nOPTIONAL MATCH (e)-[:EVIDENCED_BY]->(a)\nRETURN p.id as paper_id, a, count(DISTINCT e) as evidence_count"
         
         result = db.execute_query(query, query_params)
         
@@ -1497,12 +2021,229 @@ def getAssertions(workspace_id: str, paper_id: Optional[str] = None, metric_name
                     'unit': assertion_data['unit'],
                     'status': assertion_data['status'],
                     'confidence': context_conditions.get('confidence', 0.85),
-                    'evidenceCount': 1,  # Simplified for now
+                    'evidenceCount': record.get('evidence_count', 0),
                     'domain_pack_namespace': assertion_data.get('domain_pack_namespace')
                 })
         
         return Success({'assertions': assertions})
         
+    except AuthError:
+        raise
     except Exception as e:
         return Error(code=-32603, message=f"Failed to fetch assertions: {str(e)}")
+
+
+@method
+@_authenticated
+def getCoverageAnalysis(
+    workspace_id: str,
+    domain_pack_namespace: Optional[str] = None,
+    methods: Optional[list] = None,
+    scenarios: Optional[list] = None,
+    metrics: Optional[list] = None,
+    gap_limit: int = 20,
+    owner_id: Optional[str] = None,
+) -> Result:
+    """Report method × scenario × metric coverage and ranked gap candidates."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+
+        report = analyze_workspace_coverage(
+            db,
+            workspace_id,
+            domain_pack_namespace,
+            methods=methods,
+            scenarios=scenarios,
+            metrics=metrics,
+            gap_limit=max(0, min(int(gap_limit), 200)),
+        )
+        return Success({"coverage": report})
+
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to analyze coverage: {str(e)}")
+
+
+@method
+@_authenticated
+def getGapCandidates(
+    workspace_id: str,
+    domain_pack_namespace: Optional[str] = None,
+    methods: Optional[list] = None,
+    scenarios: Optional[list] = None,
+    metrics: Optional[list] = None,
+    limit: int = 20,
+    owner_id: Optional[str] = None,
+) -> Result:
+    """Return only the ranked candidate gaps for a workspace."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+
+        report = analyze_workspace_coverage(
+            db,
+            workspace_id,
+            domain_pack_namespace,
+            methods=methods,
+            scenarios=scenarios,
+            metrics=metrics,
+            gap_limit=max(0, min(int(limit), 200)),
+        )
+        return Success(
+            {
+                "gaps": report["gaps"],
+                "gap_count": report["gap_count"],
+                "coverage": report["coverage"],
+            }
+        )
+
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to compute gaps: {str(e)}")
+
+
+@method
+@_authenticated
+def getEvidence(
+    workspace_id: str,
+    paper_id: str,
+    metric_name: str,
+    owner_id: Optional[str] = None,
+) -> Result:
+    """Return the chunks/formulas that support a paper's assertion for a metric."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+
+        suffix = metric_name.rsplit(":", 1)[-1]
+        query = """
+        MATCH (p:PaperNode {id: $paper_id})-[:CONTAINS]->(a:AssertionNode)
+        WHERE a.workspace_id = $workspace_id
+          AND (a.subject = $metric_name OR a.subject ENDS WITH $suffix)
+        OPTIONAL MATCH (e)-[r:EVIDENCED_BY]->(a)
+        RETURN a.id AS assertion_id,
+               a.object AS value,
+               a.unit AS unit,
+               a.status AS status,
+               a.context_conditions AS context_conditions,
+               e.id AS evidence_id,
+               labels(e) AS labels,
+               e.raw_text AS raw_text,
+               e.latex_string AS latex_string,
+               e.bounding_box AS bounding_box,
+               r.confidence_score AS confidence
+        """
+        records = db.execute_query(
+            query,
+            {
+                "workspace_id": workspace_id,
+                "paper_id": paper_id,
+                "metric_name": metric_name,
+                "suffix": suffix,
+            },
+        )
+
+        evidence: list[dict] = []
+        seen: set[str] = set()
+        assertion_meta: Optional[dict] = None
+        for record in records:
+            if assertion_meta is None:
+                context = record.get("context_conditions")
+                if isinstance(context, str):
+                    try:
+                        context = json.loads(context)
+                    except json.JSONDecodeError:
+                        context = {}
+                assertion_meta = {
+                    "assertion_id": record.get("assertion_id"),
+                    "value": record.get("value"),
+                    "unit": record.get("unit"),
+                    "status": record.get("status"),
+                    "confidence": (context or {}).get("confidence", 0.0),
+                }
+
+            evidence_id = record.get("evidence_id")
+            if not evidence_id or evidence_id in seen:
+                continue
+            seen.add(evidence_id)
+
+            labels = record.get("labels") or []
+            evidence_type = "formula" if "FormulaNode" in labels else "chunk"
+            bounding_box = record.get("bounding_box")
+            if isinstance(bounding_box, str):
+                try:
+                    bounding_box = json.loads(bounding_box)
+                except json.JSONDecodeError:
+                    bounding_box = {}
+            evidence.append(
+                {
+                    "id": evidence_id,
+                    "type": evidence_type,
+                    "text": record.get("latex_string") or record.get("raw_text") or "",
+                    "confidence": record.get("confidence") or 0.0,
+                    "bounding_box": bounding_box or {},
+                }
+            )
+
+        if assertion_meta is None:
+            return Success({"evidence": [], "assertion": None})
+        return Success({"evidence": evidence, "assertion": assertion_meta})
+
+    except AuthError:
+        raise
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to fetch evidence: {str(e)}")
+
+
+@method
+@_authenticated
+def listDomainPacks(owner_id: Optional[str] = None) -> Result:
+    """List domain pack configurations available on the backend."""
+    try:
+        loader = DomainPackLoader()
+        base_dir = Path(__file__).resolve().parents[1]
+        candidates = [base_dir / "config" / "domain-pack.yaml"]
+        configs_dir = base_dir / "configs"
+        if configs_dir.exists():
+            candidates.extend(sorted(configs_dir.glob("*.yaml")))
+            candidates.extend(sorted(configs_dir.glob("*.yml")))
+
+        packs: list[dict] = []
+        seen_namespaces: set[str] = set()
+        for candidate in candidates:
+            if not candidate.exists():
+                continue
+            try:
+                config = loader.load(candidate)
+            except Exception as exc:
+                print(f"⚠️  Skipping domain pack {candidate.name}: {exc}")
+                continue
+            namespace = config.domain.id.split(".")[-1]
+            if namespace in seen_namespaces:
+                continue
+            seen_namespaces.add(namespace)
+            packs.append(
+                {
+                    "namespace": namespace,
+                    "source": candidate.name,
+                    "config": config.model_dump(),
+                }
+            )
+
+        return Success({"domain_packs": packs})
+
+    except Exception as e:
+        return Error(code=-32603, message=f"Failed to list domain packs: {str(e)}")
 

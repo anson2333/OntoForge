@@ -5,6 +5,7 @@ HTTP transport for Scientific Service Protocol.
 
 import json
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
@@ -15,17 +16,67 @@ from dotenv import load_dotenv
 # Import methods to register them
 from backend.server import jsonrpc_methods  # noqa: F401
 from backend.database import init_db, close_db
+from backend.services.auth_service import (
+    CODE_AUTH_REQUIRED,
+    auth_required,
+    ensure_demo_user,
+    resolve_session,
+    reset_current_identity,
+    set_current_identity,
+)
 
 
 load_dotenv(Path(__file__).resolve().parents[2] / ".env", override=False)
 
-QUIET_JSONRPC_METHODS = {"getLLMStatus"}
+QUIET_JSONRPC_METHODS = {"getLLMStatus", "authStatus"}
+
+# Methods callable without a session token.
+PUBLIC_JSONRPC_METHODS = {
+    "authLogin",
+    "authRegister",
+    "authStatus",
+    "authLogout",
+    "getLLMStatus",
+    "validateDomainPack",
+}
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    """Initialize and close external resources with the application."""
+    demo_user = ensure_demo_user()
+    if demo_user:
+        print(
+            "👤 Seeded demo account 'demo' "
+            "(set ONTOFORGE_DEMO_PASSWORD to change, ONTOFORGE_SEED_DEMO_USER=false to disable)"
+        )
+
+    neo4j_uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    neo4j_user = os.getenv("NEO4J_USER", "neo4j")
+    neo4j_password = os.getenv("NEO4J_PASSWORD", "password")
+
+    try:
+        db = init_db(neo4j_uri, neo4j_user, neo4j_password)
+        if db.verify_connectivity():
+            print(f"✅ Connected to Neo4j at {neo4j_uri}")
+        else:
+            print(f"⚠️  Neo4j connection verification failed")
+    except Exception as e:
+        print(f"❌ Failed to connect to Neo4j: {e}")
+        print("⚠️  Server starting without database connection")
+
+    try:
+        yield
+    finally:
+        close_db()
+        print("✅ Database connection closed")
+
 
 # Create FastAPI app
 app = FastAPI(
     title="OntoForge SSP Server",
     description="Scientific Service Protocol JSON-RPC 2.0 Server",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -42,31 +93,6 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Initialize database connection on startup."""
-    neo4j_uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    neo4j_user = os.getenv("NEO4J_USER", "neo4j")
-    neo4j_password = os.getenv("NEO4J_PASSWORD", "password")
-
-    try:
-        db = init_db(neo4j_uri, neo4j_user, neo4j_password)
-        if db.verify_connectivity():
-            print(f"✅ Connected to Neo4j at {neo4j_uri}")
-        else:
-            print(f"⚠️  Neo4j connection verification failed")
-    except Exception as e:
-        print(f"❌ Failed to connect to Neo4j: {e}")
-        print("⚠️  Server starting without database connection")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Close database connection on shutdown."""
-    close_db()
-    print("✅ Database connection closed")
-
-
 @app.get("/")
 async def root():
     """Health check endpoint."""
@@ -75,6 +101,13 @@ async def root():
         "version": "1.0.0",
         "protocol": "JSON-RPC 2.0",
         "methods": [
+            "authRegister",
+            "authLogin",
+            "authLogout",
+            "authStatus",
+            "listWorkspaceMembers",
+            "addWorkspaceMember",
+            "removeWorkspaceMember",
             "sspInitialize",
             "sspIngest",
             "sspExtract",
@@ -85,6 +118,10 @@ async def root():
             "createWorkspace",
             "getPapers",
             "getAssertions",
+            "getCoverageAnalysis",
+            "getGapCandidates",
+            "getEvidence",
+            "listDomainPacks",
             "bootstrapDomainPack",
             "validateDomainPack",
             "uploadPdf",
@@ -118,7 +155,8 @@ async def jsonrpc_endpoint(request: Request) -> Response:
         sanitized_params = params
         if isinstance(params, dict):
             sanitized_params = {
-                k: ("<binary>" if isinstance(v, bytes) else 
+                k: ("<hidden>" if k in {"auth_token", "token", "password"} else
+                    "<binary>" if isinstance(v, bytes) else
                     ("<file>" if k == "file_content" else 
                      (str(v)[:100] + "..." if isinstance(v, str) and len(v) > 100 else v)))
                 for k, v in params.items()
@@ -133,11 +171,54 @@ async def jsonrpc_endpoint(request: Request) -> Response:
             else:
                 print(f"   Params: {params_str}")
 
-        # Dispatch based on method type
-        if method_name == "parseUserIntent":
-            response = await async_dispatch(request_text)
-        else:
-            response = dispatch(request_text)
+        # Resolve the caller identity from the login session token.
+        token = None
+        authorization = request.headers.get("authorization", "")
+        if authorization.lower().startswith("bearer "):
+            token = authorization[7:].strip()
+        if not token and isinstance(params, dict):
+            token = params.get("auth_token") or params.get("token")
+        identity = resolve_session(token)
+
+        # Never forward the credential to the RPC method itself.
+        dispatch_text = request_text
+        if isinstance(params, dict) and "auth_token" in params:
+            forwarded = dict(request_json)
+            forwarded["params"] = {
+                key: value for key, value in params.items() if key != "auth_token"
+            }
+            dispatch_text = json.dumps(forwarded)
+
+        if (
+            auth_required()
+            and identity is None
+            and method_name not in PUBLIC_JSONRPC_METHODS
+        ):
+            error_response = json.dumps(
+                {
+                    "jsonrpc": "2.0",
+                    "error": {
+                        "code": CODE_AUTH_REQUIRED,
+                        "message": "Authentication required",
+                    },
+                    "id": request_id,
+                }
+            )
+            return Response(
+                content=error_response,
+                media_type="application/json",
+                status_code=200,
+            )
+
+        identity_token = set_current_identity(identity)
+        try:
+            # Dispatch based on method type
+            if method_name == "parseUserIntent":
+                response = await async_dispatch(dispatch_text)
+            else:
+                response = dispatch(dispatch_text)
+        finally:
+            reset_current_identity(identity_token)
 
         # Log response
         try:

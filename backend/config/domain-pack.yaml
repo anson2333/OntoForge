@@ -8,11 +8,30 @@ domain:
   id: domain.networking.optical
   name: Optical Access Networks
   taxonomy_tree:
-    - topology
-    - switching_mechanism
-    - performance_metrics
-    - modulation_format
-    - network_layer
+    - name: topology
+      description: Network topology architectures
+      values:
+        - mesh
+        - ring
+        - star
+        - point_to_point
+        - free_space
+    - name: switching_mechanism
+      description: Optical switching technologies
+      values:
+        - wdm
+        - optical_packet
+        - burst_switching
+        - circuit_switching
+        - hybrid
+    - name: application_domain
+      description: Primary application areas
+      values:
+        - data_center
+        - metro_network
+        - long_haul
+        - access_network
+        - satellite
 
 core_metrics:
   - name: reconfiguration_delay

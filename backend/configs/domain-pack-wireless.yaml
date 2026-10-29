@@ -1,0 +1,108 @@
+# OntoForge Domain Pack Configuration
+# Version: 1.0 with Subdomain Support
+# Domain: Wireless Networking
+
+schema_version: "1.0"
+
+domain:
+  id: domain.networking.wireless
+  name: Wireless Communications
+  parent_domain_id: null
+
+  taxonomy_tree:
+    - name: frequency_band
+      description: Operating frequency bands
+      values:
+        - mmWave
+        - sub_6ghz
+        - terahertz
+      subdomain_map:
+        mmWave: domain.networking.wireless.mmwave
+        sub_6ghz: domain.networking.wireless.sub6
+
+    - name: technology
+      description: Physical-layer and antenna technologies
+      values:
+        - beamforming
+        - mimo
+        - ofdm
+        - full_duplex
+      subdomain_map:
+        beamforming: domain.networking.wireless.beamforming
+        mimo: domain.networking.wireless.mimo
+
+    - name: application_domain
+      description: Primary application areas
+      values:
+        - access_network
+        - backhaul
+        - data_center
+        - satellite
+      subdomain_map:
+        backhaul: domain.networking.wireless.backhaul
+        access_network: domain.networking.wireless.access
+
+core_metrics:
+  - name: latency
+    expected_unit: ms
+    aliases:
+      - delay
+      - response_time
+    value_type: float
+
+  - name: throughput
+    expected_unit: Gbps
+    aliases:
+      - data_rate
+      - bandwidth
+    value_type: float
+
+  - name: coverage_radius
+    expected_unit: km
+    aliases:
+      - range
+      - reach
+    value_type: float
+
+  - name: energy_efficiency
+    expected_unit: Mbps/W
+    aliases:
+      - power_efficiency
+      - bits_per_joule
+    value_type: float
+
+validation:
+  required_context_keys:
+    - frequency
+    - antenna_config
+
+  unit_normalization:
+    ms: [ms, millisecond, milliseconds, msec]
+    Gbps: [Gbps, Gbit/s, "Gb/s"]
+    km: [km, kilometer, kilometers, kilometre, kilometres]
+    Mbps/W: ["Mbps/W", "Mbit/J", "bits/J"]
+
+subdomains:
+  - id: domain.networking.wireless.mmwave
+    name: Millimeter Wave
+    description: Papers focused on mmWave systems
+
+  - id: domain.networking.wireless.sub6
+    name: Sub-6 GHz
+    description: Papers on sub-6 GHz cellular systems
+
+  - id: domain.networking.wireless.beamforming
+    name: Beamforming
+    description: Papers on beam steering and precoding
+
+  - id: domain.networking.wireless.mimo
+    name: MIMO
+    description: Papers on multi-antenna systems
+
+  - id: domain.networking.wireless.backhaul
+    name: Wireless Backhaul
+    description: Papers on wireless backhaul and transport
+
+  - id: domain.networking.wireless.access
+    name: Wireless Access
+    description: Papers on last-mile wireless access

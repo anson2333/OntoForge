@@ -25,8 +25,8 @@ services:
 
 volumes:
   neo4j_data:
-    name: ontoforge_neo4j_data
+    name: ${ONTOFORGE_VOLUME_PREFIX:-ontoforge}_neo4j_data
   neo4j_logs:
-    name: ontoforge_neo4j_logs
+    name: ${ONTOFORGE_VOLUME_PREFIX:-ontoforge}_neo4j_logs
   neo4j_plugins:
-    name: ontoforge_neo4j_plugins
+    name: ${ONTOFORGE_VOLUME_PREFIX:-ontoforge}_neo4j_plugins

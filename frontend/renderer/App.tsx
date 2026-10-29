@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import MatrixGrid from './components/MatrixGrid';
 import DigitalMicroscope from './components/DigitalMicroscope';
 import GraphView from './components/GraphView';
+import CoverageView from './components/CoverageView';
 import TabBar, { TabId } from './components/TabBar';
 import { IntentBranchSelector, IntentDeclarationModal, IntentProfilePanel } from './components/intent';
 import { WorkspaceSidebar } from './components/workspace/WorkspaceSidebar';
@@ -13,7 +14,9 @@ import { MetricsView } from './components/workspace/MetricsView';
 import { MetricView } from './components/workspace/MetricView';
 import { SubdomainView } from './components/workspace/SubdomainView';
 import { StatusIndicator } from './components/StatusIndicator';
+import { LoginScreen } from './components/auth/LoginScreen';
 import { useWorkspaceStore } from './services/workspace';
+import { useAuthStore } from './services/auth';
 import { intentService } from './services/intent_service';
 import { useServiceStatus } from './services/service_status';
 
@@ -31,6 +34,7 @@ function App() {
     return savedTheme === 'light' ? 'light' : 'dark';
   });
   const workspace = useWorkspaceStore();
+  const auth = useAuthStore();
   const windowTitle = 'OntoForge';
   const { backendStatus, llmStatus } = useServiceStatus();
 
@@ -55,16 +59,25 @@ function App() {
     return 'Ready';
   };
 
-  // Load user intent profile on mount
+  // Restore any existing login session on mount
   useEffect(() => {
-    loadIntentProfile();
+    auth.bootstrap();
   }, []);
 
+  // Load the signed-in user's workspaces and intent profile once authentication succeeds
   useEffect(() => {
+    if (auth.status !== 'authenticated' || !auth.user) return;
+    const userId = auth.user.user_id;
+    workspace.setCurrentUser(userId);
     workspace.loadWorkspaces().catch(error => {
       console.error('Failed to load workspaces from backend:', error);
     });
-  }, []);
+    intentService.queryIntentProfile(userId, 'full')
+      .then(profile => workspace.setUserIntentProfile(profile))
+      .catch(error => {
+        console.error('Failed to load intent profile:', error);
+      });
+  }, [auth.status, auth.user?.user_id]);
 
   // Clear evidence selection when workspace changes
   useEffect(() => {
@@ -173,15 +186,6 @@ function App() {
     };
   }, [isResizingEvidence]);
 
-  const loadIntentProfile = async () => {
-    try {
-      const profile = await intentService.queryIntentProfile('current_user', 'full');
-      workspace.setUserIntentProfile(profile);
-    } catch (error) {
-      console.error('Failed to load intent profile:', error);
-    }
-  };
-
   const handleCellClick = (paperId: string, metricName: string) => {
     setSelectedCell({ paperId, metricName });
   };
@@ -196,16 +200,33 @@ function App() {
 
   const handleTabChange = (tabId: TabId) => {
     setActiveTab(tabId);
-    // Close evidence panel when switching tabs
-    if (tabId !== 'matrix') {
-      setSelectedCell(null);
-    }
+    setSelectedCell(null);
+    // Top-level tabs always open their primary surface, not a stale sidebar detail.
+    workspace.selectWorkspaceView(null);
   };
 
   const handlePaperClickFromGraph = (paperId: string) => {
     // Switch to matrix view and highlight the paper
     setActiveTab('matrix');
     workspace.selectPaper(paperId);
+  };
+
+  const handleLogout = () => {
+    workspace.setCurrentUser('');
+    setSelectedCell(null);
+    auth.logout().catch(error => {
+      console.error('Failed to sign out:', error);
+    });
+  };
+
+  const refreshIntentProfile = () => {
+    const userId = auth.user?.user_id;
+    if (!userId) return;
+    intentService.queryIntentProfile(userId, 'full')
+      .then(profile => workspace.setUserIntentProfile(profile))
+      .catch(error => {
+        console.error('Failed to load intent profile:', error);
+      });
   };
 
   const toolButtonStyle = {
@@ -314,6 +335,9 @@ function App() {
           <button style={toolButtonStyle} onClick={toggleTheme} title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
+          <button style={toolButtonStyle} onClick={handleLogout} title={`Sign out ${auth.user?.username || ''}`}>
+            Sign out
+          </button>
         </>
       );
     }
@@ -330,9 +354,35 @@ function App() {
         <button style={toolButtonStyle} onClick={toggleTheme} title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
+        <button style={toolButtonStyle} onClick={handleLogout} title={`Sign out ${auth.user?.username || ''}`}>
+          Sign out
+        </button>
       </>
     );
   };
+
+  if (auth.status === 'checking') {
+    return (
+      <div
+        data-theme={theme}
+        style={{
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'var(--app-bg, #1e1e1e)',
+          color: 'var(--text-primary, #e0e0e0)',
+          fontSize: '14px'
+        }}
+      >
+        Connecting to OntoForge…
+      </div>
+    );
+  }
+
+  if (auth.status !== 'authenticated' || !auth.user) {
+    return <LoginScreen />;
+  }
 
   return (
     <div
@@ -534,20 +584,13 @@ function App() {
             <GraphView onPaperClick={handlePaperClickFromGraph} />
           )}
 
-          {/* Timeline View (Placeholder) */}
-          {activeTab === 'timeline' && (
-            <div style={{ 
-              flex: 1, 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              flexDirection: 'column',
-              gap: '16px'
-            }}>
-              <h2 style={{ color: '#999999' }}>📅 Timeline View</h2>
-              <p style={{ color: 'var(--text-secondary)' }}>Coming soon...</p>
-            </div>
+          {activeTab === 'coverage' && (
+            <CoverageView
+              workspaceId={workspace.currentWorkspaceId}
+              domainPacks={workspace.domainPacks}
+            />
           )}
+
           </div>
         </div>
 
@@ -560,11 +603,24 @@ function App() {
             overflow: 'auto'
           }}>
             <IntentProfilePanel 
-              userId="current_user"
+              userId={auth.user.user_id}
               refreshToken={intentProfileRefreshToken}
               onDeclareIntent={() => setShowIntentModal(true)}
-              onPatternClick={(pattern) => {
-                console.log('Apply pattern:', pattern);
+              onPatternClick={async (pattern) => {
+                try {
+                  const result = await intentService.applyIntentPattern({
+                    pattern_id: pattern.pattern_id,
+                    scope: { workspace_id: workspace.currentWorkspaceId },
+                    dry_run: true
+                  });
+                  alert(
+                    `Pattern preview complete. ${result.conflicts_resolved} conflicts and ` +
+                    `${result.assertions_locked} assertions match the current workspace.`
+                  );
+                } catch (error) {
+                  console.error('Failed to preview intent pattern:', error);
+                  alert('Could not preview this pattern.');
+                }
               }}
             />
           </div>
@@ -677,9 +733,8 @@ function App() {
       <IntentDeclarationModal
         isOpen={showIntentModal}
         onClose={() => setShowIntentModal(false)}
-        onSuccess={(intentId) => {
-          console.log('Intent declared:', intentId);
-          loadIntentProfile();
+        onSuccess={() => {
+          refreshIntentProfile();
           setIntentProfileRefreshToken(current => current + 1);
         }}
       />

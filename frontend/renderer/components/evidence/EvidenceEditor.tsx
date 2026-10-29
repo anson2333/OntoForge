@@ -99,21 +99,18 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
 
         {/* Content */}
         <div className="editor-content">
-          {/* Left: PDF Comparison */}
+          {/* Left: immutable extraction source */}
           <div className="pdf-comparison">
-            <h4>Original PDF</h4>
+            <h4>Source Evidence</h4>
             <div className="pdf-viewer">
               <div className="pdf-placeholder">
-                <p>📄 PDF Page {evidence.bounding_box.page}</p>
+                <p>PDF page {evidence.bounding_box.page || 'unknown'}</p>
                 <p className="pdf-coords">
                   Region: {evidence.bounding_box.box.join(', ')}
                 </p>
-                <div className="pdf-mock-image">
-                  {/* TODO: Render actual PDF crop using bounding_box */}
-                  <div className="mock-crop">
-                    PDF crop will be displayed here highlighting the relevant section
-                  </div>
-                </div>
+                <blockquote className="source-evidence-text">
+                  {originalText || 'No extracted source text is available.'}
+                </blockquote>
               </div>
             </div>
             <div className="confidence-display">
@@ -151,7 +148,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
               </div>
 
               <div className="metadata-field">
-                <label htmlFor="confidence-override">Your Confidence in Correction:</label>
+                <label htmlFor="confidence-override">Confidence in correction:</label>
                 <div className="confidence-slider">
                   <input
                     type="range"

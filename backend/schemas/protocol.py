@@ -392,6 +392,7 @@ class SSPQueryByIntentParams(BaseModel):
     """Parameters for intent-aware natural language query (Section 2.6.6)."""
     query: str
     intent_context: Optional[str] = Field(None, description="Active intent branch ID")
+    workspace_id: Optional[str] = Field(None, description="Optional workspace scope")
 
 
 class SSPQueryByIntentResponse(BaseModel):
@@ -405,6 +406,7 @@ class SSPSuggestReviewQueueParams(BaseModel):
     """Parameters for smart review queue (Section 2.6.6)."""
     strategy: Literal["intent_aligned", "confidence_based", "temporal"] = "intent_aligned"
     limit: int = Field(default=10, ge=1, le=100)
+    workspace_id: str = Field(..., description="Workspace containing review candidates")
 
 
 class SSPSuggestReviewQueueResponse(BaseModel):
@@ -533,6 +535,12 @@ class ParsePdfWithDomainPackResponse(BaseModel):
     formulas: List[ExtractedFormula] = Field(default_factory=list)
     assertions: List[ExtractedAssertion] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
+    extraction_method: Optional[str] = Field(
+        None, description="PDF text extractor used: pypdf, marker or raw_text"
+    )
+    assertion_extraction_method: Optional[str] = Field(
+        None, description="Assertion source: llm, heuristic or none"
+    )
 
 
 class ParseUserIntentParams(BaseModel):

@@ -133,12 +133,14 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
                     >
                       Apply Pattern
                     </button>
-                    <button
-                      className="btn-delete"
-                      onClick={() => handleDeletePattern(pattern.pattern_id)}
-                    >
-                      Delete
-                    </button>
+                    {intentService.canDeletePattern(pattern.pattern_id) && (
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeletePattern(pattern.pattern_id)}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 </div>
               ))

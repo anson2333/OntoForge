@@ -3,17 +3,19 @@
  * Displays revision history with diff view
  */
 
-import { Evidence } from './types';
+import { useState } from 'react';
+import { Evidence, EvidenceRevision } from './types';
 import './EvidenceHistory.css';
 
 interface EvidenceHistoryProps {
   evidence: Evidence;
   onClose: () => void;
-  onRestore: (version: number) => void;
+  onRestore: (revision: EvidenceRevision, restoredText: string) => Promise<void>;
 }
 
 export default function EvidenceHistory({ evidence, onClose, onRestore }: EvidenceHistoryProps) {
   const revisions = evidence.revisions || [];
+  const [restoringVersion, setRestoringVersion] = useState<number | null>(null);
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { icon: string; label: string; color: string }> = {
@@ -53,6 +55,8 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
               {revisions.map((revision, index) => {
                 const badge = getStatusBadge(revision.status);
                 const isCurrent = index === 0;
+                const restoredText = revision.modifications?.new_text
+                  ?? revisions[index - 1]?.modifications?.old_text;
 
                 return (
                   <div key={revision.version} className={`revision-item ${isCurrent ? 'current' : ''}`}>
@@ -114,13 +118,21 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
                       <div className="revision-actions">
                         <button
                           className="restore-btn"
-                          onClick={() => {
-                            if (confirm(`Restore to version ${revision.version}?`)) {
-                              onRestore(revision.version);
+                          disabled={!restoredText || restoringVersion !== null}
+                          title={restoredText ? undefined : 'This revision does not contain restorable text'}
+                          onClick={async () => {
+                            if (!restoredText || !confirm(`Restore to version ${revision.version}?`)) return;
+                            setRestoringVersion(revision.version);
+                            try {
+                              await onRestore(revision, restoredText);
+                            } finally {
+                              setRestoringVersion(null);
                             }
                           }}
                         >
-                          ♻️ Restore to v{revision.version}
+                          {restoringVersion === revision.version
+                            ? 'Restoring...'
+                            : `Restore to v${revision.version}`}
                         </button>
                       </div>
                     )}
