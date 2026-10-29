@@ -1,0 +1,99 @@
+/* Root View */
+
+.root-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+.root-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--panel-bg);
+}
+
+.root-context-pill {
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.root-view-content {
+  flex: 1;
+  overflow-y: auto;
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.root-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  overflow: hidden;
+}
+
+.root-panel-header {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.root-panel-header h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.root-workspace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+.root-workspace-card {
+  min-height: 124px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--app-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.root-workspace-card:hover,
+.root-workspace-card.active {
+  border-color: var(--primary-color);
+  background: var(--surface-bg-selected, #e7f2ff);
+}
+
+.root-workspace-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.root-workspace-meta,
+.root-workspace-description {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.root-empty-state {
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}

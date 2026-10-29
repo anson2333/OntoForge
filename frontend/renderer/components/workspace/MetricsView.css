@@ -1,0 +1,213 @@
+/* Metrics Collection View */
+
+.metrics-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+.metrics-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--panel-bg);
+}
+
+.metrics-kicker {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metrics-view-header h1 {
+  margin: 5px 0 0;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.metrics-context-pill {
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metrics-view-content {
+  flex: 1;
+  overflow-y: auto;
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.metrics-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  overflow: hidden;
+}
+
+.metrics-panel-header {
+  min-height: 48px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.metrics-panel-header h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.metrics-panel-header span {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.metrics-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.metrics-add-button {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--surface-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.metrics-add-button:hover {
+  background: var(--hover-bg);
+}
+
+.metrics-add-panel {
+  max-width: 520px;
+}
+
+.metrics-table {
+  overflow-x: auto;
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(70px, 0.35fr) minmax(72px, 0.35fr) minmax(170px, 1fr) minmax(128px, auto);
+  gap: 12px;
+  align-items: center;
+  min-width: 720px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.metrics-row:last-child {
+  border-bottom: none;
+}
+
+.metrics-row.header {
+  background: var(--surface-bg);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metrics-name {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.metrics-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.metrics-actions button,
+.metric-form-actions button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--surface-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metrics-actions button:hover,
+.metric-form-actions button:hover {
+  background: var(--hover-bg);
+}
+
+.metrics-actions button.danger {
+  color: var(--danger-text, #721c24);
+}
+
+.metrics-actions button.danger:hover {
+  background: var(--danger-bg, #ffe6e6);
+}
+
+.metric-form {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.metric-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.metric-form input,
+.metric-form select {
+  min-height: 34px;
+  padding: 7px 9px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--app-bg);
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.metric-form-error {
+  padding: 9px 10px;
+  border: 1px solid var(--danger-text, #721c24);
+  border-radius: 4px;
+  color: var(--danger-text, #721c24);
+  background: var(--danger-bg, #ffe6e6);
+  font-size: 12px;
+}
+
+.metric-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}

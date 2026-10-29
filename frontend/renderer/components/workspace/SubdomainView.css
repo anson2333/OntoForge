@@ -1,0 +1,186 @@
+/* Subdomain View */
+
+.subdomain-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+.subdomain-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--panel-bg);
+}
+
+.subdomain-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.subdomain-back-button:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+}
+
+.subdomain-context-pill {
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.subdomain-view-content {
+  flex: 1;
+  overflow-y: auto;
+  width: min(1040px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.subdomain-title-block {
+  margin-bottom: 24px;
+}
+
+.subdomain-kicker {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.subdomain-title-block h1 {
+  margin: 6px 0 8px;
+  font-size: 28px;
+  line-height: 1.25;
+  text-transform: capitalize;
+}
+
+.subdomain-full-name {
+  color: var(--text-secondary);
+  font-family: Monaco, 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.subdomain-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.subdomain-summary-item {
+  min-height: 86px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.subdomain-summary-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.subdomain-summary-label {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.subdomain-section {
+  margin-bottom: 28px;
+}
+
+.subdomain-section h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.subdomain-mapping-table,
+.subdomain-metric-list,
+.subdomain-paper-list {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.subdomain-mapping-row,
+.subdomain-metric-row,
+.subdomain-paper-row {
+  display: grid;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.subdomain-mapping-row {
+  grid-template-columns: minmax(160px, 0.7fr) minmax(220px, 1fr);
+}
+
+.subdomain-metric-row,
+.subdomain-paper-row {
+  grid-template-columns: minmax(240px, 1fr) minmax(110px, auto);
+}
+
+.subdomain-mapping-row:last-child,
+.subdomain-metric-row:last-child,
+.subdomain-paper-row:last-child {
+  border-bottom: none;
+}
+
+.subdomain-mapping-row.header {
+  background: var(--surface-bg);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.subdomain-metric-row span:first-child,
+.subdomain-paper-row span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.subdomain-empty-state {
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+@media (max-width: 820px) {
+  .subdomain-summary-grid,
+  .subdomain-mapping-row,
+  .subdomain-metric-row,
+  .subdomain-paper-row {
+    grid-template-columns: 1fr;
+  }
+}

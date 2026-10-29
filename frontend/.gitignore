@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+release/
+out/
+
+# Development
+.vite/
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Electron
+.electron/
+*.asar
+
+# Virtual environments
+.venvs/
+

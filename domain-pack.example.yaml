@@ -1,0 +1,44 @@
+schema_version: 1.0
+
+domain:
+  id: domain.networking.optical
+  name: Optical Access Networks
+  taxonomy_tree:
+    - topology
+    - switching_mechanism
+    - performance_metrics
+
+core_metrics:
+  - name: reconfiguration_delay
+    expected_unit: ms
+    aliases:
+      - switching_delay
+      - matrix_latency
+    value_type: float
+  - name: cross_talk
+    expected_unit: dB
+    aliases:
+      - crosstalk
+    value_type: float
+
+validation:
+  required_context_keys:
+    - network_load
+    - topology
+  unit_normalization:
+    ms:
+      - ms
+      - millisecond
+      - milliseconds
+    dB:
+      - dB
+      - db
+
+exclusion_bounds:
+  min_year: 2015
+  max_year: 2027
+
+few_shot_baselines:
+  - doi: 10.1109/JLT.2024.123456
+    metric_anchors:
+      reconfiguration_delay: 15.0 ms

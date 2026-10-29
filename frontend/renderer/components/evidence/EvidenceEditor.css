@@ -1,0 +1,421 @@
+/* Evidence Editor Styles */
+
+.evidence-editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.evidence-editor-modal {
+  background: white;
+  border-radius: 8px;
+  max-width: 1200px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.editor-header h3 {
+  margin: 0;
+  font-size: 1.3em;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* Content */
+.editor-content {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* PDF Comparison */
+.pdf-comparison {
+  flex: 0 0 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-comparison h4,
+.text-editor h4 {
+  margin: 0 0 12px;
+  font-size: 1.1em;
+  color: #666;
+}
+
+.pdf-viewer {
+  flex: 1;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.pdf-placeholder {
+  padding: 20px;
+  text-align: center;
+}
+
+.pdf-placeholder p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.pdf-coords {
+  font-size: 0.85em;
+  color: #999;
+  font-family: monospace;
+}
+
+.pdf-mock-image {
+  margin-top: 20px;
+  min-height: 300px;
+  background: white;
+  border: 1px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mock-crop {
+  padding: 20px;
+  color: #999;
+  text-align: center;
+}
+
+.confidence-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.confidence-value {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.confidence-value.high {
+  color: #28a745;
+}
+
+.confidence-value.medium {
+  color: #ffc107;
+}
+
+.confidence-value.low {
+  color: #dc3545;
+}
+
+/* Text Editor */
+.text-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chunk-editor,
+.formula-editor {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.formula-editor {
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+}
+
+.chunk-editor:focus,
+.formula-editor:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Metadata Fields */
+.editor-metadata {
+  margin-top: 16px;
+}
+
+.metadata-field {
+  margin-bottom: 16px;
+}
+
+.metadata-field label {
+  display: block;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.metadata-field textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9em;
+  resize: vertical;
+}
+
+.confidence-slider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.confidence-slider input[type="range"] {
+  flex: 1;
+}
+
+.confidence-slider .confidence-value {
+  font-weight: 600;
+  color: #007bff;
+  min-width: 50px;
+}
+
+.tag-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-btn {
+  padding: 6px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s;
+}
+
+.tag-btn:hover {
+  background: #e9ecef;
+}
+
+.tag-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Actions */
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.editor-actions .action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.2s;
+}
+
+.action-btn.cancel {
+  background: #6c757d;
+  color: white;
+}
+
+.action-btn.cancel:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.action-btn.save {
+  background: #28a745;
+  color: white;
+}
+
+.action-btn.save:hover:not(:disabled) {
+  background: #218838;
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Change Preview */
+.change-preview {
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.change-preview h4 {
+  margin: 0 0 12px;
+  font-size: 1em;
+  color: #666;
+}
+
+.diff-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.diff-removed,
+.diff-added {
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.diff-removed {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.diff-removed strong {
+  color: #721c24;
+}
+
+.diff-added {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.diff-added strong {
+  color: #155724;
+}
+
+.diff-view pre {
+  margin: 8px 0 0;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Theme */
+.evidence-editor-modal {
+  background: var(--panel-bg-elevated);
+  color: var(--text-primary);
+}
+
+.editor-header,
+.editor-actions,
+.change-preview {
+  border-color: var(--border-color);
+}
+
+.editor-header h3,
+.text-editor h4,
+.pdf-comparison h4 {
+  color: var(--text-primary);
+}
+
+.close-btn,
+.metadata-field label,
+.pdf-coords,
+.confidence-display,
+.change-preview h4 {
+  color: var(--text-secondary);
+}
+
+.editor-content,
+.pdf-placeholder,
+.mock-crop,
+.editor-metadata,
+.change-preview,
+.tag-btn {
+  background: var(--panel-bg-muted);
+  color: var(--text-primary);
+}
+
+.chunk-editor,
+.formula-editor,
+#change-notes,
+.diff-view pre {
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.chunk-editor:focus,
+.formula-editor:focus {
+  border-color: var(--primary-color);
+}
+
+.tag-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-text);
+}
+
+.diff-removed {
+  background: var(--danger-bg);
+  border-color: var(--danger-color);
+}
+
+.diff-removed strong {
+  color: var(--danger-text);
+}
+
+.diff-added {
+  background: var(--success-bg);
+  border-color: var(--success-color);
+}
+
+.diff-added strong {
+  color: var(--success-text);
+}

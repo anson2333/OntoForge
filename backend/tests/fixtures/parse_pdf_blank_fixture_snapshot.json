@@ -1,0 +1,18 @@
+{
+  "status": "needs_review",
+  "paper_metadata": {
+    "title": "Scanned Pages Only",
+    "authors": ["Camera Capture"],
+    "year": 2026,
+    "venue": "Poster Session 2026"
+  },
+  "markdown_text": "",
+  "chunks": [],
+  "formulas": [],
+  "assertions": [],
+  "warnings": [
+    "Page 1 did not yield extractable text.",
+    "No text chunks were extracted from the PDF.",
+    "No domain-grounded assertions were extracted from the parsed chunks."
+  ]
+}

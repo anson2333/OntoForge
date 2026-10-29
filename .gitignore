@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+.coverage
+backend/.coverage
+*.backup
+
+# Editor settings
+.idea/
+.vscode/
+
+# Logs and local env files
+*.log
+.env
+.env.*
+!.env.example
+
+# Node / frontend
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+.venvs/
+venv/
+
+# Misc caches
+.cache/
+.tmp/
+tmp/
+temp/

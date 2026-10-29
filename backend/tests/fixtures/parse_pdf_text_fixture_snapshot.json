@@ -1,0 +1,24 @@
+{
+  "status": "parsed",
+  "paper_metadata": {
+    "title": "Optical Systems 2025",
+    "authors": ["Alice", "Bob"],
+    "year": 2025,
+    "venue": "Photonics 2025"
+  },
+  "markdown_text": "## Page 1\n\nOptical Systems 2025\n\nFigure 1. Topology overview\n\nThe reconfiguration delay is 12.5 ms.\n\nE = mc^2",
+  "chunks": [
+    "Optical Systems 2025 Figure 1. Topology overview The reconfiguration delay is 12.5 ms. E = mc^2"
+  ],
+  "formulas": [],
+  "assertions": [
+    {
+      "subject": "optical:reconfiguration_delay",
+      "predicate": "equals",
+      "object": "12.5",
+      "unit": "ms",
+      "evidence_sources": ["chunk_p1_0"]
+    }
+  ],
+  "warnings": []
+}

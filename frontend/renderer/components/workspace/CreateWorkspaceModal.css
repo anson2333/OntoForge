@@ -1,0 +1,55 @@
+.create-workspace-modal {
+  width: min(560px, calc(100vw - 32px));
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 18px 48px var(--shadow-color);
+  overflow: hidden;
+}
+
+.create-workspace-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.workspace-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.workspace-input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.workspace-textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.workspace-note {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.create-workspace-modal .btn-secondary {
+  border: 1px solid var(--border-color);
+  background: var(--surface-bg);
+  color: var(--text-primary);
+}
+
+.create-workspace-modal .btn-secondary:hover {
+  background: var(--surface-bg-hover);
+  border-color: var(--border-strong);
+}

@@ -1,0 +1,327 @@
+/* Evidence History Styles */
+
+.evidence-history-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.evidence-history-modal {
+  background: white;
+  border-radius: 8px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.history-header h3 {
+  margin: 0;
+  font-size: 1.3em;
+  color: #333;
+}
+
+/* Content */
+.history-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #999;
+}
+
+.empty-state .hint {
+  font-size: 0.9em;
+  color: #bbb;
+}
+
+.revision-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.revision-item {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+}
+
+.revision-item.current {
+  border-color: #007bff;
+  background: #f0f8ff;
+}
+
+.revision-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.revision-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.revision-version {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.current-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #007bff;
+  color: white;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.revision-timestamp {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.revision-user {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.revision-status .status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.revision-changes {
+  margin-top: 12px;
+}
+
+.change-notes {
+  margin-bottom: 12px;
+}
+
+.change-notes .notes {
+  margin: 0 0 8px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.change-summary {
+  margin: 0;
+  padding: 8px;
+  background: #f8f9fa;
+  border-left: 3px solid #007bff;
+  font-style: italic;
+  color: #333;
+}
+
+.diff-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.diff-section {
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.diff-removed {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.diff-removed strong {
+  color: #721c24;
+}
+
+.diff-added {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.diff-added strong {
+  color: #155724;
+}
+
+.diff-section pre {
+  margin: 8px 0 0;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.initial-extraction {
+  padding: 12px;
+  background: #e9ecef;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.initial-extraction p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.initial-extraction .confidence {
+  font-weight: 600;
+}
+
+.revision-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.restore-btn {
+  padding: 6px 12px;
+  background: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+
+.restore-btn:hover {
+  background: #138496;
+}
+
+/* Footer */
+.history-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.history-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.history-stats span {
+  font-weight: 500;
+}
+
+.close-footer-btn {
+  padding: 8px 20px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.close-footer-btn:hover {
+  background: #5a6268;
+}
+
+/* Theme */
+.evidence-history-modal {
+  background: var(--panel-bg-elevated);
+  color: var(--text-primary);
+}
+
+.history-header,
+.history-footer,
+.revision-item,
+.revision-actions {
+  border-color: var(--border-color);
+}
+
+.history-header h3,
+.revision-version,
+.revision-status,
+.revision-user,
+.revision-notes,
+.modification-diff h5 {
+  color: var(--text-primary);
+}
+
+.close-btn,
+.revision-time,
+.revision-metadata,
+.initial-extraction p,
+.history-stats {
+  color: var(--text-secondary);
+}
+
+.revision-item,
+.initial-extraction,
+.modification-diff,
+.old-text pre,
+.new-text pre {
+  background: var(--panel-bg-muted);
+  color: var(--text-primary);
+}
+
+.revision-item.current {
+  background: var(--surface-bg-selected);
+  border-color: var(--primary-color);
+}
+
+.old-text {
+  background: var(--danger-bg);
+}
+
+.old-text strong {
+  color: var(--danger-text);
+}
+
+.new-text {
+  background: var(--success-bg);
+}
+
+.new-text strong {
+  color: var(--success-text);
+}

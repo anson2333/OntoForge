@@ -1,0 +1,163 @@
+# OntoForge Domain Pack Configuration
+# Version: 1.0 with Subdomain Support
+# Domain: Optical Networking
+
+schema_version: "1.0"
+
+domain:
+  id: domain.networking.optical
+  name: Optical Access Networks
+  parent_domain_id: null  # null for top-level domains
+  
+  # Enhanced taxonomy with subdomain mappings
+  taxonomy_tree:
+    - name: topology
+      description: Network topology architectures
+      values:
+        - mesh
+        - ring
+        - star
+        - free_space
+        - point_to_point
+      subdomain_map:
+        free_space: domain.networking.optical.fso
+        mesh: domain.networking.optical.access
+        ring: domain.networking.optical.access
+        # star and point_to_point map to parent domain (no specific subdomain)
+    
+    - name: switching_mechanism
+      description: Optical switching technologies
+      values:
+        - wdm
+        - optical_packet
+        - burst_switching
+        - circuit_switching
+        - hybrid
+      subdomain_map:
+        wdm: domain.networking.optical.wdm
+        optical_packet: domain.networking.optical.ops
+        burst_switching: domain.networking.optical.obs
+        # circuit_switching and hybrid map to parent domain
+    
+    - name: application_domain
+      description: Primary application areas
+      values:
+        - data_center
+        - metro_network
+        - long_haul
+        - access_network
+        - satellite
+      subdomain_map:
+        data_center: domain.networking.optical.datacenter
+        satellite: domain.networking.optical.satellite
+        access_network: domain.networking.optical.access
+
+core_metrics:
+  - name: reconfiguration_delay
+    expected_unit: ms
+    aliases:
+      - switching_delay
+      - matrix_latency
+      - reconfiguration_time
+    value_type: float
+    description: Time required to reconfigure optical switching matrix
+  
+  - name: cross_talk
+    expected_unit: dB
+    aliases:
+      - crosstalk
+      - inter_channel_interference
+    value_type: float
+    description: Signal leakage between optical channels
+  
+  - name: spectral_efficiency
+    expected_unit: bits/s/Hz
+    aliases:
+      - bandwidth_efficiency
+      - capacity_density
+    value_type: float
+    description: Data rate per unit bandwidth
+  
+  - name: reach
+    expected_unit: km
+    aliases:
+      - transmission_distance
+      - maximum_span
+    value_type: float
+    description: Maximum transmission distance without regeneration
+  
+  - name: power_consumption
+    expected_unit: W
+    aliases:
+      - energy_consumption
+      - power_draw
+    value_type: float
+    description: Electrical power consumption
+
+validation:
+  required_context_keys:
+    - network_load
+    - topology
+    - wavelength_count  # For WDM-specific papers
+  
+  unit_normalization:
+    ms: [ms, millisecond, milliseconds, msec]
+    dB: [dB, db, decibel, decibels]
+    bits/s/Hz: ["bits/s/Hz", "b/s/Hz", "bps/Hz"]
+    km: [km, kilometer, kilometers, kilometre, kilometres]
+    W: [W, watt, watts, Watt, Watts]
+    μs: [μs, us, microsecond, microseconds]
+    ns: [ns, nanosecond, nanoseconds]
+
+# Optional: Define expected subdomain nodes
+# (These will be auto-created during ingestion if they don't exist)
+subdomains:
+  - id: domain.networking.optical.wdm
+    name: Wavelength Division Multiplexing (WDM)
+    description: Papers focused on WDM systems and technologies
+    
+  - id: domain.networking.optical.ops
+    name: Optical Packet Switching
+    description: Papers on packet-switched optical networks
+    
+  - id: domain.networking.optical.obs
+    name: Optical Burst Switching
+    description: Papers on burst-mode optical switching
+    
+  - id: domain.networking.optical.fso
+    name: Free-Space Optical Communications
+    description: Papers on wireless optical links (laser/LED)
+    
+  - id: domain.networking.optical.access
+    name: Optical Access Networks
+    description: Papers on last-mile optical access (FTTH, PON, etc.)
+    
+  - id: domain.networking.optical.datacenter
+    name: Data Center Optical Networks
+    description: Papers on intra-datacenter optical interconnects
+    
+  - id: domain.networking.optical.satellite
+    name: Satellite Optical Communications
+    description: Papers on space-based optical links
+
+# Optional: Classification hints for LLM
+classification_hints:
+  wdm_keywords:
+    - wavelength division
+    - DWDM
+    - CWDM
+    - wavelength routing
+    - wavelength assignment
+  
+  ops_keywords:
+    - optical packet
+    - packet switching
+    - optical label
+    - OPS
+  
+  fso_keywords:
+    - free space
+    - free-space optical
+    - FSO
+    - laser communication
+    - atmospheric transmission

@@ -1,0 +1,237 @@
+/**
+ * EvidenceEditor Component
+ * Inline editing interface with PDF comparison view
+ */
+
+import { useState, useEffect } from 'react';
+import { Evidence, EvidenceModification, IntentMetadata } from './types';
+import './EvidenceEditor.css';
+
+interface EvidenceEditorProps {
+  evidence: Evidence;
+  onSave: (modifications: EvidenceModification, metadata: IntentMetadata) => Promise<void>;
+  onCancel: () => void;
+}
+
+export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceEditorProps) {
+  const [originalText, setOriginalText] = useState('');
+  const [editedText, setEditedText] = useState('');
+  const [changeNotes, setChangeNotes] = useState('');
+  const [confidenceOverride, setConfidenceOverride] = useState<number>(0.9);
+  const [tags, setTags] = useState<string[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [submitForReview, setSubmitForReview] = useState(false);
+
+  // Reset form when evidence changes
+  useEffect(() => {
+    const text = evidence.type === 'chunk' 
+      ? evidence.raw_text || ''
+      : evidence.latex_string || '';
+    
+    setOriginalText(text);
+    setEditedText(text);
+    setChangeNotes('');
+    setTags([]);
+    setSubmitForReview(false);
+    setIsSaving(false);
+  }, [evidence]);
+
+  const hasChanges = editedText.trim() !== originalText.trim();
+
+  const handleSave = async () => {
+    // Allow saving if either text changed OR submitting for review
+    if (!hasChanges && !submitForReview) {
+      alert('No changes to save.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const modifications: EvidenceModification = {
+        old_text: originalText,
+        new_text: editedText,
+        change_notes: changeNotes.trim() || undefined
+      };
+
+      const metadata: IntentMetadata = {
+        intent_type: 'correction',
+        intent_scope: 'local',
+        confidence_override: confidenceOverride,
+        tags: tags.length > 0 ? tags : submitForReview ? ['review_request'] : ['manual_correction']
+      };
+
+      await onSave(modifications, metadata);
+    } catch (error) {
+      console.error('Failed to save:', error);
+      alert('Failed to save changes. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleToggleTag = (tag: string) => {
+    if (tags.includes(tag)) {
+      setTags(tags.filter(t => t !== tag));
+    } else {
+      setTags([...tags, tag]);
+    }
+  };
+
+  const commonTags = [
+    'ocr_error',
+    'numeric_correction',
+    'formula_fix',
+    'unit_correction',
+    'formatting_fix',
+    'missing_text'
+  ];
+
+  return (
+    <div className="evidence-editor-overlay">
+      <div className="evidence-editor-modal">
+        {/* Header */}
+        <div className="editor-header">
+          <h3>
+            Editing {evidence.type === 'chunk' ? 'Chunk' : 'Formula'} #{evidence.id.split('#')[1]}
+          </h3>
+          <button className="close-btn" onClick={onCancel}>✕</button>
+        </div>
+
+        {/* Content */}
+        <div className="editor-content">
+          {/* Left: PDF Comparison */}
+          <div className="pdf-comparison">
+            <h4>Original PDF</h4>
+            <div className="pdf-viewer">
+              <div className="pdf-placeholder">
+                <p>📄 PDF Page {evidence.bounding_box.page}</p>
+                <p className="pdf-coords">
+                  Region: {evidence.bounding_box.box.join(', ')}
+                </p>
+                <div className="pdf-mock-image">
+                  {/* TODO: Render actual PDF crop using bounding_box */}
+                  <div className="mock-crop">
+                    PDF crop will be displayed here highlighting the relevant section
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="confidence-display">
+              <span>Original Confidence:</span>
+              <span className={`confidence-value ${
+                evidence.confidence_score >= 0.9 ? 'high' :
+                evidence.confidence_score >= 0.7 ? 'medium' : 'low'
+              }`}>
+                {(evidence.confidence_score * 100).toFixed(0)}%
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Editable Text */}
+          <div className="text-editor">
+            <h4>Edit Text</h4>
+            <textarea
+              className={evidence.type === 'formula' ? 'formula-editor' : 'chunk-editor'}
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+              rows={12}
+              placeholder={`Edit the ${evidence.type} text here...`}
+            />
+            
+            <div className="editor-metadata">
+              <div className="metadata-field">
+                <label htmlFor="change-notes">Change Notes (Optional):</label>
+                <textarea
+                  id="change-notes"
+                  value={changeNotes}
+                  onChange={(e) => setChangeNotes(e.target.value)}
+                  rows={3}
+                  placeholder="Describe what you changed and why..."
+                />
+              </div>
+
+              <div className="metadata-field">
+                <label htmlFor="confidence-override">Your Confidence in Correction:</label>
+                <div className="confidence-slider">
+                  <input
+                    type="range"
+                    id="confidence-override"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={confidenceOverride}
+                    onChange={(e) => setConfidenceOverride(parseFloat(e.target.value))}
+                  />
+                  <span className="confidence-value">
+                    {(confidenceOverride * 100).toFixed(0)}%
+                  </span>
+                </div>
+              </div>
+
+              <div className="metadata-field">
+                <label>Tags (Optional):</label>
+                <div className="tag-selector">
+                  {commonTags.map(tag => (
+                    <button
+                      key={tag}
+                      className={`tag-btn ${tags.includes(tag) ? 'active' : ''}`}
+                      onClick={() => handleToggleTag(tag)}
+                    >
+                      {tag.replace(/_/g, ' ')}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="metadata-field">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={submitForReview}
+                    onChange={(e) => setSubmitForReview(e.target.checked)}
+                  />
+                  Submit for review by another user
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="editor-actions">
+          <button
+            className="action-btn cancel"
+            onClick={onCancel}
+            disabled={isSaving}
+          >
+            ↶ Cancel
+          </button>
+          <button
+            className="action-btn save"
+            onClick={handleSave}
+            disabled={(!hasChanges && !submitForReview) || isSaving}
+          >
+            {isSaving ? 'Saving...' : submitForReview ? '📤 Save & Request Review' : '✓ Save & Mark Verified'}
+          </button>
+        </div>
+
+        {/* Change Preview */}
+        {hasChanges && (
+          <div className="change-preview">
+            <h4>Change Preview</h4>
+            <div className="diff-view">
+              <div className="diff-removed">
+                <strong>- Original:</strong>
+                <pre>{originalText}</pre>
+              </div>
+              <div className="diff-added">
+                <strong>+ Edited:</strong>
+                <pre>{editedText}</pre>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
