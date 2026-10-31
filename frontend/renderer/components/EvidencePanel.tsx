@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * Evidence Panel Component
  * Lists all supporting evidence with confidence scores
@@ -22,7 +23,7 @@ export default function EvidencePanel({ evidence, selectedEvidence, onSelectEvid
         justifyContent: 'center',
         opacity: 0.5
       }}>
-        <p>No evidence found</p>
+        <p>{t("No evidence found")}</p>
       </div>
     );
   }
@@ -30,7 +31,7 @@ export default function EvidencePanel({ evidence, selectedEvidence, onSelectEvid
   return (
     <div style={{ flex: 1, overflowY: 'auto', paddingRight: '8px' }}>
       <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', opacity: 0.8 }}>
-        Supporting Evidence ({evidence.length})
+        {t("Supporting Evidence (")}{evidence.length}{t(')')}
       </h4>
       {evidence.map((item, index) => (
         <div
@@ -57,7 +58,7 @@ export default function EvidencePanel({ evidence, selectedEvidence, onSelectEvid
               backgroundColor: item.type === 'formula' ? '#3a3a7a' : '#3a3a3a',
               color: item.type === 'formula' ? '#9999ff' : '#999999'
             }}>
-              {item.type === 'formula' ? '∫ Formula' : '📝 Chunk'}
+              {item.type === 'formula' ? t("∫ Formula") : t("📝 Chunk")}
             </span>
             <span style={{ fontSize: '12px', opacity: 0.6 }}>
               #{index + 1}
@@ -77,7 +78,7 @@ export default function EvidencePanel({ evidence, selectedEvidence, onSelectEvid
           {/* Bounding Box Info */}
           {item.boundingBox && (
             <div style={{ fontSize: '11px', opacity: 0.5, marginBottom: '8px' }}>
-              Page {item.boundingBox.page} · ({item.boundingBox.x}, {item.boundingBox.y})
+              {t("Page")} {item.boundingBox.page} · ({item.boundingBox.x}, {item.boundingBox.y}{t(')')}
             </div>
           )}
 

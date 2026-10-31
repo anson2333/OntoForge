@@ -2,7 +2,10 @@
   "status": "parsed",
   "paper_metadata": {
     "title": "Optical Systems 2025",
-    "authors": ["Alice", "Bob"],
+    "authors": [
+      "Alice",
+      "Bob"
+    ],
     "year": 2025,
     "venue": "Photonics 2025"
   },
@@ -17,10 +20,13 @@
       "predicate": "equals",
       "object": "12.5",
       "unit": "ms",
-      "evidence_sources": ["chunk_p1_0"]
+      "evidence_sources": [
+        "chunk_p1_0"
+      ]
     }
   ],
   "warnings": [
+    "Page-only source locations; precise PDF bounding boxes are unavailable.",
     "LLM extraction was unavailable; assertions were produced by the rule-based heuristic extractor."
   ]
 }

@@ -1,0 +1,774 @@
+{
+  "paper": "faster_rcnn",
+  "paper_metadata": {
+    "title": "Faster R-CNN: Towards Real-Time Object Detection",
+    "authors": [
+      "Unknown authors"
+    ],
+    "year": 2015,
+    "venue": "Unknown venue",
+    "doi": null,
+    "provenance_hash": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef"
+  },
+  "source_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+  "diagnostics": {
+    "batch_count": 4,
+    "failed_batches": [],
+    "warnings": [
+      "Rejected inference_latency: excluded ensemble or comparison result"
+    ],
+    "errors": [],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "prompt_tokens": 4582,
+        "completion_tokens": 664,
+        "total_tokens": 5246,
+        "prompt_tokens_details": {
+          "cached_tokens": 1536
+        },
+        "prompt_cache_hit_tokens": 1536,
+        "prompt_cache_miss_tokens": 3046
+      },
+      {
+        "prompt_tokens": 5132,
+        "completion_tokens": 1413,
+        "total_tokens": 6545,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 3468
+      },
+      {
+        "prompt_tokens": 6387,
+        "completion_tokens": 1428,
+        "total_tokens": 7815,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 4723
+      },
+      {
+        "prompt_tokens": 2811,
+        "completion_tokens": 251,
+        "total_tokens": 3062,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 1147
+      }
+    ],
+    "input_characters": 39241,
+    "finish_reasons": [
+      "stop",
+      "stop",
+      "stop",
+      "stop"
+    ],
+    "output_formats": [
+      "json",
+      "json",
+      "json",
+      "json"
+    ],
+    "model_seconds": 25.214021,
+    "retryable": false,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "deepseek-flash",
+    "parse_seconds": 0.885686,
+    "total_seconds": 26.101734,
+    "pages": 10,
+    "chunks": 13,
+    "pdf_bytes": 2368067
+  },
+  "assertions": [
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "73.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN, VGG-16",
+        "training_data": "unknown",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "300 proposals per image; VOC integration convention unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "training_data",
+          "input_resolution",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Abstract states 73.2% mAP on VOC 2007."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.85
+        },
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.4",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN, VGG-16",
+        "training_data": "unknown",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "300 proposals per image; VOC integration convention unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "training_data",
+          "input_resolution",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Abstract states 70.4% mAP on VOC 2012."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.85
+        },
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b0_2",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "5",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN, VGG-16",
+        "training_data": "unknown",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "GPU",
+        "batch_size": "unknown",
+        "timing_scope": "end_to_end",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Frame rate 5fps including all steps on a GPU."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.85
+        },
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b0_3",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "10",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN proposal stage",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "marginal proposal cost",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "ablation",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.6,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "10ms is marginal cost of RPN proposals, not full detector."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.6
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "59.9",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF, shared (300 proposals)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "ZF net",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 1 main row RPN+ZF shared 300 proposals mAP 59.9"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        },
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF, unshared (300 proposals)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "ZF net",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "missing_context_keys": [
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Ablation row RPN+ZF unshared mAP 58.7"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_2",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "56.8",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS train 2k, RPN+ZF test 300 (unshared ablation)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "ZF net",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "missing_context_keys": [
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Ablation test-time RPN+ZF 300 proposals mAP 56.8"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_3",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "55.1",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS train 2k, RPN+ZF test 100 (unshared ablation)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "ZF net",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "missing_context_keys": [
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Ablation top-100 RPN proposals mAP 55.1"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_4",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "52.1",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF (no reg) 300 proposals",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "ZF net",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "missing_context_keys": [
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Ablation no reg 300 proposals mAP 52.1"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_5",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "59.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS+ZF detector with RPN+VGG 300 proposals",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "VGG-16 (proposals)",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "missing_context_keys": [
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Proposal quality ablation RPN+VGG 59.2"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b2_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "69.9",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared",
+        "training_data": "VOC07",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 2 RPN+VGG shared 07 row reports 69.9 mAP VOC07 test"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        },
+        {
+          "source_id": "chunk_p9_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b2_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "73.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared",
+        "training_data": "VOC07+12",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 2 and Table 6 report 73.2 mAP on VOC07 test with 07+12"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        },
+        {
+          "source_id": "chunk_p9_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b2_2",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.4",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared",
+        "training_data": "VOC07++12",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 3 and Table 7 report 70.4 mAP on VOC2012 test with 07++12"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        },
+        {
+          "source_id": "chunk_p9_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b2_3",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "196",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN VGG-16",
+        "training_data": "unknown",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU",
+        "batch_size": "unknown",
+        "timing_scope": "end_to_end",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 totals 196 ms for both proposal and detection with VGG"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b2_4",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "5",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN VGG-16",
+        "training_data": "unknown",
+        "backbone": "VGG-16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU",
+        "batch_size": "unknown",
+        "timing_scope": "end_to_end",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 VGG RPN + Fast R-CNN row reports 5 fps"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b2_5",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "15",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN ZF",
+        "training_data": "unknown",
+        "backbone": "ZF",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU",
+        "batch_size": "unknown",
+        "timing_scope": "end_to_end",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 ZF RPN + Fast R-CNN row reports 15 fps"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    }
+  ],
+  "chunk_pages": {
+    "chunk_p1_0": 1,
+    "chunk_p2_0": 2,
+    "chunk_p3_0": 3,
+    "chunk_p4_0": 4,
+    "chunk_p5_0": 5,
+    "chunk_p6_0": 6,
+    "chunk_p7_0": 7,
+    "chunk_p8_0": 8,
+    "chunk_p8_1": 8,
+    "chunk_p8_2": 8,
+    "chunk_p8_3": 8,
+    "chunk_p9_0": 9,
+    "chunk_p10_0": 10
+  }
+}

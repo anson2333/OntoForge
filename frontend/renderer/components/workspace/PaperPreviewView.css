@@ -373,3 +373,5 @@
     align-items: flex-start;
   }
 }
+
+.paper-preview-view .preview-error-section .error-message { background: transparent; border: 0; padding: 0; color: var(--text-primary); }

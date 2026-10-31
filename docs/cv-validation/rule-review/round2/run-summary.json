@@ -1,0 +1,108 @@
+{
+  "workspace_id": "workspace_cv目标检测_规则与原文核验_391e998b",
+  "config_sha256": "2715dfc58366e7fc76bd565ee58a5edf3c9ec9c4d343a34f95828c66a044c084",
+  "model": "glm-4.7-flash",
+  "provider": "openai_compatible",
+  "papers": {
+    "faster_rcnn": {
+      "file_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "upload_id": "upload_b3504091ea45462cb9464fdb96b56651",
+      "file_name": "faster_rcnn.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 2368067,
+      "sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "expires_at": "2026-10-31T02:51:49.016759+00:00",
+      "seconds": 270.906,
+      "preview_id": "preview_6182a28bba054081978c572983ba43cf",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 4,
+        "failed_batches": [],
+        "warnings": [
+          "Rejected voc_map50: detector family does not match document",
+          "Rejected voc_map50: detector family does not match document",
+          "Rejected voc_map50: detector family does not match document",
+          "Rejected inference_latency: detector family does not match document",
+          "Rejected inference_latency: detector family does not match document",
+          "Rejected inference_fps: detector family does not match document",
+          "Rejected inference_latency: detector family does not match document"
+        ],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "completion_tokens": 842,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 4536,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            },
+            "total_tokens": 5378
+          },
+          {
+            "completion_tokens": 552,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 5091,
+            "prompt_tokens_details": {
+              "cached_tokens": 4
+            },
+            "total_tokens": 5643
+          },
+          {
+            "completion_tokens": 1112,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 6412,
+            "prompt_tokens_details": {
+              "cached_tokens": 5
+            },
+            "total_tokens": 7524
+          },
+          {
+            "completion_tokens": 204,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 2836,
+            "prompt_tokens_details": {
+              "cached_tokens": 1756
+            },
+            "total_tokens": 3040
+          }
+        ],
+        "input_characters": 39241,
+        "finish_reasons": [
+          "stop",
+          "stop",
+          "stop",
+          "stop"
+        ],
+        "output_formats": [
+          "json",
+          "json",
+          "json",
+          "json"
+        ],
+        "model_seconds": 270.316282,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "glm-4.7-flash",
+        "parse_seconds": 0.531341,
+        "total_seconds": 270.855689,
+        "pages": 10,
+        "chunks": 13,
+        "pdf_bytes": 2368067
+      },
+      "assertion_count": 7,
+      "extraction_method": "llm"
+    }
+  },
+  "pilot_zhipu_interval_seconds": 65,
+  "complete": true
+}

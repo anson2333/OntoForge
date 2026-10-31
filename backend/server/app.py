@@ -30,6 +30,17 @@ load_dotenv(Path(__file__).resolve().parents[2] / ".env", override=False)
 
 QUIET_JSONRPC_METHODS = {"getLLMStatus", "authStatus"}
 
+
+def redact_payload(value):
+    """Recursively hide credentials and document contents in optional debug logs."""
+    hidden = {"token", "auth_token", "password", "api_key", "authorization", "content_base64",
+              "file_content", "raw_text", "markdown_text", "latex_string"}
+    if isinstance(value, dict):
+        return {key: "<hidden>" if key.lower() in hidden else redact_payload(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [redact_payload(item) for item in value]
+    return value
+
 # Methods callable without a session token.
 PUBLIC_JSONRPC_METHODS = {
     "authLogin",
@@ -120,6 +131,12 @@ async def root():
             "getAssertions",
             "getCoverageAnalysis",
             "getGapCandidates",
+            "resolveEntityMentions",
+            "getEntitySubgraph",
+            "getExperiments",
+            "compareExperiments",
+            "reviewResolution",
+            "analyzeResearchGaps",
             "getEvidence",
             "listDomainPacks",
             "bootstrapDomainPack",
@@ -151,17 +168,9 @@ async def jsonrpc_endpoint(request: Request) -> Response:
         params = request_json.get("params", {}) if isinstance(request_json, dict) else {}
         should_log_rpc = method_name not in QUIET_JSONRPC_METHODS
         
-        # Sanitize params for logging (hide sensitive data)
-        sanitized_params = params
-        if isinstance(params, dict):
-            sanitized_params = {
-                k: ("<hidden>" if k in {"auth_token", "token", "password"} else
-                    "<binary>" if isinstance(v, bytes) else
-                    ("<file>" if k == "file_content" else 
-                     (str(v)[:100] + "..." if isinstance(v, str) and len(v) > 100 else v)))
-                for k, v in params.items()
-            }
-        
+        log_payloads = os.getenv("ONTOFORGE_LOG_RPC_PAYLOADS", "false").lower() == "true"
+        sanitized_params = redact_payload(params) if log_payloads else {"fields": list(params) if isinstance(params, dict) else []}
+
         if should_log_rpc:
             print(f"\n📥 JSON-RPC Request [id={request_id}]")
             print(f"   Method: {method_name}")
@@ -213,7 +222,7 @@ async def jsonrpc_endpoint(request: Request) -> Response:
         identity_token = set_current_identity(identity)
         try:
             # Dispatch based on method type
-            if method_name == "parseUserIntent":
+            if method_name in {"parseUserIntent", "testLLMProfile", "saveLLMProfile"}:
                 response = await async_dispatch(dispatch_text)
             else:
                 response = dispatch(dispatch_text)
@@ -225,7 +234,7 @@ async def jsonrpc_endpoint(request: Request) -> Response:
             response_json = json.loads(response)
             if "result" in response_json:
                 if should_log_rpc:
-                    result_str = str(response_json["result"])
+                    result_str = str(redact_payload(response_json["result"])) if log_payloads else "<payload omitted>"
                     print(f"✅ JSON-RPC Response [id={request_id}]")
                     print(f"   Method: {method_name}")
                     if len(result_str) > 300:

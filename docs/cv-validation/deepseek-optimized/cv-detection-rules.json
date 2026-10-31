@@ -1,0 +1,226 @@
+{
+  "schema_version": "1.0",
+  "domain": {
+    "id": "domain.vision.cv_detection",
+    "name": "目标检测：准确率与推理速度",
+    "taxonomy_tree": [
+      {
+        "name": "method",
+        "values": [
+          "region_based",
+          "dense_regression",
+          "multibox"
+        ],
+        "subdomain_map": {},
+        "description": "Classify the detector being measured, not the paper's cited baselines. Fast/Faster R-CNN and SPPnet are region_based; YOLO is dense_regression; SSD/MultiBox are multibox. Use unknown if unsupported."
+      },
+      {
+        "name": "scenario",
+        "values": [
+          "voc2007_test",
+          "voc2010_test",
+          "voc2012_test",
+          "coco_test_dev",
+          "coco_val"
+        ],
+        "subdomain_map": {},
+        "description": "Dataset and evaluation split. Never merge different VOC years or COCO splits. Speed-only statements without a named benchmark use unknown."
+      }
+    ],
+    "parent_domain_id": null
+  },
+  "core_metrics": [
+    {
+      "name": "voc_map50",
+      "expected_unit": "percent",
+      "aliases": [
+        "VOC mAP",
+        "VOC AP50",
+        "PASCAL VOC mAP"
+      ],
+      "value_type": "float",
+      "description": "Absolute overall detection mAP at IoU 0.5 on a named PASCAL VOC test split. Not per-class AP, recall, relative improvement or COCO averaged AP. Record VOC year and evaluation protocol; unknown when the text does not specify the AP integration convention.",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "unit_conversions": {}
+    },
+    {
+      "name": "coco_ap",
+      "expected_unit": "percent",
+      "aliases": [
+        "COCO AP",
+        "COCO mAP",
+        "COCO AP50:95"
+      ],
+      "value_type": "float",
+      "description": "Absolute COCO detection AP averaged over IoU 0.50:0.05:0.95. Never treat AP50, AP75, AP_small or VOC mAP as this metric.",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "unit_conversions": {}
+    },
+    {
+      "name": "coco_ap_small",
+      "expected_unit": "percent",
+      "aliases": [
+        "AP_small",
+        "APs"
+      ],
+      "value_type": "float",
+      "description": "Absolute COCO AP for small objects under the standard COCO small-area definition and averaged IoU protocol. A qualitative claim about small objects is not a measurement.",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "unit_conversions": {}
+    },
+    {
+      "name": "coco_ap75",
+      "expected_unit": "percent",
+      "aliases": [
+        "AP75",
+        "COCO AP75"
+      ],
+      "value_type": "float",
+      "description": "Absolute COCO AP at IoU 0.75, not VOC AP50 or COCO averaged AP.",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "unit_conversions": {}
+    },
+    {
+      "name": "inference_fps",
+      "expected_unit": "fps",
+      "aliases": [
+        "frames per second",
+        "frame rate",
+        "detection FPS"
+      ],
+      "value_type": "float",
+      "description": "Explicitly reported inference frames per second for the evaluated detector. Preserve hardware, batch size, input resolution, model variant and timing_scope. Do not calculate FPS from latency or from a dataset-total runtime.",
+      "minimum": 0.0,
+      "maximum": null,
+      "unit_conversions": {}
+    },
+    {
+      "name": "inference_latency",
+      "expected_unit": "ms",
+      "aliases": [
+        "milliseconds per image",
+        "test time per image",
+        "inference time per image"
+      ],
+      "value_type": "float",
+      "description": "Explicitly reported per-image detector inference time, including detector_only_excludes_proposals when stated. Distinguish this from end_to_end inference. Exclude individual-layer/proposal-only times, training time, speedup ratios and total time for a whole test set. Return the original value/unit; the application converts seconds to milliseconds explicitly.",
+      "minimum": 0.0,
+      "maximum": null,
+      "unit_conversions": {
+        "s": 1000.0,
+        "us": 0.001
+      }
+    }
+  ],
+  "validation": {
+    "required_context_keys": [
+      "method",
+      "scenario",
+      "detector_family",
+      "model_variant",
+      "training_data",
+      "backbone",
+      "input_resolution",
+      "evaluation_protocol",
+      "hardware",
+      "batch_size",
+      "timing_scope",
+      "result_role"
+    ],
+    "unit_normalization": {
+      "percent": [
+        "percent",
+        "%",
+        "percentage"
+      ],
+      "fps": [
+        "fps",
+        "FPS",
+        "frames/s",
+        "frames per second"
+      ],
+      "ms": [
+        "ms",
+        "milliseconds",
+        "millisecond",
+        "msec",
+        "ms/image"
+      ],
+      "s": [
+        "s",
+        "sec",
+        "second",
+        "seconds",
+        "s/im",
+        "s/image",
+        "seconds per image"
+      ],
+      "us": [
+        "us",
+        "microsecond",
+        "microseconds"
+      ]
+    },
+    "extraction_instructions": [
+      "Task scope: compare the paper authors own single-detector aggregate accuracy and inference speed. Include measured author ablations with a distinct model_variant. Exclude cited baseline/comparison rows and other papers results; result_role must be primary or ablation. Exclude ensemble/fusion rows from this single-detector collection.",
+      "Use context_conditions keys exactly as listed. method and scenario use the canonical taxonomy values. detector_family identifies Fast R-CNN, Faster R-CNN, YOLO, SSD, etc. Never use a backbone name as a detector family.",
+      "Copy the original reported numeric value and unit without calculating conversions or reciprocals. Absolute percent accuracy is distinct from percentage-point improvements and relative gains; never put a gain into voc_map50 or coco_ap.",
+      "Separate VOC 2007, VOC 2010 and VOC 2012; preserve training_data such as VOC07 vs VOC07+12. Do not infer the VOC integration convention, test resolution, batch size or speed dataset from model memory.",
+      "For accuracy rows use timing_scope=not_applicable. For speed use end_to_end, detector_only_excludes_proposals or unknown. GPU/hardware and timing scope must come from supporting evidence, not assumptions. Faster R-CNN proposal/layer timings are not total detector latency.",
+      "A table value is usable only with its row label and column header. Cite every source chunk needed for value, model, dataset and units. Preserve source_table and concise reasoning. Do not substitute an abstract rounded value for a precise table result, or combine values from different versions of a paper.",
+      "Missing or ambiguous context must be unknown; retain the measurement for review rather than inventing missing conditions. Do not transfer hardware, training split or backbone across unrelated experiments.",
+      "Return at most 6 distinct measurements per batch. Prioritize main overall mAP, reported detector latency and FPS; then author ablations. Never output per-class scores, training hours, training speedup, theoretical recall, literature baselines or repeated copies of one experiment. Keep reasoning to at most 12 words per result.",
+      "The complete Faster R-CNN architecture includes the RPN and its detection head; do not label it as the standalone Fast R-CNN baseline. timing_scope=end_to_end means including the detector and any proposal stage; use detector_only_excludes_proposals ONLY when proposal generation is explicitly excluded. For a detector without a separate proposal stage, do not label its own complete pass as excluding proposals."
+    ],
+    "require_numeric_evidence": true,
+    "mark_missing_context": true,
+    "document_families": {
+      "fast_rcnn": [
+        "Fast R-CNN",
+        "Fast RCNN"
+      ],
+      "faster_rcnn": [
+        "Faster R-CNN",
+        "Faster RCNN"
+      ],
+      "yolo": [
+        "YOLO",
+        "You Only Look Once"
+      ],
+      "ssd": [
+        "SSD",
+        "Single Shot MultiBox Detector"
+      ],
+      "rcnn": [
+        "R-CNN",
+        "Rich feature hierarchies"
+      ],
+      "sppnet": [
+        "SPP-net",
+        "Spatial Pyramid Pooling"
+      ],
+      "multibox": [
+        "MultiBox",
+        "Scalable Object Detection"
+      ]
+    },
+    "excluded_result_roles": [
+      "baseline",
+      "comparison",
+      "ensemble",
+      "fusion"
+    ],
+    "excluded_result_terms": [
+      "ensemble",
+      "model fusion",
+      "detector fusion",
+      "model combination",
+      "combined model"
+    ],
+    "max_batch_characters": 14000
+  }
+}

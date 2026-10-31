@@ -147,6 +147,7 @@ class TestLLMProtocolSchemas:
             workspace_id="workspace_test",
             domain_pack_namespace="optical",
             upload_id="upload_123",
+            preview_id="preview_test",
         )
         assert params.upload_id == "upload_123"
         assert params.parse_options.auto_classify is True
@@ -489,6 +490,11 @@ class TestPdfIngestionServices:
     def test_commit_parsed_pdf_persists_parsed_artifacts(self):
         class FakeNodeRepo:
             def __init__(self):
+                from contextlib import nullcontext
+                from unittest.mock import Mock
+                self.db = Mock()
+                self.db.transaction.side_effect = nullcontext
+                self.db.execute_query.return_value = [{"id": "workspace_test"}]
                 self.papers = []
                 self.chunks = []
                 self.formulas = []
@@ -557,12 +563,14 @@ class TestPdfIngestionServices:
         node_repo = FakeNodeRepo()
         edge_repo = FakeEdgeRepo()
 
-        with patch("backend.services.pdf_ingestion_service.parse_pdf_with_domain_pack", return_value=parse_result):
+        with patch("backend.services.pdf_ingestion_service.load_preview", return_value=parse_result), patch("backend.services.pdf_ingestion_service.preserve_pdf_source"):
+            # This repository contract test isolates filesystem storage; real storage has separate regressions.
             response = commit_parsed_pdf(
                 CommitParsedPdfParams(
                     workspace_id="workspace_test",
                     domain_pack_namespace="optical",
                     upload_id="upload_test",
+                    preview_id="preview_test",
                 ),
                 node_repo=node_repo,
                 edge_repo=edge_repo,

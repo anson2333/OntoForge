@@ -494,6 +494,7 @@ class CommitParsedPdfParams(BaseModel):
     workspace_id: str
     domain_pack_namespace: str
     upload_id: str
+    preview_id: str
     owner_id: Optional[str] = None
     parse_options: ParseOptions = Field(default_factory=ParseOptions)
 
@@ -508,6 +509,10 @@ class CommitParsedPdfResponse(BaseModel):
     chunks_created: int = 0
     formulas_created: int = 0
     assertions_created: int = 0
+    extraction_run_id: Optional[str] = None
+    experiments_created: int = 0
+    measurements_created: int = 0
+    constraint_violations: List[Dict[str, Any]] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
 
 
@@ -529,6 +534,8 @@ class ParsePdfWithDomainPackResponse(BaseModel):
     workspace_id: str
     domain_pack_namespace: str
     upload_id: Optional[str] = None
+    preview_id: Optional[str] = None
+    diagnostics: Dict[str, Any] = Field(default_factory=dict)
     markdown_text: str = ""
     paper_metadata: Optional[PaperMetadata] = None
     chunks: List[ExtractedChunk] = Field(default_factory=list)

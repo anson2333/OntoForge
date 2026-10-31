@@ -1,3 +1,4 @@
+import { t, uiLabel } from '../../i18n';
 /**
  * Domain Pack Panel
  * View and edit domain pack configuration (metrics, taxonomy, validation rules)
@@ -11,6 +12,10 @@ export interface MetricDefinition {
   expected_unit: string;
   aliases: string[];
   value_type: 'float' | 'int' | 'string' | 'bool';
+  description?: string;
+  minimum?: number | null;
+  maximum?: number | null;
+  unit_conversions?: Record<string, number>;
 }
 
 export interface TaxonomyDimension {
@@ -30,6 +35,14 @@ export interface DomainInfo {
 export interface ValidationRules {
   required_context_keys: string[];
   unit_normalization: Record<string, string[]>;
+  extraction_instructions?: string[];
+  require_numeric_evidence?: boolean;
+  mark_missing_context?: boolean;
+  require_condition_evidence?: boolean;
+  document_families?: Record<string, string[]>;
+  excluded_result_roles?: string[];
+  excluded_result_terms?: string[];
+  max_batch_characters?: number | null;
 }
 
 export interface DomainPackConfig {
@@ -83,7 +96,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
       setIsEditing(false);
       onSave?.(parsed);
     } catch (error) {
-      alert('Invalid JSON format');
+      alert(t("Invalid JSON format"));
     }
   };
 
@@ -100,7 +113,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
         color: '#cccccc',
         height: '100%'
       }}>
-        Loading domain pack...
+        {t("Loading domain pack...")}
       </div>
     );
   }
@@ -113,7 +126,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
         color: '#cccccc',
         height: '100%'
       }}>
-        Failed to load domain pack
+        {t("Failed to load domain pack")}
       </div>
     );
   }
@@ -135,9 +148,9 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
         alignItems: 'center'
       }}>
         <div>
-          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Domain Pack Configuration</h3>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>{t("Domain Pack Configuration")}</h3>
           <p style={{ margin: '4px 0 0 0', fontSize: '12px', opacity: 0.7 }}>
-            {config.domain.name} (v{config.schema_version})
+            {config.domain.name} {t("(v")}{config.schema_version}{t(')')}
           </p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -155,7 +168,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                   fontSize: '12px'
                 }}
               >
-                Save
+                {t("Save")}
               </button>
               <button
                 onClick={handleCancel}
@@ -169,7 +182,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                   fontSize: '12px'
                 }}
               >
-                Cancel
+                {t("Cancel")}
               </button>
             </>
           ) : (
@@ -186,7 +199,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                   fontSize: '12px'
                 }}
               >
-                Edit JSON
+                {t("Edit JSON")}
               </button>
               <button
                 onClick={loadDomainPack}
@@ -200,7 +213,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                   fontSize: '12px'
                 }}
               >
-                Reload
+                {t("Reload")}
               </button>
             </>
           )}
@@ -217,7 +230,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                 fontSize: '12px'
               }}
             >
-              Close
+              {t("Close")}
             </button>
           )}
         </div>
@@ -246,7 +259,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                 fontWeight: selectedTab === tab ? 600 : 400
               }}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab === 'raw' ? t('Raw Configuration') : uiLabel(tab)}
             </button>
           ))}
         </div>
@@ -273,7 +286,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
           />
         ) : selectedTab === 'metrics' ? (
           <div>
-            <h4 style={{ marginTop: 0 }}>Core Metrics ({config.core_metrics.length})</h4>
+            <h4 style={{ marginTop: 0 }}>{t("Core Metrics (")}{config.core_metrics.length}{t(')')}</h4>
             {config.core_metrics.map((metric) => (
               <div
                 key={metric.name}
@@ -296,13 +309,13 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                   </span>
                 </div>
                 <div style={{ fontSize: '12px', opacity: 0.7, marginBottom: '4px' }}>
-                  Type: <code style={{ backgroundColor: '#1e1e1e', padding: '2px 6px', borderRadius: '2px' }}>
-                    {metric.value_type}
+                  {t("Type:")} <code style={{ backgroundColor: '#1e1e1e', padding: '2px 6px', borderRadius: '2px' }}>
+                    {uiLabel(metric.value_type || 'float')}
                   </code>
                 </div>
                 {metric.aliases.length > 0 && (
                   <div style={{ fontSize: '12px', opacity: 0.7 }}>
-                    Aliases: {metric.aliases.map((alias, i) => (
+                    {t("Aliases:")} {metric.aliases.map((alias, i) => (
                       <code
                         key={i}
                         style={{
@@ -322,20 +335,20 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
           </div>
         ) : selectedTab === 'taxonomy' ? (
           <div>
-            <h4 style={{ marginTop: 0 }}>Domain Taxonomy</h4>
+            <h4 style={{ marginTop: 0 }}>{t("Domain Taxonomy")}</h4>
             <div style={{
               padding: '12px',
               backgroundColor: '#252525',
               borderRadius: '4px',
               marginBottom: '12px'
             }}>
-              <div style={{ fontSize: '12px', opacity: 0.7, marginBottom: '4px' }}>Domain ID:</div>
+              <div style={{ fontSize: '12px', opacity: 0.7, marginBottom: '4px' }}>{t("Domain ID:")}</div>
               <code style={{ fontSize: '13px' }}>{config.domain.id}</code>
             </div>
             {Array.isArray(config.domain.taxonomy_tree) && config.domain.taxonomy_tree.length > 0 ? (
               typeof config.domain.taxonomy_tree[0] === 'string' ? (
                 <div>
-                  <h5>Simple Taxonomy:</h5>
+                  <h5>{t("Simple Taxonomy:")}</h5>
                   {(config.domain.taxonomy_tree as string[]).map((item, i) => (
                     <div
                       key={i}
@@ -352,7 +365,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
                 </div>
               ) : (
                 <div>
-                  <h5>Structured Taxonomy:</h5>
+                  <h5>{t("Structured Taxonomy:")}</h5>
                   {(config.domain.taxonomy_tree as TaxonomyDimension[]).map((dim, i) => (
                     <div
                       key={i}
@@ -395,9 +408,9 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
           </div>
         ) : selectedTab === 'validation' ? (
           <div>
-            <h4 style={{ marginTop: 0 }}>Validation Rules</h4>
+            <h4 style={{ marginTop: 0 }}>{t("Validation Rules")}</h4>
             <div style={{ marginBottom: '20px' }}>
-              <h5>Required Context Keys:</h5>
+              <h5>{t("Required Context Keys:")}</h5>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {config.validation.required_context_keys.map((key, i) => (
                   <span
@@ -415,7 +428,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
               </div>
             </div>
             <div>
-              <h5>Unit Normalization:</h5>
+              <h5>{t("Unit Normalization:")}</h5>
               {Object.entries(config.validation.unit_normalization).map(([unit, synonyms]) => (
                 <div
                   key={unit}
@@ -450,7 +463,7 @@ export const DomainPackPanel: React.FC<DomainPackPanelProps> = ({ onClose, onSav
           </div>
         ) : (
           <div>
-            <h4 style={{ marginTop: 0 }}>Raw Configuration</h4>
+            <h4 style={{ marginTop: 0 }}>{t("Raw Configuration")}</h4>
             <pre style={{
               backgroundColor: '#252525',
               padding: '12px',

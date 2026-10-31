@@ -1,3 +1,4 @@
+import { t, uiLabel } from '../../i18n';
 /**
  * Taxonomy Filter Component
  * Allows filtering papers by taxonomy dimensions from domain pack
@@ -33,7 +34,7 @@ export const TaxonomyFilter: React.FC<TaxonomyFilterProps> = ({
         justifyContent: 'space-between',
         marginBottom: '8px'
       }}>
-        <span style={{ fontSize: '13px', fontWeight: 600 }}>Filter by Taxonomy</span>
+        <span style={{ fontSize: '13px', fontWeight: 600 }}>{t("Filter by Taxonomy")}</span>
         {hasActiveFilters && (
           <button
             onClick={onClearAll}
@@ -47,7 +48,7 @@ export const TaxonomyFilter: React.FC<TaxonomyFilterProps> = ({
               fontSize: '11px'
             }}
           >
-            Clear All
+            {t("Clear All")}
           </button>
         )}
       </div>
@@ -65,7 +66,7 @@ export const TaxonomyFilter: React.FC<TaxonomyFilterProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
-                {dimension.name.replace(/_/g, ' ')}
+                {uiLabel(dimension.name)}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                 {dimension.values.map(value => {
@@ -94,8 +95,8 @@ export const TaxonomyFilter: React.FC<TaxonomyFilterProps> = ({
                         transition: 'all 0.15s ease'
                       }}
                       title={hasSubdomain 
-                        ? `Subdomain: ${hasSubdomain}` 
-                        : 'No subdomain mapping'}
+                        ? t('Subdomain: {name}', { name: hasSubdomain })
+                        : t("No subdomain mapping")}
                     >
                       {value}
                       {hasSubdomain && ' 🎯'}
@@ -117,7 +118,7 @@ export const TaxonomyFilter: React.FC<TaxonomyFilterProps> = ({
           fontSize: '11px',
           opacity: 0.8
         }}>
-          Active filters: {Object.entries(selectedFilters)
+          {t("Active filters:")} {Object.entries(selectedFilters)
             .filter(([, values]) => values.length > 0)
             .map(([dim, values]) => `${dim}: ${values.join(', ')}`)
             .join(' | ')}

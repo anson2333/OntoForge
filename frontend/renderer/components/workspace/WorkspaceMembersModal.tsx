@@ -1,3 +1,4 @@
+import { t, uiLabel, localizeMessage } from '../../i18n';
 import { FormEvent, useEffect, useState } from 'react';
 import { sspClient } from '../../services/ssp_client';
 import './WorkspaceMembersModal.css';
@@ -36,7 +37,7 @@ export function WorkspaceMembersModal({
       const response = await sspClient.listWorkspaceMembers(workspaceId);
       setMembers(response.members || []);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Failed to load workspace members');
+      setError(reason instanceof Error ? reason.message : t("Failed to load workspace members"));
     } finally {
       setLoading(false);
     }
@@ -62,7 +63,7 @@ export function WorkspaceMembersModal({
       setUsername('');
       await loadMembers();
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Failed to add member');
+      setError(reason instanceof Error ? reason.message : t("Failed to add member"));
     } finally {
       setSubmitting(false);
     }
@@ -75,7 +76,7 @@ export function WorkspaceMembersModal({
       await sspClient.removeWorkspaceMember(workspaceId, member.user_id);
       await loadMembers();
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Failed to remove member');
+      setError(reason instanceof Error ? reason.message : t("Failed to remove member"));
     } finally {
       setSubmitting(false);
     }
@@ -85,31 +86,31 @@ export function WorkspaceMembersModal({
     <div className="modal-overlay" onClick={onClose}>
       <div className="workspace-members-modal" onClick={event => event.stopPropagation()}>
         <header>
-          <div><h2>Workspace Access</h2><p>{workspaceName}</p></div>
-          <button type="button" onClick={onClose} aria-label="Close">×</button>
+          <div><h2>{t("Workspace Access")}</h2><p>{workspaceName}</p></div>
+          <button type="button" onClick={onClose} aria-label={t("Close")}>×</button>
         </header>
 
         <div className="workspace-members-content">
           {canManage && (
             <form className="workspace-member-form" onSubmit={addMember}>
               <label>
-                Username
-                <input value={username} onChange={event => setUsername(event.target.value)} placeholder="Registered username" />
+                {t("Username")}
+                <input value={username} onChange={event => setUsername(event.target.value)} placeholder={t("Registered username")} />
               </label>
               <label>
-                Role
+                {t("Role")}
                 <select value={role} onChange={event => setRole(event.target.value as 'viewer' | 'editor')}>
-                  <option value="viewer">Viewer</option>
-                  <option value="editor">Editor</option>
+                  <option value="viewer">{t("Viewer")}</option>
+                  <option value="editor">{t("Editor")}</option>
                 </select>
               </label>
-              <button type="submit" disabled={submitting || !username.trim()}>Add</button>
+              <button type="submit" disabled={submitting || !username.trim()}>{t("Add")}</button>
             </form>
           )}
 
-          {error && <div className="workspace-members-error" role="alert">{error}</div>}
+          {error && <div className="workspace-members-error" role="alert">{localizeMessage(error)}</div>}
           {loading ? (
-            <div className="workspace-members-state">Loading…</div>
+            <div className="workspace-members-state">{t("Loading…")}</div>
           ) : (
             <div className="workspace-member-list">
               {members.map(member => (
@@ -118,9 +119,9 @@ export function WorkspaceMembersModal({
                     <strong>{member.display_name || member.username || member.user_id}</strong>
                     <small>{member.username ? `@${member.username}` : member.user_id}</small>
                   </span>
-                  <span className={`workspace-member-role role-${member.role}`}>{member.role}</span>
+                  <span className={`workspace-member-role role-${member.role}`}>{uiLabel(member.role)}</span>
                   {canManage && member.role !== 'owner' && (
-                    <button type="button" onClick={() => void removeMember(member)} disabled={submitting} aria-label={`Remove ${member.username || member.user_id}`}>×</button>
+                    <button type="button" onClick={() => void removeMember(member)} disabled={submitting} aria-label={t('Remove {name}', { name: member.username || member.user_id })}>×</button>
                   )}
                 </div>
               ))}

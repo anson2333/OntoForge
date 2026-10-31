@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-30",
+  "transport": "HTTPX ASGI against normal JSON-RPC handlers; local account session",
+  "model": "glm-4.7-flash",
+  "provider": "openai_compatible",
+  "steps": [
+    {
+      "method": "createWorkspace",
+      "seconds": 0.094,
+      "ok": true
+    },
+    {
+      "method": "uploadPdf",
+      "seconds": 0.031,
+      "ok": true
+    },
+    {
+      "method": "parsePdfWithDomainPack",
+      "seconds": 32.531,
+      "ok": true
+    }
+  ],
+  "workspace_id": "workspace_真实模型全流程验收_2026_10_30_8cb2be82",
+  "paper_file": "fast_rcnn.pdf",
+  "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+  "preview": {
+    "status": "needs_review",
+    "workspace_id": "workspace_真实模型全流程验收_2026_10_30_8cb2be82",
+    "domain_pack_namespace": "cv_detection",
+    "upload_id": "upload_b8dc135df1624f32a9e64608fbcf836e",
+    "preview_id": "preview_a59347fba0274220b88b9d0d84383c28",
+    "diagnostics": {
+      "batch_count": 2,
+      "failed_batches": [
+        1
+      ],
+      "warnings": [
+        "模型抽取第 2/2 批失败。HTTP 429：接口限流或额度不足：请检查账户余额/限额，稍后重试。"
+      ],
+      "errors": [
+        {
+          "http_status": 429,
+          "message": "HTTP 429：接口限流或额度不足：请检查账户余额/限额，稍后重试。",
+          "retryable": true,
+          "abort_remaining": true
+        }
+      ],
+      "skipped_batches": [],
+      "usage": [
+        {
+          "completion_tokens": 3268,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2944
+          },
+          "prompt_tokens": 5626,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          },
+          "total_tokens": 8894
+        }
+      ],
+      "input_characters": 43430,
+      "output_formats": [
+        "json"
+      ],
+      "model_seconds": 32.036603,
+      "retryable": true,
+      "model_called": true,
+      "provider": "openai_compatible",
+      "model": "glm-4.7-flash",
+      "parse_seconds": 0.452272,
+      "total_seconds": 32.497243,
+      "pages": 9,
+      "chunks": 9,
+      "pdf_bytes": 728919
+    },
+    "paper_metadata": {
+      "title": "Fast R-CNN",
+      "authors": [
+        "Unknown authors"
+      ],
+      "year": 2012,
+      "venue": "Unknown venue",
+      "doi": null,
+      "provenance_hash": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646"
+    },
+    "warnings": [
+      "模型抽取第 2/2 批失败。HTTP 429：接口限流或额度不足：请检查账户余额/限额，稍后重试。",
+      "Page-only source locations; precise PDF bounding boxes are unavailable."
+    ],
+    "extraction_method": "pypdf",
+    "assertion_extraction_method": "llm"
+  },
+  "assertion_sample": [
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "66",
+      "unit": "percent",
+      "context_conditions": {
+        "reported_conditions": "PASCAL VOC 2012, VGG16, Fast R-CNN",
+        "confidence": 1.0,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement of mAP value."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 1.0
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b0_1",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "300",
+      "unit": "ms",
+      "context_conditions": {
+        "reported_conditions": "PASCAL VOC 2012, VGG16, Fast R-CNN, excluding object proposal time",
+        "confidence": 1.0,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement of runtime in 0.3s, normalized to ms."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 1.0
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b0_2",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "47000",
+      "unit": "ms",
+      "context_conditions": {
+        "reported_conditions": "R-CNN, VGG16",
+        "confidence": 1.0,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement of R-CNN test time in 47s, normalized to ms."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 1.0
+        }
+      ]
+    }
+  ],
+  "complete": false,
+  "failure": "HTTP 429：接口限流或额度不足：请检查账户余额/限额，稍后重试。"
+}

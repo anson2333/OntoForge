@@ -1,0 +1,39 @@
+{
+  "method": "Frozen round1 candidates replayed locally against final policy; zero model calls. Batching disabled only for replay. Does not establish completeness of the potentially truncated round1 Faster R-CNN output.",
+  "papers": {
+    "fast_rcnn": {
+      "input_candidates": 12,
+      "remaining_candidates": 12,
+      "filtered_candidates": 0,
+      "warnings": []
+    },
+    "faster_rcnn": {
+      "input_candidates": 7,
+      "remaining_candidates": 0,
+      "filtered_candidates": 7,
+      "warnings": [
+        "Rejected voc_map50: detector family does not match document",
+        "Rejected voc_map50: detector family does not match document",
+        "Rejected inference_fps: detector family does not match document",
+        "Rejected voc_map50: detector family does not match document",
+        "Rejected voc_map50: detector family does not match document",
+        "Rejected voc_map50: detector family does not match document",
+        "Rejected voc_map50: detector family does not match document"
+      ]
+    },
+    "yolo": {
+      "input_candidates": 12,
+      "remaining_candidates": 5,
+      "filtered_candidates": 7,
+      "warnings": [
+        "Rejected voc_map50: excluded ensemble or comparison result",
+        "Rejected voc_map50: excluded ensemble or comparison result",
+        "Rejected inference_fps: detector family does not match document",
+        "Rejected inference_fps: detector family does not match document",
+        "Rejected inference_fps: detector family does not match document",
+        "Rejected inference_fps: detector family does not match document",
+        "Rejected inference_fps: detector family does not match document"
+      ]
+    }
+  }
+}

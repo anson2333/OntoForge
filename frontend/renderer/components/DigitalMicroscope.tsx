@@ -1,3 +1,4 @@
+import { t, localizeMessage } from '../i18n';
 /**
  * Digital Microscope Component
  * Evidence viewer showing PDF crops and supporting text
@@ -18,42 +19,9 @@ interface DigitalMicroscopeProps {
 // Adapter to convert workspace Evidence to Inspector Evidence
 function convertToInspectorEvidence(
   wsEvidence: WorkspaceEvidence[],
-  paperId: string,
-  cellStatus: 'pending' | 'resolved' | 'conflict' | 'locked'
+  paperId: string
 ): InspectorEvidence[] {
   return wsEvidence.map((ev, index) => {
-    // Map cell status to evidence verification status
-    let verificationStatus: InspectorEvidence['verification_status'];
-    let modificationCount = 0;
-    
-    switch (cellStatus) {
-      case 'locked':
-        // Locked = finalized, all evidence verified
-        verificationStatus = 'verified';
-        modificationCount = 0;
-        break;
-      case 'resolved':
-        // Resolved = mostly verified, maybe one pending review
-        verificationStatus = index === wsEvidence.length - 1 ? 'pending_verification' : 'verified';
-        modificationCount = index === wsEvidence.length - 1 ? 0 : Math.floor(Math.random() * 2);
-        break;
-      case 'conflict': {
-        // Conflict = mix of states including corrections and rejections
-        const conflictStates: InspectorEvidence['verification_status'][] = [
-          'under_correction', 'rejected', 'pending_verification', 'verified'
-        ];
-        verificationStatus = conflictStates[index % conflictStates.length];
-        modificationCount = verificationStatus === 'under_correction' ? Math.floor(Math.random() * 3) + 1 : 0;
-        break;
-      }
-      case 'pending':
-      default:
-        // Pending = raw or pending verification
-        verificationStatus = index === 0 ? 'raw' : 'pending_verification';
-        modificationCount = 0;
-        break;
-    }
-    
     return {
       id: ev.id || `evidence_${paperId}_${index}`,
       type: ev.type,
@@ -62,14 +30,15 @@ function convertToInspectorEvidence(
       latex_string: ev.type === 'formula' ? ev.text : undefined,
       bounding_box: ev.boundingBox ? {
         page: ev.boundingBox.page,
+        coordinate_precision: ev.boundingBox.coordinate_precision,
         box: [ev.boundingBox.x, ev.boundingBox.y, 
               ev.boundingBox.x + ev.boundingBox.width, 
               ev.boundingBox.y + ev.boundingBox.height]
       } : { page: 1, box: [0, 0, 100, 100] },
-      verification_status: verificationStatus,
+      verification_status: ev.verification_status || 'raw',
       confidence_score: ev.confidence,
-      modification_count: modificationCount,
-      last_modified_at: new Date().toISOString()
+      modification_count: ev.modification_count || 0,
+      last_modified_at: ev.last_modified_at
     };
   });
 }
@@ -78,6 +47,26 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
   const { getEvidence, getCellData, papers } = useWorkspaceStore();
   const [evidence, setEvidence] = useState<InspectorEvidence[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sourceError, setSourceError] = useState<string | null>(null);
+  const [evidenceError, setEvidenceError] = useState<string | null>(null);
+
+  const downloadOriginal = async () => {
+    setSourceError(null);
+    try {
+      const result = await sspClient.call('getPaperSource', {
+        workspace_id: useWorkspaceStore.getState().currentWorkspaceId, paper_id: paperId
+      });
+      const bytes = Uint8Array.from(atob(result.content_base64), character => character.charCodeAt(0));
+      const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = result.file_name;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      setSourceError(error instanceof Error ? error.message : t("Original PDF unavailable"));
+    }
+  };
 
   const paper = papers.find(p => p.id === paperId);
   const cellData = getCellData(paperId, metricName);
@@ -92,11 +81,14 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
 
   const loadEvidence = async () => {
     setLoading(true);
+    setEvidenceError(null);
     try {
       const data = await getEvidence(paperId, metricName);
-      const cellStatus = cellData?.status || 'pending';
-      const inspectorData = convertToInspectorEvidence(data, paperId, cellStatus);
+      const inspectorData = convertToInspectorEvidence(data, paperId);
       setEvidence(inspectorData);
+    } catch (error) {
+      setEvidenceError(error instanceof Error ? error.message : t("Failed to load evidence"));
+      setEvidence([]);
     } finally {
       setLoading(false);
     }
@@ -137,9 +129,9 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
       console.error('Failed to verify evidence:', error);
       const isConnectionError = error instanceof TypeError && error.message.includes('fetch');
       if (isConnectionError) {
-        alert('⚠️ Backend server not running. UI-only testing mode.');
+        alert(t('Backend server not responding'));
       } else {
-        alert('Failed to verify evidence. See console for details.');
+        alert(t("Failed to verify evidence. See console for details."));
       }
     }
   };
@@ -174,9 +166,9 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
       console.error('Failed to correct evidence:', error);
       const isConnectionError = error instanceof TypeError && error.message.includes('fetch');
       if (isConnectionError) {
-        alert('⚠️ Backend server not running.\n\nThe UI change was successful, but could not save to backend.\nStart the SSP server at http://localhost:8765 for full functionality.\n\n(This is normal during UI-only testing)');
+        alert(t('Failed to correct evidence. See console for details.'));
       } else {
-        alert('Failed to correct evidence. See console for details.');
+        alert(t("Failed to correct evidence. See console for details."));
       }
     }
   };
@@ -196,9 +188,9 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
       console.error('Failed to reject evidence:', error);
       const isConnectionError = error instanceof TypeError && error.message.includes('fetch');
       if (isConnectionError) {
-        alert('⚠️ Backend server not running. UI-only testing mode.');
+        alert(t('Backend server not responding'));
       } else {
-        alert('Failed to reject evidence. See console for details.');
+        alert(t("Failed to reject evidence. See console for details."));
       }
     }
   };
@@ -234,7 +226,7 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
       ));
     } catch (error) {
       console.error(`Failed to ${action} evidence:`, error);
-      alert(`Failed to ${action} evidence. See console for details.`);
+      alert(t('Failed to update evidence. Please try again.'));
     }
   };
 
@@ -247,6 +239,10 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
       color: 'var(--text-primary)'
     }}>
       {/* Evidence Inspector */}
+      <div style={{ padding: '8px 12px' }}>
+        <button onClick={downloadOriginal}>{t("Download original PDF")}</button>
+        {sourceError && <p role="alert">{localizeMessage(sourceError)}</p>}
+      </div>
       {loading ? (
         <div style={{ 
           flex: 1,
@@ -255,7 +251,11 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
           justifyContent: 'center',
           opacity: 0.5 
         }}>
-          Loading evidence...
+          {t("Loading evidence...")}
+        </div>
+      ) : evidenceError ? (
+        <div role="alert" style={{ padding: '16px' }}>
+          <p>{localizeMessage(evidenceError)}</p><button onClick={loadEvidence}>{t("Retry evidence")}</button>
         </div>
       ) : evidence.length === 0 ? (
         <div style={{ 
@@ -268,7 +268,7 @@ export default function DigitalMicroscope({ paperId, metricName, onClose }: Digi
           opacity: 0.5 
         }}>
           <p style={{ fontSize: '18px' }}>📭</p>
-          <p>No evidence found for this cell</p>
+          <p>{t("No evidence found for this cell")}</p>
         </div>
       ) : (
         <div style={{ flex: 1, overflow: 'hidden' }}>

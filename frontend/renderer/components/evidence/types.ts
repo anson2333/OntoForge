@@ -42,6 +42,7 @@ export interface Evidence {
   latex_string?: string;      // For FormulaNode
   bounding_box: {
     page: number;
+    coordinate_precision?: string;
     box: [number, number, number, number]; // [x1, y1, x2, y2]
   };
   verification_status: VerificationStatus;

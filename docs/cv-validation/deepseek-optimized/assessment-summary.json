@@ -1,0 +1,60 @@
+{
+  "reviewer": "AI-assisted source review, not independent human annotation",
+  "counts": {
+    "fast_rcnn": {
+      "exclude": 5,
+      "supported": 7,
+      "needs_correction": 2
+    },
+    "faster_rcnn": {
+      "exclude": 4,
+      "supported": 11,
+      "needs_correction": 1
+    },
+    "yolo": {
+      "exclude": 1,
+      "supported": 3
+    }
+  },
+  "selected_reference_count": 27,
+  "direct_reference_ids": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R17",
+    "R18",
+    "R20",
+    "R21",
+    "R22",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "covered_after_explicit_corrections": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R09",
+    "R12",
+    "R17",
+    "R18",
+    "R20",
+    "R21",
+    "R22",
+    "R24",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "comparison_limit": "Earlier Zhipu runs used mixed development stages; not a controlled model benchmark. Same 3 papers are development examples, not held-out validation.",
+  "provider_adapter_sha256": "b650c4795d19ddf9db7576f06a592253015805741e74daba393490021edf0baf",
+  "thinking": "disabled for DeepSeek flexible_output extraction only",
+  "human_verified": false
+}

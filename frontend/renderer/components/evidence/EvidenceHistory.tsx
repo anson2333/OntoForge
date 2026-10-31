@@ -1,3 +1,4 @@
+import { t, getLocale } from '../../i18n';
 /**
  * EvidenceHistory Component
  * Displays revision history with diff view
@@ -19,17 +20,17 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { icon: string; label: string; color: string }> = {
-      raw: { icon: '📥', label: 'Raw', color: 'gray' },
-      under_correction: { icon: '✏️', label: 'Editing', color: 'blue' },
-      pending_verification: { icon: '⏳', label: 'Pending Review', color: 'yellow' },
-      verified: { icon: '✓', label: 'Verified', color: 'green' },
-      rejected: { icon: '✗', label: 'Rejected', color: 'red' }
+      raw: { icon: '📥', label: t('Raw'), color: 'gray' },
+      under_correction: { icon: '✏️', label: t("Editing"), color: 'blue' },
+      pending_verification: { icon: '⏳', label: t("Pending Review"), color: 'yellow' },
+      verified: { icon: '✓', label: t('Verified'), color: 'green' },
+      rejected: { icon: '✗', label: t("Rejected"), color: 'red' }
     };
     return badges[status] || { icon: '?', label: status, color: 'gray' };
   };
 
   const formatTimestamp = (timestamp: string) => {
-    return new Date(timestamp).toLocaleString();
+    return new Date(timestamp).toLocaleString(getLocale());
   };
 
   return (
@@ -38,7 +39,7 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
         {/* Header */}
         <div className="history-header">
           <h3>
-            Revision History: {evidence.type === 'chunk' ? 'Chunk' : 'Formula'} #{evidence.id.split('#')[1]}
+            {t("Revision History:")} {evidence.type === 'chunk' ? t("Chunk") : t("Formula")} #{evidence.id.split('#')[1]}
           </h3>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
@@ -47,8 +48,8 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
         <div className="history-content">
           {revisions.length === 0 ? (
             <div className="empty-state">
-              <p>No revision history available.</p>
-              <p className="hint">History is recorded when evidence is modified.</p>
+              <p>{t("No revision history available.")}</p>
+              <p className="hint">{t("History is recorded when evidence is modified.")}</p>
             </div>
           ) : (
             <div className="revision-list">
@@ -63,13 +64,13 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
                     <div className="revision-header">
                       <div className="revision-info">
                         <span className="revision-version">
-                          v{revision.version} {isCurrent && <span className="current-badge">(Current)</span>}
+                          v{revision.version} {isCurrent && <span className="current-badge">{t("(Current)")}</span>}
                         </span>
                         <span className="revision-timestamp">
                           {formatTimestamp(revision.timestamp)}
                         </span>
                         <span className="revision-user">
-                          by {revision.user_id}
+                          {t("by")} {revision.user_id}
                         </span>
                       </div>
                       <div className="revision-status">
@@ -84,21 +85,21 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
                         <div className="change-notes">
                           {revision.notes && (
                             <p className="notes">
-                              <strong>Notes:</strong> {revision.notes}
+                              <strong>{t("Notes:")}</strong> {revision.notes}
                             </p>
                           )}
                           <p className="change-summary">
-                            "{revision.modifications.change_notes || 'Manual correction'}"
+                            "{revision.modifications.change_notes || t("Manual correction")}"
                           </p>
                         </div>
 
                         <div className="diff-view">
                           <div className="diff-section diff-removed">
-                            <strong>- Previous:</strong>
+                            <strong>{t("- Previous:")}</strong>
                             <pre>{revision.modifications.old_text}</pre>
                           </div>
                           <div className="diff-section diff-added">
-                            <strong>+ Updated:</strong>
+                            <strong>{t("+ Updated:")}</strong>
                             <pre>{revision.modifications.new_text}</pre>
                           </div>
                         </div>
@@ -107,9 +108,9 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
 
                     {revision.status === 'raw' && index === revisions.length - 1 && (
                       <div className="initial-extraction">
-                        <p>📥 Initial extraction (machine-generated)</p>
+                        <p>{t("📥 Initial extraction (machine-generated)")}</p>
                         <p className="confidence">
-                          Confidence: {(evidence.confidence_score * 100).toFixed(0)}%
+                          {t("Confidence:")} {(evidence.confidence_score * 100).toFixed(0)}%
                         </p>
                       </div>
                     )}
@@ -119,9 +120,9 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
                         <button
                           className="restore-btn"
                           disabled={!restoredText || restoringVersion !== null}
-                          title={restoredText ? undefined : 'This revision does not contain restorable text'}
+                          title={restoredText ? undefined : t("This revision does not contain restorable text")}
                           onClick={async () => {
-                            if (!restoredText || !confirm(`Restore to version ${revision.version}?`)) return;
+                            if (!restoredText || !confirm(t('Restore to version {version}?', { version: revision.version }))) return;
                             setRestoringVersion(revision.version);
                             try {
                               await onRestore(revision, restoredText);
@@ -131,8 +132,8 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
                           }}
                         >
                           {restoringVersion === revision.version
-                            ? 'Restoring...'
-                            : `Restore to v${revision.version}`}
+                            ? t("Restoring...")
+                            : t('Restore to v{version}', { version: revision.version })}
                         </button>
                       </div>
                     )}
@@ -146,11 +147,11 @@ export default function EvidenceHistory({ evidence, onClose, onRestore }: Eviden
         {/* Footer */}
         <div className="history-footer">
           <div className="history-stats">
-            <span>Total Revisions: {revisions.length}</span>
-            <span>Total Modifications: {evidence.modification_count}</span>
+            <span>{t("Total Revisions:")} {revisions.length}</span>
+            <span>{t("Total Modifications:")} {evidence.modification_count}</span>
           </div>
           <button className="close-footer-btn" onClick={onClose}>
-            Close
+            {t("Close")}
           </button>
         </div>
       </div>

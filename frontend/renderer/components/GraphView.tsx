@@ -1,3 +1,4 @@
+import { t, uiLabel, useLanguage } from '../i18n';
 /**
  * GraphView Component
  * Interactive knowledge graph visualization using force-directed layout
@@ -34,6 +35,7 @@ interface GraphViewProps {
 }
 
 export default function GraphView({ onPaperClick }: GraphViewProps) {
+  const language = useLanguage();
   const { workspace, domainPacks, papers, activeDomainPackNamespaces, cellData } = useWorkspaceStore();
   const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
@@ -298,7 +300,8 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
       ctx.font = isHovered ? 'bold 12px sans-serif' : '11px sans-serif';
       
       // Measure text
-      const metrics = ctx.measureText(node.label);
+      const label = node.type === 'domain' ? t(node.label) : node.label;
+      const metrics = ctx.measureText(label);
       const textWidth = metrics.width;
       const textHeight = 14;
       const padding = 4;
@@ -360,7 +363,7 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
           ctx.fillStyle = '#ffffff';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
-          ctx.fillText(node.label, labelX, labelY);
+          ctx.fillText(label, labelX, labelY);
         }
         
         attempts++;
@@ -381,10 +384,10 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText(node.label, labelX, labelY);
+        ctx.fillText(label, labelX, labelY);
       }
     });
-  }, [graphData, hoveredNode, selectedNode]);
+  }, [graphData, hoveredNode, selectedNode, language]);
 
   const applyFilter = (type: string) => {
     setFilterNodeType(type);
@@ -397,26 +400,26 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
       {/* Graph Controls */}
       <div className="graph-controls">
         <div className="control-group">
-          <label>Layout:</label>
+          <label>{t("Layout:")}</label>
           <select value={layoutType} onChange={(e) => setLayoutType(e.target.value as any)}>
-            <option value="hierarchical">Hierarchical</option>
-            <option value="force">Force-Directed (Coming Soon)</option>
+            <option value="hierarchical">{t("Hierarchical")}</option>
+            <option value="force">{t("Force-Directed (Coming Soon)")}</option>
           </select>
         </div>
 
         <div className="control-group">
-          <label>Filter:</label>
+          <label>{t("Filter:")}</label>
           <select value={filterNodeType} onChange={(e) => applyFilter(e.target.value)}>
-            <option value="all">All Nodes</option>
-            <option value="workspace">Workspace Only</option>
-            <option value="domain">Domains</option>
-            <option value="paper">Papers</option>
-            <option value="assertion">Assertions</option>
+            <option value="all">{t("All Nodes")}</option>
+            <option value="workspace">{t("Workspace Only")}</option>
+            <option value="domain">{t("Domains")}</option>
+            <option value="paper">{t("Papers")}</option>
+            <option value="assertion">{t("Assertions")}</option>
           </select>
         </div>
 
         <div className="control-group">
-          <label>Active Domain Packs:</label>
+          <label>{t("Active Domain Packs:")}</label>
           <div className="domain-badges">
             {domainPacks.filter(p => activeDomainPackNamespaces.includes(p.namespace)).map(pack => (
               <span key={pack.namespace} className="domain-badge" style={{ backgroundColor: '#28a745' }}>
@@ -436,22 +439,22 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
       {selectedNode && (
         <div className="node-details">
           <div className="node-details-header">
-            <h3>{selectedNode.label}</h3>
+            <h3>{selectedNode.type === 'domain' ? t(selectedNode.label) : selectedNode.label}</h3>
             <button onClick={() => setSelectedNode(null)}>×</button>
           </div>
           <div className="node-details-content">
             <div className="detail-row">
-              <span className="detail-label">Type:</span>
-              <span className="detail-value">{selectedNode.type}</span>
+              <span className="detail-label">{t("Type:")}</span>
+              <span className="detail-value">{uiLabel(selectedNode.type)}</span>
             </div>
             {selectedNode.namespace && (
               <div className="detail-row">
-                <span className="detail-label">Namespace:</span>
+                <span className="detail-label">{t("Namespace:")}</span>
                 <span className="detail-value">{selectedNode.namespace}</span>
               </div>
             )}
             <div className="detail-row">
-              <span className="detail-label">ID:</span>
+              <span className="detail-label">{t("ID:")}</span>
               <span className="detail-value">{selectedNode.id}</span>
             </div>
             {selectedNode.type === 'paper' && (
@@ -459,7 +462,7 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
                 className="view-in-matrix-btn"
                 onClick={() => onPaperClick && onPaperClick(selectedNode.id)}
               >
-                View in Matrix
+                {t("View in Matrix")}
               </button>
             )}
           </div>
@@ -468,33 +471,33 @@ export default function GraphView({ onPaperClick }: GraphViewProps) {
 
       {/* Legend */}
       <div className="graph-legend">
-        <h4>Legend</h4>
+        <h4>{t("Legend")}</h4>
         <div className="legend-item">
           <span className="legend-color" style={{ backgroundColor: '#007bff' }}></span>
-          <span>Workspace</span>
+          <span>{t("Workspace")}</span>
         </div>
         <div className="legend-item">
           <span className="legend-color" style={{ backgroundColor: '#28a745' }}></span>
-          <span>Domain Pack (Active)</span>
+          <span>{t("Domain Pack (Active)")}</span>
         </div>
         <div className="legend-item">
           <span className="legend-color" style={{ backgroundColor: '#17a2b8' }}></span>
-          <span>Subdomain</span>
+          <span>{t("Subdomain")}</span>
         </div>
         <div className="legend-item">
           <span className="legend-color" style={{ backgroundColor: '#ffc107' }}></span>
-          <span>Paper</span>
+          <span>{t("Paper")}</span>
         </div>
         <div className="legend-item">
           <span className="legend-color" style={{ backgroundColor: '#dc3545' }}></span>
-          <span>Assertion</span>
+          <span>{t("Assertion")}</span>
         </div>
       </div>
 
       {/* Stats */}
       <div className="graph-stats">
-        <span>{graphData.nodes.length} nodes</span>
-        <span>{graphData.links.length} edges</span>
+        <span>{graphData.nodes.length} {t("nodes")}</span>
+        <span>{graphData.links.length} {t("edges")}</span>
       </div>
     </div>
   );

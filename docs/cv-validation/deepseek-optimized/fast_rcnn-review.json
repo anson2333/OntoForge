@@ -1,0 +1,220 @@
+[
+  {
+    "assertion_id": "assert_llm_inference_latency_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_latency",
+    "value": "300",
+    "unit": "ms",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "引言0.3秒是约数概述；不作为独立精确实验，与表4重复。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "66",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "引言66%是VOC2012的四舍五入概述，优先采用表3精确值。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.9",
+    "unit": "percent",
+    "reference_ids": [
+      "R01"
+    ],
+    "source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "表1/4，VOC07 trainval，VGG16，66.9%。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.0",
+    "unit": "percent",
+    "reference_ids": [
+      "R02"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "表1，07+12 trainval，不含VOC07 test，70.0%。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_2",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.1",
+    "unit": "percent",
+    "reference_ids": [
+      "R03"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "表2，VOC12 trainval训练，VOC2010测试66.1%。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_3",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "65.7",
+    "unit": "percent",
+    "reference_ids": [
+      "R05"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "表3，VOC12 trainval训练，VOC2012测试65.7%。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b2_4",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "320",
+    "unit": "ms",
+    "reference_ids": [
+      "R09"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "表4的320ms不包含候选框生成，不能标为端到端。",
+    "suggested_context_corrections": {
+      "timing_scope": "detector_only_excludes_proposals"
+    },
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b2_5",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "220",
+    "unit": "ms",
+    "reference_ids": [
+      "R12"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "表4的220ms不包含候选框生成，不能标为端到端；保留表格舍入。",
+    "suggested_context_corrections": {
+      "timing_scope": "detector_only_excludes_proposals"
+    },
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b3_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7,
+      8
+    ],
+    "reason_zh": "与前面66.9同一模型与训练实验重复；第7页尺度实验提供条件。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b3_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.0",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      8
+    ],
+    "reason_zh": "与前面70.0同一训练设置重复，不计为独立实验。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b3_2",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "68.8",
+    "unit": "percent",
+    "reference_ids": [
+      "R04"
+    ],
+    "source_pdf_pages": [
+      8
+    ],
+    "reason_zh": "第8页增广训练与表2一致，07++12确实包含VOC07 test。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b3_3",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "68.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R06"
+    ],
+    "source_pdf_pages": [
+      8
+    ],
+    "reason_zh": "第8页增广训练与表3一致，07++12确实包含VOC07 test。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b3_4",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "60.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表7模型M五尺度60.7，属于范围内消融；骨干未知保持未知。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b3_5",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      8
+    ],
+    "reason_zh": "表8 softmax L的66.9重复同一基本实验，比较视图应引用已有记录。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  }
+]

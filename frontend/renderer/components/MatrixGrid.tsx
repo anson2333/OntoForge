@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * Matrix Grid Component
  * Displays papers (rows) × metrics (columns) data grid
@@ -186,9 +187,12 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        opacity: 0.5
+        color: 'var(--text-secondary)',
+        padding: '24px',
+        lineHeight: 1.8,
+        textAlign: 'center'
       }}>
-        <p>No papers loaded. Click "Load Workspace" to begin.</p>
+        <p>{t("No papers loaded. Click \"Load Workspace\" to begin.")}</p>
       </div>
     );
   }
@@ -201,7 +205,7 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
             <th style={{ minWidth: '250px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Paper</span>
+                  <span>{t("Paper")}</span>
                   {workspace && (
                     <span 
                       style={{ 
@@ -211,7 +215,7 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
                         backgroundColor: 'var(--chip-bg)',
                         borderRadius: '2px'
                       }}
-                      title={`Workspace: ${workspace.name} • ${activeDomainPackNamespaces.length} active domain packs`}
+                      title={t('Workspace: {name} • {count} active domain packs', { name: workspace.name, count: activeDomainPackNamespaces.length })}
                     >
                       📦
                     </span>
@@ -222,16 +226,16 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
                     type="button"
                     className="matrix-paper-sort-chip"
                     onClick={() => handlePaperSort('domain')}
-                    title="Sort papers by domain pack label"
+                    title={t("Sort papers by domain pack label")}
                   >
-                    <span>Domain</span>
+                    <span>{t("Domain")}</span>
                     <span className="matrix-sort-indicator">{getSortIndicator(sortState, 'paper-domain')}</span>
                   </button>
                   <button
                     type="button"
                     className="matrix-paper-sort-chip"
                     onClick={() => handlePaperSort('alphabetic')}
-                    title="Sort papers alphabetically"
+                    title={t("Sort papers alphabetically")}
                   >
                     <span>A-Z</span>
                     <span className="matrix-sort-indicator">{getSortIndicator(sortState, 'paper-alphabetic')}</span>
@@ -240,9 +244,9 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
                     type="button"
                     className="matrix-paper-sort-chip"
                     onClick={() => handlePaperSort('year')}
-                    title="Sort papers by publication year"
+                    title={t("Sort papers by publication year")}
                   >
-                    <span>Year</span>
+                    <span>{t("Year")}</span>
                     <span className="matrix-sort-indicator">{getSortIndicator(sortState, 'paper-year')}</span>
                   </button>
                 </div>
@@ -252,7 +256,7 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
               <th 
                 key={metric.full_name} 
                 style={{ minWidth: '120px' }}
-                title={metric.aliases.length > 0 ? `Aliases: ${metric.aliases.join(', ')}` : undefined}
+                title={metric.aliases.length > 0 ? t('Aliases: {aliases}', { aliases: metric.aliases.join(', ') }) : undefined}
               >
                 <button
                   type="button"
@@ -263,7 +267,7 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
                     <div>
                       <div style={{ fontWeight: 600 }}>
                         {metric.name.replace(/_/g, ' ')}
-                        <span style={{ fontSize: '0.7em', opacity: 0.5, marginLeft: '4px' }}>({metric.namespace})</span>
+                        <span style={{ fontSize: '0.7em', opacity: 0.5, marginLeft: '4px' }}>({metric.namespace}{t(')')}</span>
                       </div>
                       <div style={{ fontSize: '0.85em', opacity: 0.6, fontWeight: 'normal' }}>
                         [{metric.unit}]
@@ -276,7 +280,7 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
                           fontStyle: 'italic',
                           marginTop: '2px'
                         }}>
-                          aka: {metric.aliases[0]}
+                          {t("aka:")} {metric.aliases[0]}
                         </div>
                       )}
                     </div>
@@ -296,10 +300,10 @@ export default function MatrixGrid({ onCellClick, selectedCell }: MatrixGridProp
               <td style={{ background: selectedPaperId === paper.id ? 'var(--surface-bg-selected, #e7f2ff)' : 'var(--panel-bg)' }}>
                 <div style={{ fontWeight: 500 }}>{paper.title}</div>
                 <div style={{ fontSize: '0.85em', opacity: 0.7, marginTop: '4px' }}>
-                  {paper.authors.join(', ')} ({paper.year})
+                  {paper.authors.join(', ')} ({paper.year}{t(')')}
                 </div>
                 <div style={{ fontSize: '0.8em', opacity: 0.5, marginTop: '2px' }}>
-                  {paper.venue}
+                  {paper.venue === 'Unknown venue' ? t('Unknown venue') : paper.venue}
                 </div>
                 <div style={{ fontSize: '0.75em', opacity: 0.55, marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {paper.domain_pack_namespace || 'unscoped'}

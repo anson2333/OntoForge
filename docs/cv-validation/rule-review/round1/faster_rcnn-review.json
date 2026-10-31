@@ -1,0 +1,159 @@
+[
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "73.2",
+    "unit": "percent",
+    "reference_ids": [
+      "R18"
+    ],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "73.2%有摘要和表2支持，但完整方法应是Faster R-CNN/RPN+VGG共享模型，不是Fast R-CNN；ImageNet预训练不能替代检测训练集。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "training_data": "VOC07 trainval + VOC12 trainval",
+      "model_variant": "RPN+VGG16 shared, 300 proposals",
+      "backbone": "VGG16"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R20"
+    ],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "70.4%有摘要和表3支持，但完整方法是Faster R-CNN，且训练集为VOC07 trainval+test与VOC12 trainval，不是只填ImageNet预训练。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "training_data": "VOC07 trainval+test + VOC12 trainval",
+      "model_variant": "RPN+VGG16 shared, 300 proposals",
+      "backbone": "VGG16"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b0_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_fps",
+    "value": "5",
+    "unit": "fps",
+    "reference_ids": [
+      "R22"
+    ],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "5 FPS有来源，但摘要明确including all steps，模型解释却反向标记为排除候选框时间。完整方法是Faster R-CNN。表4进一步注明K40 GPU。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "timing_scope": "end_to_end",
+      "hardware": "Nvidia K40 GPU",
+      "backbone": "VGG16"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_3",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "59.9%是作者RPN+ZF shared模型，有第5页实验说明及第6页表1支持。模型家族应是Faster R-CNN，检测训练集应VOC07 trainval。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "training_data": "VOC07 trainval",
+      "model_variant": "RPN+ZF shared, 300 proposals",
+      "backbone": "ZF",
+      "result_role": "primary"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_4",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "这是表1中的SS或EdgeBoxes + Fast R-CNN比较基线，数值虽有出处，但不是本轮要收集的Faster R-CNN作者方法。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_5",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.6",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "这是表1中的SS或EdgeBoxes + Fast R-CNN比较基线，数值虽有出处，但不是本轮要收集的Faster R-CNN作者方法。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "58.7%在第6页表1对应RPN+ZF unshared消融，有数值依据，但应标记Faster R-CNN的消融变体。该批恰好达到输出预算，批次完整性不能据此确认。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "model_variant": "RPN+ZF unshared, 300 proposals",
+      "backbone": "ZF",
+      "result_role": "ablation"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  }
+]

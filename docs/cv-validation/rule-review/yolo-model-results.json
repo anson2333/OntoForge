@@ -1,0 +1,605 @@
+{
+  "paper": "yolo",
+  "paper_metadata": {
+    "title": "You Only Look Once:",
+    "authors": [
+      "Unknown authors"
+    ],
+    "year": 2015,
+    "venue": "Unknown venue",
+    "doi": null,
+    "provenance_hash": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09"
+  },
+  "source_sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+  "diagnostics": {
+    "batch_count": 2,
+    "failed_batches": [],
+    "warnings": [],
+    "errors": [],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "completion_tokens": 522,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens": 7857,
+        "prompt_tokens_details": {
+          "cached_tokens": 1570
+        },
+        "total_tokens": 8379
+      },
+      {
+        "completion_tokens": 1595,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens": 4993,
+        "prompt_tokens_details": {
+          "cached_tokens": 2
+        },
+        "total_tokens": 6588
+      }
+    ],
+    "input_characters": 34746,
+    "output_formats": [
+      "json",
+      "json"
+    ],
+    "model_seconds": 184.485522,
+    "retryable": false,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "glm-4.7-flash",
+    "parse_seconds": 0.356497,
+    "total_seconds": 184.845335,
+    "pages": 9,
+    "chunks": 9,
+    "pdf_bytes": 5550305
+  },
+  "assertions": [
+    {
+      "assertion_id": "assert_llm_inference_fps_b0_0",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "45",
+      "unit": "fps",
+      "context_conditions": {
+        "detector_family": "YOLO",
+        "input_resolution": "448x448",
+        "method": "dense_regression",
+        "timing_scope": "end_to_end",
+        "scenario": "unknown",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "scenario",
+          "model_variant",
+          "training_data",
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "The text states 'YOLO processes images in real-time at 45 frames per second' in the abstract."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "54.5",
+      "unit": "percent",
+      "context_conditions": {
+        "detector_family": "YOLO",
+        "input_resolution": "448x448",
+        "method": "dense_regression",
+        "scenario": "voc2012_test",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Table 1 explicitly lists the 'YOLO' row under the 'VOC 2012 test mAP' column header, reporting a value of 54.5."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_2",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "62.5",
+      "unit": "percent",
+      "context_conditions": {
+        "detector_family": "Fast R-CNN + YOLO",
+        "input_resolution": "448x448",
+        "method": "dense_regression",
+        "scenario": "voc2012_test",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Table 1 lists 'Fast R-CNN + YOLO' in the first column with a value of 62.5 under the 'VOC 2012 test mAP' header."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.8",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2007_test",
+        "detector_family": "YOLO",
+        "result_role": "primary",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 explicitly lists YOLO's mAP on the VOC 2007 test set as 58.8."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "74.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2007_test",
+        "detector_family": "YOLO",
+        "result_role": "primary",
+        "source_table": "Table 3: Model combination expermients on VOC 2007",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 3 reports the mAP of the combined Fast R-CNN + YOLO model on the VOC 2007 test set as 74.7%."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p8_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_2",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "45",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "unknown",
+        "detector_family": "YOLO",
+        "result_role": "primary",
+        "hardware": "Nvidia Titan X GPU",
+        "timing_scope": "detector_only_excludes_proposals",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "scenario",
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 lists YOLO's inference speed as 45 frames per second on an Nvidia Titan X GPU."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_3",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "54.5",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2012_test",
+        "detector_family": "YOLO",
+        "result_role": "primary",
+        "source_table": "unknown",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Section 4.1 explicitly states YOLO achieves 54.5 mAP on the VOC 2012 test set."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_4",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "0.02",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "R-CNN",
+        "result_role": "primary",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 reports R-CNN (VGG-16) processing speed as 0.02 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_5",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "0.45",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "result_role": "primary",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 reports Fast R-CNN (VGG-16) processing speed as 0.45 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_6",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "0.09",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "R-CNN",
+        "result_role": "primary",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 reports R-CNN (Small VGG) processing speed as 0.09 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_7",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "0.48",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "result_role": "primary",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 reports Fast R-CNN (Small VGG) processing speed as 0.48 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_8",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "0.11",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "R-CNN",
+        "result_role": "primary",
+        "source_table": "Table 2: Prediction Timing",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "missing_context_keys": [
+          "model_variant",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 reports R-CNN (Caffe) processing speed as 0.11 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    }
+  ],
+  "chunk_pages": {
+    "chunk_p1_0": 1,
+    "chunk_p2_0": 2,
+    "chunk_p3_0": 3,
+    "chunk_p4_0": 4,
+    "chunk_p5_0": 5,
+    "chunk_p6_0": 6,
+    "chunk_p7_0": 7,
+    "chunk_p8_0": 8,
+    "chunk_p9_0": 9
+  }
+}

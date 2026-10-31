@@ -1,3 +1,4 @@
+import { t, uiLabel, localizeMessage } from '../../i18n';
 /**
  * Metrics View
  * Collection-level surface for adding, editing, and deleting domain-pack metrics.
@@ -53,7 +54,7 @@ export const MetricsView: React.FC<MetricsViewProps> = ({
       setDraft(EMPTY_METRIC);
       setAliasText('');
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : 'Failed to add metric');
+      setError(nextError instanceof Error ? nextError.message : t("Failed to add metric"));
     }
   };
 
@@ -68,10 +69,10 @@ export const MetricsView: React.FC<MetricsViewProps> = ({
         {mode === 'registry' ? (
           <section className="metrics-panel metrics-registry-panel">
             <div className="metrics-panel-header">
-              <h2>Metric Registry</h2>
+              <h2>{t("Metric Registry")}</h2>
               <div className="metrics-panel-actions">
-                <span>{domainPack.metrics.length} metrics</span>
-                <button type="button" className="metrics-add-button" onClick={onOpenAdd} title="Add metric">
+                <span>{domainPack.metrics.length} {t("metrics")}</span>
+                <button type="button" className="metrics-add-button" onClick={onOpenAdd} title={t("Add metric")}>
                   +
                 </button>
               </div>
@@ -79,30 +80,30 @@ export const MetricsView: React.FC<MetricsViewProps> = ({
 
             <div className="metrics-table">
               <div className="metrics-row header">
-                <span>Name</span>
-                <span>Unit</span>
-                <span>Type</span>
-                <span>Aliases</span>
-                <span>Actions</span>
+                <span>{t("Name")}</span>
+                <span>{t("Unit")}</span>
+                <span>{t("Type")}</span>
+                <span>{t("Aliases")}</span>
+                <span>{t("Actions")}</span>
               </div>
               {domainPack.metrics.map(metric => (
                 <div className="metrics-row" key={metric.full_name}>
                   <span className="metrics-name">{metric.name.replace(/_/g, ' ')}</span>
-                  <span>{metric.unit || 'unitless'}</span>
-                  <span>{metric.value_type || 'value'}</span>
-                  <span>{metric.aliases.length > 0 ? metric.aliases.join(', ') : 'None'}</span>
+                  <span>{metric.unit || t('Unitless')}</span>
+                  <span>{uiLabel(metric.value_type || 'Value')}</span>
+                  <span>{metric.aliases.length > 0 ? metric.aliases.join(', ') : t("None")}</span>
                   <span className="metrics-actions">
-                    <button type="button" onClick={() => onEditMetric(metric)}>Edit</button>
+                    <button type="button" onClick={() => onEditMetric(metric)}>{t("Edit")}</button>
                     <button
                       type="button"
                       className="danger"
                       onClick={() => {
-                        if (confirm(`Delete metric "${metric.name}"? Existing extracted values for this metric will be removed from the current local view.`)) {
+                        if (confirm(t('Delete metric "{name}"? Existing extracted values for this metric will be removed from the current local view.', { name: metric.name }))) {
                           onDeleteMetric(metric);
                         }
                       }}
                     >
-                      Delete
+                      {t("Delete")}
                     </button>
                   </span>
                 </div>
@@ -112,54 +113,54 @@ export const MetricsView: React.FC<MetricsViewProps> = ({
         ) : (
           <section className="metrics-panel metrics-add-panel">
             <div className="metrics-panel-header">
-              <h2>Add Metric</h2>
+              <h2>{t("Add Metric")}</h2>
             </div>
 
             <form className="metric-form" onSubmit={handleSubmit}>
               <label>
-                <span>Name</span>
+                <span>{t("Name")}</span>
                 <input
                   value={draft.name}
                   onChange={event => setDraft(current => ({ ...current, name: event.target.value }))}
-                  placeholder="e.g. reconfiguration_delay"
+                placeholder={t('Metric identifier example')}
                 />
               </label>
 
               <label>
-                <span>Expected Unit</span>
+                <span>{t("Expected Unit")}</span>
                 <input
                   value={draft.expected_unit}
                   onChange={event => setDraft(current => ({ ...current, expected_unit: event.target.value }))}
-                  placeholder="e.g. ms"
+                placeholder={t('Unit example')}
                 />
               </label>
 
               <label>
-                <span>Value Type</span>
+                <span>{t("Value Type")}</span>
                 <select
                   value={draft.value_type}
                   onChange={event => setDraft(current => ({ ...current, value_type: event.target.value as MetricInput['value_type'] }))}
                 >
-                  <option value="float">Float</option>
-                  <option value="int">Integer</option>
-                  <option value="string">String</option>
-                  <option value="bool">Boolean</option>
+                  <option value="float">{t("Float")}</option>
+                  <option value="int">{t("Integer")}</option>
+                  <option value="string">{t("String")}</option>
+                  <option value="bool">{t("Boolean")}</option>
                 </select>
               </label>
 
               <label>
-                <span>Aliases</span>
+                <span>{t("Aliases")}</span>
                 <input
                   value={aliasText}
                   onChange={event => setAliasText(event.target.value)}
-                  placeholder="comma-separated aliases"
+                  placeholder={t("comma-separated aliases")}
                 />
               </label>
 
-              {error && <div className="metric-form-error">{error}</div>}
+              {error && <div className="metric-form-error">{localizeMessage(error)}</div>}
 
               <div className="metric-form-actions">
-                <button type="submit">Add Metric</button>
+                <button type="submit">{t("Add Metric")}</button>
               </div>
             </form>
           </section>

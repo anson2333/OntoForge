@@ -1,0 +1,587 @@
+{
+  "paper": "fast_rcnn",
+  "paper_metadata": {
+    "title": "Fast R-CNN",
+    "authors": [
+      "Unknown authors"
+    ],
+    "year": 2015,
+    "venue": "Unknown venue",
+    "doi": null,
+    "provenance_hash": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646"
+  },
+  "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+  "diagnostics": {
+    "batch_count": 2,
+    "failed_batches": [],
+    "warnings": [],
+    "errors": [],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "completion_tokens": 485,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens": 6573,
+        "prompt_tokens_details": {
+          "cached_tokens": 6571
+        },
+        "total_tokens": 7058
+      },
+      {
+        "completion_tokens": 2075,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens": 9422,
+        "prompt_tokens_details": {
+          "cached_tokens": 1564
+        },
+        "total_tokens": 11497
+      }
+    ],
+    "input_characters": 43430,
+    "output_formats": [
+      "json",
+      "json"
+    ],
+    "model_seconds": 93.055425,
+    "retryable": false,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "glm-4.7-flash",
+    "parse_seconds": 0.440555,
+    "total_seconds": 93.503229,
+    "pages": 9,
+    "chunks": 9,
+    "pdf_bytes": 728919
+  },
+  "assertions": [
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "66",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16",
+        "training_data": "PASCAL VOC 2012",
+        "backbone": "VGG16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "missing_context_keys": [
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "The abstract states Fast R-CNN 'achieves a significantly higher mAP on PASCAL VOC 2012' and explicitly gives a value of '66% (vs. 62% for R-CNN)', which corresponds to VOC mAP50."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b0_1",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "300",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16",
+        "training_data": "unknown",
+        "backbone": "VGG16",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "detector_only_excludes_proposals",
+        "result_role": "primary",
+        "reported_value": "0.3",
+        "reported_unit": "s",
+        "unit_conversion": {
+          "factor": 1000.0,
+          "target_unit": "ms"
+        },
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "The abstract states 'the network processes images in 0.3s (excluding object proposal time)', which defines the per-image inference latency for the detector excluding proposal generation."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.0",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L",
+        "training_data": "VOC07 trainval + VOC12 trainval (07++12)",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 1)",
+        "backbone": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 1, row 'FRCN [ours] 07++12', column 'mAP'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "66.9",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L",
+        "training_data": "VOC07 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 1)",
+        "backbone": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 1, row 'FRCN [ours] 07', column 'mAP'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_2",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "68.8",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2010_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L",
+        "training_data": "VOC07 trainval union with VOC12 trainval (07++12)",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 2)",
+        "backbone": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 2, row 'FRCN [ours]‡ 07++12', column 'mAP'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_3",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "65.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L",
+        "training_data": "VOC12 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 3)",
+        "backbone": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 3, row 'FRCN [ours]† 12', column 'mAP'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_4",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "68.4",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L",
+        "training_data": "VOC07 trainval union with VOC12 trainval (07++12)",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 3)",
+        "backbone": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 3, row 'FRCN [ours]‡ 07++12', column 'mAP'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b1_5",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "320",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L",
+        "training_data": "VOC07 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 4)",
+        "hardware": "Nvidia K40 GPU",
+        "timing_scope": "detector_only_excludes_proposals",
+        "reported_value": "0.32",
+        "reported_unit": "seconds per image",
+        "unit_conversion": {
+          "factor": 1000.0,
+          "target_unit": "ms"
+        },
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "batch_size",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 4, row 'Fast R-CNN S M L', column 'test rate (s/im)', model 'L'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b1_6",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "100",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_S",
+        "training_data": "VOC07 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 4)",
+        "hardware": "Nvidia K40 GPU",
+        "timing_scope": "detector_only_excludes_proposals",
+        "reported_value": "0.1",
+        "reported_unit": "seconds per image",
+        "unit_conversion": {
+          "factor": 1000.0,
+          "target_unit": "ms"
+        },
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "batch_size",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 4, row 'Fast R-CNN S M L', column 'test rate (s/im)', model 'S'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b1_7",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "150",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_M",
+        "training_data": "VOC07 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 4)",
+        "hardware": "Nvidia K40 GPU",
+        "timing_scope": "detector_only_excludes_proposals",
+        "reported_value": "0.15",
+        "reported_unit": "seconds per image",
+        "unit_conversion": {
+          "factor": 1000.0,
+          "target_unit": "ms"
+        },
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "batch_size",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 4, row 'Fast R-CNN S M L', column 'test rate (s/im)', model 'M'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_8",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "66.6",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L (Truncated SVD)",
+        "training_data": "VOC07 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Table 4)",
+        "backbone": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Table 4, row 'VOC07 mAP ⊿ with SVD', model 'L'."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b1_9",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "220",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG16_L (Truncated SVD)",
+        "training_data": "VOC07 trainval",
+        "input_resolution": "600 (shortest side)",
+        "evaluation_protocol": "VOC mAP (Figure 2)",
+        "hardware": "Nvidia K40 GPU",
+        "timing_scope": "detector_only_excludes_proposals",
+        "reported_value": "0.22",
+        "reported_unit": "seconds per image",
+        "unit_conversion": {
+          "factor": 1000.0,
+          "target_unit": "ms"
+        },
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "batch_size",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Directly extracted from Figure 2 caption 'Forward pass timing (SVD) ... mAP 66.6% @ 223ms / image'. Converted 223ms to seconds."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    }
+  ],
+  "chunk_pages": {
+    "chunk_p1_0": 1,
+    "chunk_p2_0": 2,
+    "chunk_p3_0": 3,
+    "chunk_p4_0": 4,
+    "chunk_p5_0": 5,
+    "chunk_p6_0": 6,
+    "chunk_p7_0": 7,
+    "chunk_p8_0": 8,
+    "chunk_p9_0": 9
+  }
+}

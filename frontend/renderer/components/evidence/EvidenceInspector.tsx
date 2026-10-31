@@ -1,3 +1,4 @@
+import { t, uiLabel } from '../../i18n';
 /**
  * EvidenceInspector Component
  * Main container for evidence review with filtering and batch operations
@@ -100,7 +101,7 @@ export default function EvidenceInspector({
       }
     } catch (error) {
       console.error('Error performing action:', error);
-      alert('Failed to perform action. Please try again.');
+      alert(t("Failed to perform action. Please try again."));
     }
   };
 
@@ -147,7 +148,7 @@ export default function EvidenceInspector({
   const handleBatchVerify = async () => {
     if (selectedIds.size === 0) return;
     
-    if (confirm(`Verify ${selectedIds.size} evidence items?`)) {
+    if (confirm(t('Verify {count} evidence items?', { count: selectedIds.size }))) {
       try {
         await onBatchOperation(Array.from(selectedIds), 'verify');
         setSelectedIds(new Set());
@@ -161,7 +162,7 @@ export default function EvidenceInspector({
   const handleBatchReject = async () => {
     if (selectedIds.size === 0) return;
     
-    if (confirm(`Reject ${selectedIds.size} evidence items? This action can be undone.`)) {
+    if (confirm(t('Reject {count} evidence items? This action can be undone.', { count: selectedIds.size }))) {
       try {
         await onBatchOperation(Array.from(selectedIds), 'reject');
         setSelectedIds(new Set());
@@ -190,13 +191,13 @@ export default function EvidenceInspector({
             className={`tab ${activeTab === 'all' ? 'active' : ''}`}
             onClick={() => setActiveTab('all')}
           >
-            📋 All Evidence ({stats.total})
+            {t("📋 All Evidence (")}{stats.total}{t(')')}
           </button>
           <button
             className={`tab ${activeTab === 'review-queue' ? 'active' : ''}`}
             onClick={() => setActiveTab('review-queue')}
           >
-            🔍 Review Queue ({stats.reviewQueue})
+            {t("🔍 Review Queue (")}{stats.reviewQueue}{t(')')}
           </button>
         </div>
 
@@ -210,12 +211,12 @@ export default function EvidenceInspector({
             )}
             {status && (
               <span className={`context-status status-${status}`}>
-                {status}
+                {uiLabel(status)}
               </span>
             )}
             {onClose && (
               <button className="evidence-close-btn" onClick={onClose}>
-                Close
+                {t("Close")}
               </button>
             )}
           </div>
@@ -227,30 +228,30 @@ export default function EvidenceInspector({
           {/* Header with stats and filters */}
           <div className="evidence-header">
             <div className="evidence-filters">
-              <label>Filter:</label>
+              <label>{t("Filter:")}</label>
               <button
                 className={`filter-btn ${isAllFilterActive ? 'active' : ''}`}
                 onClick={() => setFilter({})}
               >
-                All
+                {t("All")}
               </button>
               <button
                 className={`filter-btn ${filter.confidence_range?.[1] === 0.7 ? 'active' : ''}`}
                 onClick={() => handleFilterClick({ confidence_range: [0, 0.7] })}
               >
-                Low Conf.
+                {t("Low Conf.")}
               </button>
               <button
                 className={`filter-btn ${filter.status?.includes('raw') ? 'active' : ''}`}
                 onClick={() => handleFilterClick({ status: ['raw'] })}
               >
-                Unverified
+                {t("Unverified")}
               </button>
               <button
                 className={`filter-btn ${filter.status?.includes('rejected') ? 'active' : ''}`}
                 onClick={() => handleFilterClick({ status: ['rejected'] })}
               >
-                Rejected
+                {t("Rejected")}
               </button>
             </div>
 
@@ -263,16 +264,16 @@ export default function EvidenceInspector({
                     checked={selectedIds.size === filteredEvidence.length && filteredEvidence.length > 0}
                     onChange={(e) => handleSelectAll(e.target.checked)}
                   />
-                  Select All
+                  {t("Select All")}
                   {selectedIds.size > 0 && ` (${selectedIds.size})`}
                 </label>
                 {selectedIds.size > 0 && (
                   <>
                     <button className="batch-btn verify" onClick={handleBatchVerify}>
-                      ✓ Verify ({selectedIds.size})
+                      {t("✓ Verify (")}{selectedIds.size}{t(')')}
                     </button>
                     <button className="batch-btn reject" onClick={handleBatchReject}>
-                      ✗ Reject ({selectedIds.size})
+                      {t("✗ Reject (")}{selectedIds.size}{t(')')}
                     </button>
                   </>
                 )}
@@ -284,7 +285,7 @@ export default function EvidenceInspector({
           <div className="evidence-list">
             {filteredEvidence.length === 0 ? (
               <div className="empty-state">
-                <p>No evidence items match the current filter.</p>
+                <p>{t("No evidence items match the current filter.")}</p>
               </div>
             ) : (
               filteredEvidence.map(evidence => (
@@ -335,7 +336,7 @@ export default function EvidenceInspector({
               {
                 old_text: currentText,
                 new_text: restoredText,
-                change_notes: `Restored from revision v${revision.version}`
+                change_notes: t('Restored from revision v{version}', { version: revision.version })
               },
               {
                 intent_type: 'correction',

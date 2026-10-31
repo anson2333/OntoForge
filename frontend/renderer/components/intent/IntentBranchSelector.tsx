@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 /**
  * Intent Branch Selector
  * Dropdown for switching between research context branches
@@ -58,7 +59,7 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
       setIsExpanded(false);
       onBranchChange?.(branch);
     } catch (error) {
-      setCreateError(error instanceof Error ? error.message : 'Failed to create branch');
+      setCreateError(error instanceof Error ? error.message : t("Failed to create branch"));
     } finally {
       setIsCreating(false);
     }
@@ -69,18 +70,18 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
       <button
         className="branch-selector-btn"
         onClick={() => setIsExpanded(!isExpanded)}
-        title="Switch intent context"
+        title={t("Switch intent context")}
       >
         <span className="branch-icon">🎯</span>
         <span className="branch-name">
-          {currentBranch ? currentBranch.branch_name : 'No Active Context'}
+          {currentBranch ? currentBranch.branch_name : t('No Active Context')}
         </span>
         <span className="dropdown-arrow">{isExpanded ? '▲' : '▼'}</span>
       </button>
 
       {isExpanded && (
         <div className="branch-dropdown">
-          <div className="dropdown-header">Intent Contexts</div>
+          <div className="dropdown-header">{t("Intent Contexts")}</div>
           
           {currentBranch && (
             <div className="current-branch-info">
@@ -95,7 +96,7 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
                 className="clear-context-btn"
                 onClick={handleClearContext}
               >
-                Clear Context
+                {t("Clear Context")}
               </button>
             </div>
           )}
@@ -104,8 +105,8 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
             <div className="branch-item disabled">
               <span className="branch-icon">○</span>
               <div>
-                <div className="branch-item-name">Main Context</div>
-                <div className="branch-item-desc">No active intent branch</div>
+                <div className="branch-item-name">{t("Main Context")}</div>
+                <div className="branch-item-desc">{t("No active intent branch")}</div>
               </div>
             </div>
           )}
@@ -118,7 +119,7 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
                 setIsExpanded(false);
               }}
             >
-              + Create New Branch
+              {t("+ Create New Branch")}
             </button>
           </div>
         </div>
@@ -128,18 +129,18 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
         <div className="branch-modal-backdrop" role="presentation">
           <form className="branch-modal" onSubmit={handleCreateBranch}>
             <div className="branch-modal-header">
-              <h3>Create Intent Branch</h3>
+              <h3>{t("Create Intent Branch")}</h3>
               <button
                 type="button"
                 className="branch-modal-close"
                 onClick={() => setShowCreateForm(false)}
-                aria-label="Close"
+                aria-label={t("Close")}
               >
                 ×
               </button>
             </div>
             <label>
-              Name
+              {t("Name")}
               <input
                 autoFocus
                 value={branchName}
@@ -149,7 +150,7 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
               />
             </label>
             <label>
-              Description
+              {t("Description")}
               <textarea
                 value={branchDescription}
                 onChange={(event) => setBranchDescription(event.target.value)}
@@ -159,16 +160,16 @@ export const IntentBranchSelector: React.FC<IntentBranchSelectorProps> = ({
             </label>
             {currentBranch && (
               <div className="branch-parent-note">
-                Inherits from {currentBranch.branch_name}
+                {t("Inherits from")} {currentBranch.branch_name}
               </div>
             )}
             {createError && <div className="branch-create-error">{createError}</div>}
             <div className="branch-modal-actions">
               <button type="button" onClick={() => setShowCreateForm(false)} disabled={isCreating}>
-                Cancel
+                {t("Cancel")}
               </button>
               <button type="submit" disabled={isCreating || !branchName.trim()}>
-                {isCreating ? 'Creating...' : 'Create & Switch'}
+                {isCreating ? t('Creating...') : t("Create & Switch")}
               </button>
             </div>
           </form>

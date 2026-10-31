@@ -1,0 +1,803 @@
+[
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "66",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "第1页引言的66%是VOC2012结果的取整概述，表3精确值为65.7%或68.4%（不同训练集）。该段没有给出训练集，模型却填成VOC2012。与精确表格结果重复，不进入比较。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_inference_latency_b0_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_latency",
+    "value": "300",
+    "unit": "ms",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "第1页0.3秒是排除候选框生成的近似概述；第6页表4给出更具体的320ms与SVD变体220ms。保留为原文概述，不与精确实验条目并列。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.0",
+    "unit": "percent",
+    "reference_ids": [
+      "R02"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "70.0%总体mAP正确，但模型把表1的07+12写成07++12。二者在论文中不是同一训练范围，须明确为VOC07 trainval + VOC12 trainval，不包含VOC07 test。",
+    "suggested_context_corrections": {
+      "training_data": "VOC07 trainval + VOC12 trainval (07+12)"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.9",
+    "unit": "percent",
+    "reference_ids": [
+      "R01"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "68.8",
+    "unit": "percent",
+    "reference_ids": [
+      "R04"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "总体mAP和测试集正确，但原文07++12包含VOC07 trainval+test与VOC12 trainval。模型只写VOC07 trainval和VOC12 trainval，遗漏了VOC07 test，影响公平比较。",
+    "suggested_context_corrections": {
+      "training_data": "VOC07 trainval+test + VOC12 trainval (07++12)"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_3",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "65.7",
+    "unit": "percent",
+    "reference_ids": [
+      "R05"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_4",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "68.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R06"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "总体mAP和测试集正确，但原文07++12包含VOC07 trainval+test与VOC12 trainval。模型只写VOC07 trainval和VOC12 trainval，遗漏了VOC07 test，影响公平比较。",
+    "suggested_context_corrections": {
+      "training_data": "VOC07 trainval+test + VOC12 trainval (07++12)"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_inference_latency_b1_5",
+    "verdict": "supported",
+    "metric": "cv_detection:inference_latency",
+    "value": "320",
+    "unit": "ms",
+    "reference_ids": [
+      "R09"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_inference_latency_b1_6",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "100",
+    "unit": "ms",
+    "reference_ids": [
+      "R07"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "100ms数值对应表4的S模型，但第5页4.1节说明S是CaffeNet，不是VGG16。",
+    "suggested_context_corrections": {
+      "model_variant": "Fast R-CNN S (CaffeNet)",
+      "backbone": "CaffeNet",
+      "source_table": "Table 4",
+      "result_role": "primary"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_inference_latency_b1_7",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "150",
+    "unit": "ms",
+    "reference_ids": [
+      "R08"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "150ms数值对应表4的M模型，但第5页4.1节说明M是VGG_CNN_M_1024，不是VGG16。",
+    "suggested_context_corrections": {
+      "model_variant": "Fast R-CNN M (VGG_CNN_M_1024)",
+      "backbone": "VGG_CNN_M_1024",
+      "source_table": "Table 4",
+      "result_role": "primary"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_8",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.6",
+    "unit": "percent",
+    "reference_ids": [
+      "R15"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "fast_rcnn",
+    "assertion_id": "assert_llm_inference_latency_b1_9",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "220",
+    "unit": "ms",
+    "reference_ids": [
+      "R12"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "220ms是表4的0.22s换算；图2标注223ms。模型用图2的223ms解释表4的220ms，来源说明矛盾，不能把两者当精确相等。",
+    "suggested_context_corrections": {
+      "source_table": "Table 4",
+      "model_variant": "Fast R-CNN L + truncated SVD",
+      "backbone": "VGG16",
+      "reasoning": "Table 4 reports 0.22 seconds/image = 220 milliseconds/image; Figure 2 separately reports 223 ms."
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "73.2",
+    "unit": "percent",
+    "reference_ids": [
+      "R18"
+    ],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "73.2%有摘要和表2支持，但完整方法应是Faster R-CNN/RPN+VGG共享模型，不是Fast R-CNN；ImageNet预训练不能替代检测训练集。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "training_data": "VOC07 trainval + VOC12 trainval",
+      "model_variant": "RPN+VGG16 shared, 300 proposals",
+      "backbone": "VGG16"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R20"
+    ],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "70.4%有摘要和表3支持，但完整方法是Faster R-CNN，且训练集为VOC07 trainval+test与VOC12 trainval，不是只填ImageNet预训练。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "training_data": "VOC07 trainval+test + VOC12 trainval",
+      "model_variant": "RPN+VGG16 shared, 300 proposals",
+      "backbone": "VGG16"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_inference_fps_b0_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_fps",
+    "value": "5",
+    "unit": "fps",
+    "reference_ids": [
+      "R22"
+    ],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "5 FPS有来源，但摘要明确including all steps，模型解释却反向标记为排除候选框时间。完整方法是Faster R-CNN。表4进一步注明K40 GPU。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "timing_scope": "end_to_end",
+      "hardware": "Nvidia K40 GPU",
+      "backbone": "VGG16"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_3",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "59.9%是作者RPN+ZF shared模型，有第5页实验说明及第6页表1支持。模型家族应是Faster R-CNN，检测训练集应VOC07 trainval。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "training_data": "VOC07 trainval",
+      "model_variant": "RPN+ZF shared, 300 proposals",
+      "backbone": "ZF",
+      "result_role": "primary"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_4",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "这是表1中的SS或EdgeBoxes + Fast R-CNN比较基线，数值虽有出处，但不是本轮要收集的Faster R-CNN作者方法。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_5",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.6",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "这是表1中的SS或EdgeBoxes + Fast R-CNN比较基线，数值虽有出处，但不是本轮要收集的Faster R-CNN作者方法。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "58.7%在第6页表1对应RPN+ZF unshared消融，有数值依据，但应标记Faster R-CNN的消融变体。该批恰好达到输出预算，批次完整性不能据此确认。",
+    "suggested_context_corrections": {
+      "detector_family": "Faster R-CNN",
+      "model_variant": "RPN+ZF unshared, 300 proposals",
+      "backbone": "ZF",
+      "result_role": "ablation"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "45",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "摘要45 FPS与第7页精确信息为同一速度结果的重复概述。保留后者及硬件信息，不重复计数。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "54.5",
+    "unit": "percent",
+    "reference_ids": [
+      "R25"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "第6页表1的YOLO总体mAP为54.5%，不是逐类别列，测试集为VOC2012。输入分辨率等额外条件须核对另外的正文证据。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_voc_map50_b0_2",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "62.5",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "既违反单检测器范围，也读错表格：第6页融合模型总体mAP是70.4%，62.5是YOLO行的person类别AP，不能作为融合模型或总体mAP。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.8",
+    "unit": "percent",
+    "reference_ids": [
+      "R26"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2 YOLO行的总体mAP为58.8%，标题明确VOC2007 test。其他实验条件仍未知，不补猜。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "74.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      8
+    ],
+    "review_source_pdf_pages": [
+      8
+    ],
+    "reason_zh": "第8页74.7%是Fast R-CNN + YOLO融合结果，不是单独YOLO的准确率，本轮单检测器规则应排除。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b1_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_fps",
+    "value": "45",
+    "unit": "fps",
+    "reference_ids": [
+      "R27"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页4.2节支持Titan X上的45 FPS，但YOLO是单网络完整检测流程，应与排除独立proposal步骤的Fast R-CNN耗时区分；表2标题可补充VOC2007场景。",
+    "suggested_context_corrections": {
+      "timing_scope": "end_to_end",
+      "scenario": "voc2007_test",
+      "model_variant": "YOLO v1"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_voc_map50_b1_3",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "54.5",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      6,
+      7
+    ],
+    "reason_zh": "第7页4.1节的54.5%重复第6页表1同一VOC2012实验；合并证据，不作为第二次独立测量。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b1_4",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.02",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b1_5",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.45",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b1_6",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.09",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b1_7",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.48",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round1",
+    "paper": "yolo",
+    "assertion_id": "assert_llm_inference_fps_b1_8",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.11",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "73.2",
+    "unit": "percent",
+    "reference_ids": [
+      "R18"
+    ],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "review_source_pdf_pages": [
+      1,
+      2,
+      7
+    ],
+    "reason_zh": "数值及当前论文方法归属有原文支持；未知训练条件和评估细节继续保留未知，不据此进行无条件比较。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R20"
+    ],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "review_source_pdf_pages": [
+      1,
+      2,
+      7
+    ],
+    "reason_zh": "数值及当前论文方法归属有原文支持；未知训练条件和评估细节继续保留未知，不据此进行无条件比较。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_inference_fps_b0_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_fps",
+    "value": "5",
+    "unit": "fps",
+    "reference_ids": [
+      "R22"
+    ],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "5 FPS数值和完整方法正确，但原文明确including all steps，模型仍反向标为排除proposal。应改为端到端；表4补充K40硬件。",
+    "suggested_context_corrections": {
+      "timing_scope": "end_to_end",
+      "hardware": "Nvidia K40 GPU"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_inference_latency_b0_3",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_latency",
+    "value": "10",
+    "unit": "ms",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      2
+    ],
+    "review_source_pdf_pages": [
+      2,
+      7
+    ],
+    "reason_zh": "10ms是额外计算候选框的边际开销，不是完整检测器单图延迟。数值存在仍不能保证指标含义正确。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "第6页表1的RPN+ZF shared主方法为59.9%，归属、训练集与测试集一致。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "第6页表1的RPN+ZF unshared消融为58.7%，变体和训练/测试集一致。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "round": "round2",
+    "paper": "faster_rcnn",
+    "assertion_id": "assert_llm_voc_map50_b1_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.2",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "59.2%对应以RPN+VGG生成proposal，但固定检测器仍是SS+ZF。表1下方正文明确仍使用原来的检测器。应区分proposal backbone和detector backbone，不能把VGG写成整个检测器骨干。",
+    "suggested_context_corrections": {
+      "model_variant": "RPN-VGG proposals + fixed SS-trained Fast R-CNN-ZF detector",
+      "backbone": "ZF",
+      "proposal_backbone": "VGG16",
+      "result_role": "ablation"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  }
+]

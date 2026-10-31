@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-30",
+  "transport": "HTTPX ASGI against normal JSON-RPC handlers; local account session",
+  "model": "glm-4.7-flash",
+  "provider": "openai_compatible",
+  "steps": [
+    {
+      "method": "createWorkspace",
+      "seconds": 0.094,
+      "ok": true
+    },
+    {
+      "method": "uploadPdf",
+      "seconds": 0.031,
+      "ok": true
+    },
+    {
+      "method": "parsePdfWithDomainPack",
+      "seconds": 37.797,
+      "ok": true
+    }
+  ],
+  "workspace_id": "workspace_真实模型全流程验收_2026_10_30_576cc49a",
+  "paper_file": "fast_rcnn.pdf",
+  "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+  "preview": {
+    "status": "needs_review",
+    "workspace_id": "workspace_真实模型全流程验收_2026_10_30_576cc49a",
+    "domain_pack_namespace": "cv_detection",
+    "upload_id": "upload_9bbaa502e8404efe9183ce43313839ce",
+    "preview_id": "preview_3b1ae3e8caa642e886fea856a380df49",
+    "diagnostics": {
+      "batch_count": 1,
+      "failed_batches": [
+        0
+      ],
+      "warnings": [
+        "模型抽取第 1/1 批失败。模型已回复，但未识别到带指标、数值、单位和证据的结果。支持 JSON、Markdown 表格和标注字段的文本；请重试或更换模型。"
+      ],
+      "errors": [
+        {
+          "http_status": null,
+          "message": "模型已回复，但未识别到带指标、数值、单位和证据的结果。支持 JSON、Markdown 表格和标注字段的文本；请重试或更换模型。",
+          "retryable": true,
+          "abort_remaining": false
+        }
+      ],
+      "skipped_batches": [],
+      "usage": [
+        {
+          "completion_tokens": 4096,
+          "completion_tokens_details": {
+            "reasoning_tokens": 4096
+          },
+          "prompt_tokens": 13450,
+          "prompt_tokens_details": {
+            "cached_tokens": 5587
+          },
+          "total_tokens": 17546
+        }
+      ],
+      "input_characters": 43430,
+      "model_seconds": 37.323518,
+      "retryable": true,
+      "model_called": true,
+      "provider": "openai_compatible",
+      "model": "glm-4.7-flash",
+      "parse_seconds": 0.428584,
+      "total_seconds": 37.766654,
+      "pages": 9,
+      "chunks": 9,
+      "pdf_bytes": 728919
+    },
+    "paper_metadata": {
+      "title": "Fast R-CNN",
+      "authors": [
+        "Unknown authors"
+      ],
+      "year": 2012,
+      "venue": "Unknown venue",
+      "doi": null,
+      "provenance_hash": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646"
+    },
+    "warnings": [
+      "模型抽取第 1/1 批失败。模型已回复，但未识别到带指标、数值、单位和证据的结果。支持 JSON、Markdown 表格和标注字段的文本；请重试或更换模型。",
+      "Page-only source locations; precise PDF bounding boxes are unavailable."
+    ],
+    "extraction_method": "pypdf",
+    "assertion_extraction_method": "none"
+  },
+  "assertion_sample": [],
+  "complete": false,
+  "failure": "模型已回复，但未识别到带指标、数值、单位和证据的结果。支持 JSON、Markdown 表格和标注字段的文本；请重试或更换模型。"
+}

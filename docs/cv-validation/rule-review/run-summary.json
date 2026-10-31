@@ -1,0 +1,190 @@
+{
+  "workspace_id": "workspace_cv目标检测_规则与原文核验_391e998b",
+  "config_sha256": "4fadebfcf6db4b2cf9ba74f369eab8738abd9a176db6f1dc2f341938bde205a3",
+  "model": "glm-4.7-flash",
+  "provider": "openai_compatible",
+  "papers": {
+    "fast_rcnn": {
+      "file_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "upload_id": "upload_c2e5ad7288d147fdb557c8810861615b",
+      "file_name": "fast_rcnn.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 728919,
+      "sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "expires_at": "2026-10-31T02:29:13.266768+00:00",
+      "seconds": 93.625,
+      "preview_id": "preview_88088a7f4aae43a5a1eb86de1bc41001",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 2,
+        "failed_batches": [],
+        "warnings": [],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "completion_tokens": 485,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 6573,
+            "prompt_tokens_details": {
+              "cached_tokens": 6571
+            },
+            "total_tokens": 7058
+          },
+          {
+            "completion_tokens": 2075,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 9422,
+            "prompt_tokens_details": {
+              "cached_tokens": 1564
+            },
+            "total_tokens": 11497
+          }
+        ],
+        "input_characters": 43430,
+        "output_formats": [
+          "json",
+          "json"
+        ],
+        "model_seconds": 93.055425,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "glm-4.7-flash",
+        "parse_seconds": 0.440555,
+        "total_seconds": 93.503229,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 728919
+      },
+      "assertion_count": 12,
+      "extraction_method": "llm"
+    },
+    "faster_rcnn": {
+      "file_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "upload_id": "upload_a522d2a1cb124990a64231663ac93895",
+      "file_name": "faster_rcnn.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 2368067,
+      "sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "expires_at": "2026-10-31T02:33:30.254259+00:00",
+      "seconds": 211.188,
+      "preview_id": "preview_1050632eecb4450b88e934224e2e5d0c",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 2,
+        "failed_batches": [],
+        "warnings": [],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "completion_tokens": 1310,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 6655,
+            "prompt_tokens_details": {
+              "cached_tokens": 1570
+            },
+            "total_tokens": 7965
+          },
+          {
+            "completion_tokens": 4096,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 8256,
+            "prompt_tokens_details": {
+              "cached_tokens": 1564
+            },
+            "total_tokens": 12352
+          }
+        ],
+        "input_characters": 39241,
+        "output_formats": [
+          "json",
+          "json"
+        ],
+        "model_seconds": 210.574408,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "glm-4.7-flash",
+        "parse_seconds": 0.561252,
+        "total_seconds": 211.138261,
+        "pages": 10,
+        "chunks": 13,
+        "pdf_bytes": 2368067
+      },
+      "assertion_count": 7,
+      "extraction_method": "llm"
+    },
+    "yolo": {
+      "file_sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+      "upload_id": "upload_8fe9e99ece674eca86fe7402ef2b90e1",
+      "file_name": "yolo.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 5550305,
+      "sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+      "expires_at": "2026-10-31T02:37:01.651787+00:00",
+      "seconds": 184.89,
+      "preview_id": "preview_1ab98a20579f4654b381c7c688e16d7b",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 2,
+        "failed_batches": [],
+        "warnings": [],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "completion_tokens": 522,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 7857,
+            "prompt_tokens_details": {
+              "cached_tokens": 1570
+            },
+            "total_tokens": 8379
+          },
+          {
+            "completion_tokens": 1595,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 4993,
+            "prompt_tokens_details": {
+              "cached_tokens": 2
+            },
+            "total_tokens": 6588
+          }
+        ],
+        "input_characters": 34746,
+        "output_formats": [
+          "json",
+          "json"
+        ],
+        "model_seconds": 184.485522,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "glm-4.7-flash",
+        "parse_seconds": 0.356497,
+        "total_seconds": 184.845335,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 5550305
+      },
+      "assertion_count": 12,
+      "extraction_method": "llm"
+    }
+  },
+  "pilot_zhipu_interval_seconds": 65,
+  "complete": true
+}

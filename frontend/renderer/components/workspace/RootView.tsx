@@ -1,3 +1,4 @@
+import { t, uiLabel } from '../../i18n';
 /**
  * Root View
  * Collection surface for all workspaces.
@@ -25,13 +26,13 @@ export const RootView: React.FC<RootViewProps> = ({
     <div className="root-view">
       <div className="root-view-header">
         <HierarchyNav items={hierarchyItems} />
-        <div className="root-context-pill">{workspaces.length} workspaces</div>
+        <div className="root-context-pill">{t('Workspaces')} · {workspaces.length}</div>
       </div>
 
       <div className="root-view-content">
         <section className="root-panel">
           <div className="root-panel-header">
-            <h2>Workspaces</h2>
+            <h2>{t("Workspaces")}</h2>
           </div>
           {workspaces.length > 0 ? (
             <div className="root-workspace-grid">
@@ -43,7 +44,7 @@ export const RootView: React.FC<RootViewProps> = ({
                   onClick={() => onOpenWorkspace(workspace.id)}
                 >
                   <span className="root-workspace-name">{workspace.name}</span>
-                  <span className="root-workspace-meta">{workspace.status}</span>
+                  <span className="root-workspace-meta">{uiLabel(workspace.status)}</span>
                   {workspace.description && (
                     <span className="root-workspace-description">{workspace.description}</span>
                   )}
@@ -51,7 +52,7 @@ export const RootView: React.FC<RootViewProps> = ({
               ))}
             </div>
           ) : (
-            <div className="root-empty-state">No workspaces have been created yet.</div>
+            <div className="root-empty-state">{t("No workspaces have been created yet.")}</div>
           )}
         </section>
       </div>

@@ -44,3 +44,13 @@ backend/data/
 # One-command demo runtime state and generated screenshots
 .demo/
 frontend/demo-screenshots/
+
+.review-anson/
+
+
+data/cv-validation/
+
+
+# Local handoff archive (not published)
+.handoff-local-archive/
+htmlcov/

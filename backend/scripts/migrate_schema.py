@@ -284,6 +284,20 @@ def create_constraints_and_indexes(db):
         ("FormulaNode", "id"),
         ("HumanArbitratorNode", "id"),
         ("IntentBranchNode", "id"),
+        ("SourceVersion", "id"),
+        ("ExtractionRun", "id"),
+        ("Model", "id"),
+        ("ModelVariant", "id"),
+        ("Component", "id"),
+        ("Backbone", "id"),
+        ("Dataset", "id"),
+        ("DatasetSplit", "id"),
+        ("Metric", "id"),
+        ("Experiment", "id"),
+        ("Measurement", "id"),
+        ("EvidenceBundle", "id"),
+        ("ResolutionDecision", "id"),
+        ("ReviewEvent", "id"),
     ]
     
     created_count = 0
@@ -314,6 +328,10 @@ def create_constraints_and_indexes(db):
         ("AssertionNode", "domain_pack_namespace"),
         ("DomainNode", "namespace"),
         ("WorkspaceNode", "owner_id"),
+        ("Experiment", "workspace_id"),
+        ("Measurement", "workspace_id"),
+        ("ExtractionRun", "workspace_id"),
+        ("ResolutionDecision", "workspace_id"),
     ]
     
     for node_label, property_name in indexes:

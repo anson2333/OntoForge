@@ -1,0 +1,80 @@
+{
+  "scope": "AI-assisted developmental pilot, not independent human evaluation. supported means basic numerical/semantic attribution has source support; it does not mean all conditions are complete or cross-paper ranking is valid.",
+  "counts_by_round_and_paper": {
+    "round1/fast_rcnn": {
+      "exclude": 2,
+      "needs_correction": 6,
+      "supported": 4
+    },
+    "round1/faster_rcnn": {
+      "needs_correction": 5,
+      "exclude": 2
+    },
+    "round1/yolo": {
+      "exclude": 9,
+      "supported": 2,
+      "needs_correction": 1
+    },
+    "round2/faster_rcnn": {
+      "supported": 4,
+      "needs_correction": 2,
+      "exclude": 1
+    }
+  },
+  "total_model_candidates_across_rounds": 38,
+  "reviewed_candidate_set_size": 19,
+  "final_config_sha256": "e7d33875d4c306652dda0061db5c3ce6690a432655973c9faf7bebde20a88f89",
+  "selected_reference_count": 27,
+  "selected_references_supported_without_context_correction": 8,
+  "selected_references_covered_after_ai_source_corrections": 16,
+  "covered_reference_ids": [
+    "R01",
+    "R02",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "R09",
+    "R12",
+    "R15",
+    "R18",
+    "R20",
+    "R22",
+    "R25",
+    "R26",
+    "R27"
+  ],
+  "missing_reference_ids": [
+    "R03",
+    "R10",
+    "R11",
+    "R13",
+    "R14",
+    "R16",
+    "R17",
+    "R19",
+    "R21",
+    "R23",
+    "R24"
+  ],
+  "not_metrics": [
+    "These selected-reference fractions are not exhaustive corpus recall or independently measured precision/F1.",
+    "Round1 Faster R-CNN reached 4096 completion tokens without finish_reason logging; completeness is untrusted.",
+    "Round2 Faster R-CNN has four stop finish reasons and no failed batches, but semantic mistakes remain.",
+    "Configuration was refined on these papers; this is development-set assessment, not a held-out generalization test."
+  ],
+  "checks": {
+    "backend_targeted_tests_passed": 121,
+    "raw_model_outputs_preserved": true,
+    "approved_as_human_verified": false,
+    "raw_candidates_committed_to_database": false,
+    "temporary_workspace_deleted": true
+  },
+  "final_source_sha256": {
+    "backend/schemas/domain_pack.py": "630a2885e03ff48956994b8cc26686a32a8ef27bc7cdc9394aea981b3fe73c88",
+    "backend/services/llm/semantic_extractor.py": "94f52385b54a4e7bb4b1e73d4d5b38c36c351b2208cd6bc567f44ba31dd4e167",
+    "backend/services/pdf_ingestion_service.py": "d6be134ce4b9447539fd08e4ad4a19eaaf8d63e06d264311241c98617cf017ec",
+    "backend/configs/domain-pack-cv-detection.yaml": "a107b1aa560a0f600e04efd03004cf901de532ffa97e16e05de835df7cd4bb73"
+  }
+}

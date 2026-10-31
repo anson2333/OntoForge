@@ -244,6 +244,7 @@ def main() -> int:
                 "workspace_id": workspace["id"],
                 "domain_pack_namespace": args.namespace,
                 "upload_id": upload["upload_id"],
+                "preview_id": parsed["preview_id"],
             },
             token,
         )
@@ -260,6 +261,7 @@ def main() -> int:
                 "workspace_id": workspace["id"],
                 "domain_pack_namespace": args.namespace,
                 "upload_id": upload["upload_id"],
+                "preview_id": parsed["preview_id"],
             },
             token,
         )

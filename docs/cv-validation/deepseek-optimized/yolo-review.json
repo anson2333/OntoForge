@@ -1,0 +1,65 @@
+[
+  {
+    "assertion_id": "assert_llm_inference_fps_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "45",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "摘要45fps与第7页相同实验重复；448输入和网络层数来源第2/3页，当前仅引第1页证据也不充分。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "54.5",
+    "unit": "percent",
+    "reference_ids": [
+      "R25"
+    ],
+    "source_pdf_pages": [
+      6,
+      7
+    ],
+    "reason_zh": "第6页表1及正文，VOC2012整体mAP54.5，未混入person类AP62.5。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.8",
+    "unit": "percent",
+    "reference_ids": [
+      "R26"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2，VOC2007整体mAP58.8。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_2",
+    "verdict": "supported",
+    "metric": "cv_detection:inference_fps",
+    "value": "45",
+    "unit": "fps",
+    "reference_ids": [
+      "R27"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页正文，Titan X、45fps完整统一检测网络；未误取110秒全测试集耗时。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  }
+]

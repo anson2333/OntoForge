@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * Confidence Indicator Component
  * Visual bar showing confidence score
@@ -26,7 +27,7 @@ export default function ConfidenceIndicator({ confidence }: ConfidenceIndicatorP
         marginBottom: '4px',
         opacity: 0.7
       }}>
-        <span>Confidence</span>
+        <span>{t("Confidence")}</span>
         <span style={{ fontWeight: 500 }}>{percentage}%</span>
       </div>
       <div className="confidence-bar">

@@ -1,3 +1,4 @@
+import { t, uiLabel, getLocale } from '../../i18n';
 /**
  * Intent Profile Panel
  * Display learned patterns, preferences, and active goals
@@ -40,31 +41,31 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
   };
 
   const handleDeletePattern = async (patternId: string) => {
-    if (confirm('Delete this learned pattern?')) {
+    if (confirm(t("Delete this learned pattern?"))) {
       await intentService.deletePattern(patternId);
       await loadProfile();
     }
   };
 
   if (isLoading) {
-    return <div className="profile-panel loading">Loading profile...</div>;
+    return <div className="profile-panel loading">{t("Loading profile...")}</div>;
   }
 
   if (!profile) {
-    return <div className="profile-panel error">Failed to load profile</div>;
+    return <div className="profile-panel error">{t("Failed to load profile")}</div>;
   }
 
   return (
     <div className="intent-profile-panel">
       <div className="panel-header">
         <div className="panel-title-row">
-          <h3>Intents</h3>
+          <h3>{t("Intents")}</h3>
           {onDeclareIntent && (
             <button
               className="declare-intent-btn"
               onClick={onDeclareIntent}
-              title="Declare intent"
-              aria-label="Declare intent"
+              title={t("Declare intent")}
+              aria-label={t("Declare intent")}
             >
               +
             </button>
@@ -72,15 +73,15 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
         </div>
         <div className="profile-stats">
           <span className="stat-item">
-            <span className="stat-label">Total Intents:</span>
+            <span className="stat-label">{t("Total Intents:")}</span>
             <span className="stat-value">{profile.total_intents_captured}</span>
           </span>
           <span className="stat-item">
-            <span className="stat-label">Patterns:</span>
+            <span className="stat-label">{t("Patterns:")}</span>
             <span className="stat-value">{profile.learned_patterns.length}</span>
           </span>
           <span className="stat-item">
-            <span className="stat-label">Active Goals:</span>
+            <span className="stat-label">{t("Active Goals:")}</span>
             <span className="stat-value">{profile.active_goals.length}</span>
           </span>
         </div>
@@ -91,19 +92,19 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
           className={`tab-btn ${selectedTab === 'patterns' ? 'active' : ''}`}
           onClick={() => setSelectedTab('patterns')}
         >
-          Learned Patterns ({profile.learned_patterns.length})
+          {t("Learned Patterns (")}{profile.learned_patterns.length}{t(')')}
         </button>
         <button
           className={`tab-btn ${selectedTab === 'goals' ? 'active' : ''}`}
           onClick={() => setSelectedTab('goals')}
         >
-          Active Goals ({profile.active_goals.length})
+          {t("Active Goals (")}{profile.active_goals.length}{t(')')}
         </button>
         <button
           className={`tab-btn ${selectedTab === 'preferences' ? 'active' : ''}`}
           onClick={() => setSelectedTab('preferences')}
         >
-          Preferences
+          {t("Preferences")}
         </button>
       </div>
 
@@ -111,34 +112,34 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
         {selectedTab === 'patterns' && (
           <div className="patterns-list">
             {profile.learned_patterns.length === 0 ? (
-              <div className="empty-state">No learned patterns yet. Keep resolving conflicts to build patterns.</div>
+              <div className="empty-state">{t("No learned patterns yet. Keep resolving conflicts to build patterns.")}</div>
             ) : (
               profile.learned_patterns.map((pattern) => (
                 <div key={pattern.pattern_id} className="pattern-card">
                   <div className="pattern-header">
-                    <span className="pattern-type">{pattern.intent_type}</span>
+                    <span className="pattern-type">{uiLabel(pattern.intent_type)}</span>
                     <span className="pattern-confidence">
-                      {(pattern.confidence * 100).toFixed(0)}% confidence
+                      {(pattern.confidence * 100).toFixed(0)}{t("% confidence")}
                     </span>
                   </div>
                   <div className="pattern-description">{pattern.description}</div>
                   <div className="pattern-stats">
-                    <span>Applied {pattern.applications} times</span>
-                    <span>Last used: {new Date(pattern.last_used).toLocaleDateString()}</span>
+                    <span>{t("Applied")} {pattern.applications} {t("times")}</span>
+                    <span>{t("Last used:")} {new Date(pattern.last_used).toLocaleDateString(getLocale())}</span>
                   </div>
                   <div className="pattern-actions">
                     <button
                       className="btn-apply"
                       onClick={() => onPatternClick && onPatternClick(pattern)}
                     >
-                      Apply Pattern
+                      {t("Apply Pattern")}
                     </button>
                     {intentService.canDeletePattern(pattern.pattern_id) && (
                       <button
                         className="btn-delete"
                         onClick={() => handleDeletePattern(pattern.pattern_id)}
                       >
-                        Delete
+                        {t("Delete")}
                       </button>
                     )}
                   </div>
@@ -151,21 +152,21 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
         {selectedTab === 'goals' && (
           <div className="goals-list">
             {profile.active_goals.length === 0 ? (
-              <div className="empty-state">No active goals. Declare an intent to create goals.</div>
+              <div className="empty-state">{t("No active goals. Declare an intent to create goals.")}</div>
             ) : (
               profile.active_goals.map((goal) => (
                 <div key={goal.goal_id} className="goal-card">
                   <div className="goal-header">
-                    <span className={`goal-status ${goal.status}`}>{goal.status}</span>
+                    <span className={`goal-status ${goal.status}`}>{uiLabel(goal.status)}</span>
                     <span className="goal-dates">
-                      {new Date(goal.active_from).toLocaleDateString()}
-                      {goal.active_until && ` - ${new Date(goal.active_until).toLocaleDateString()}`}
+                      {new Date(goal.active_from).toLocaleDateString(getLocale())}
+                      {goal.active_until && ` - ${new Date(goal.active_until).toLocaleDateString(getLocale())}`}
                     </span>
                   </div>
                   <div className="goal-description">{goal.description}</div>
                   {Object.keys(goal.constraints).length > 0 && (
                     <div className="goal-constraints">
-                      <strong>Constraints:</strong>
+                      <strong>{t("Constraints:")}</strong>
                       <pre>{JSON.stringify(goal.constraints, null, 2)}</pre>
                     </div>
                   )}
@@ -178,9 +179,9 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
         {selectedTab === 'preferences' && (
           <div className="preferences-view">
             <div className="pref-section">
-              <h4>Unit Preferences</h4>
+              <h4>{t("Unit Preferences")}</h4>
               {Object.keys(profile.preferred_units).length === 0 ? (
-                <div className="empty-state">No unit preferences learned yet</div>
+                <div className="empty-state">{t("No unit preferences learned yet")}</div>
               ) : (
                 <ul className="pref-list">
                   {Object.entries(profile.preferred_units).map(([metric, unit]) => (
@@ -194,9 +195,9 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
             </div>
 
             <div className="pref-section">
-              <h4>Evidence Ranking</h4>
+              <h4>{t("Evidence Ranking")}</h4>
               {profile.evidence_ranking.length === 0 ? (
-                <div className="empty-state">No evidence preferences</div>
+                <div className="empty-state">{t("No evidence preferences")}</div>
               ) : (
                 <ol className="ranking-list">
                   {profile.evidence_ranking.map((source, idx) => (
@@ -207,9 +208,9 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
             </div>
 
             <div className="pref-section">
-              <h4>Subdomain Focus</h4>
+              <h4>{t("Subdomain Focus")}</h4>
               {profile.subdomain_focus.length === 0 ? (
-                <div className="empty-state">No subdomain preferences</div>
+                <div className="empty-state">{t("No subdomain preferences")}</div>
               ) : (
                 <div className="tag-list">
                   {profile.subdomain_focus.map((subdomain) => (
@@ -220,7 +221,7 @@ export const IntentProfilePanel: React.FC<IntentProfilePanelProps> = ({
             </div>
 
             <div className="pref-section">
-              <h4>AI Suggestion Threshold</h4>
+              <h4>{t("AI Suggestion Threshold")}</h4>
               <div className="threshold-control">
                 <input
                   type="range"

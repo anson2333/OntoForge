@@ -1,3 +1,4 @@
+import { t, uiLabel, getLocale } from '../../i18n';
 /**
  * Intent Pattern Card
  * Display individual learned pattern with metadata
@@ -20,13 +21,13 @@ export const IntentPatternCard: React.FC<IntentPatternCardProps> = ({
   compact = false
 }) => {
   const confidenceColor = pattern.confidence >= 0.8 ? '#4dff8a' : pattern.confidence >= 0.6 ? '#ffc04d' : '#ff6b6b';
-  const confidenceLabel = pattern.confidence >= 0.8 ? 'High' : pattern.confidence >= 0.6 ? 'Medium' : 'Low';
+  const confidenceLabel = pattern.confidence >= 0.8 ? t("High") : pattern.confidence >= 0.6 ? t("Medium") : t("Low");
 
   return (
     <div className={`intent-pattern-card ${compact ? 'compact' : ''}`}>
       <div className="pattern-header">
         <div className="pattern-meta">
-          <span className="pattern-type-badge">{pattern.intent_type}</span>
+          <span className="pattern-type-badge">{uiLabel(pattern.intent_type)}</span>
           <span className="pattern-id">{pattern.pattern_id}</span>
         </div>
         <div className="pattern-confidence-badge" style={{ color: confidenceColor }}>
@@ -43,24 +44,24 @@ export const IntentPatternCard: React.FC<IntentPatternCardProps> = ({
         <>
           <div className="pattern-stats-grid">
             <div className="stat">
-              <span className="stat-label">Applications</span>
+              <span className="stat-label">{t("Applications")}</span>
               <span className="stat-value">{pattern.applications}</span>
             </div>
             <div className="stat">
-              <span className="stat-label">Similar Arbitrations</span>
+              <span className="stat-label">{t("Similar Arbitrations")}</span>
               <span className="stat-value">{pattern.matched_arbitrator_ids.length}</span>
             </div>
             <div className="stat">
-              <span className="stat-label">Last Used</span>
+              <span className="stat-label">{t("Last Used")}</span>
               <span className="stat-value">
-                {new Date(pattern.last_used).toLocaleDateString()}
+                {new Date(pattern.last_used).toLocaleDateString(getLocale())}
               </span>
             </div>
           </div>
 
           {pattern.matched_arbitrator_ids.length > 0 && (
             <div className="matched-arbitrations">
-              <span className="section-label">Based on arbitrations:</span>
+              <span className="section-label">{t("Based on arbitrations:")}</span>
               <div className="arbitration-ids">
                 {pattern.matched_arbitrator_ids.slice(0, 3).map((id) => (
                   <span key={id} className="arbitration-id" title={id}>
@@ -68,7 +69,7 @@ export const IntentPatternCard: React.FC<IntentPatternCardProps> = ({
                   </span>
                 ))}
                 {pattern.matched_arbitrator_ids.length > 3 && (
-                  <span className="more-count">+{pattern.matched_arbitrator_ids.length - 3} more</span>
+                  <span className="more-count">+{pattern.matched_arbitrator_ids.length - 3} {t("more")}</span>
                 )}
               </div>
             </div>
@@ -81,18 +82,18 @@ export const IntentPatternCard: React.FC<IntentPatternCardProps> = ({
           <button
             className="action-btn primary"
             onClick={() => onApply(pattern.pattern_id)}
-            title="Apply this pattern to similar conflicts"
+            title={t("Apply this pattern to similar conflicts")}
           >
-            Apply Pattern
+            {t("Apply Pattern")}
           </button>
         )}
         {onDelete && (
           <button
             className="action-btn secondary"
             onClick={() => onDelete(pattern.pattern_id)}
-            title="Remove this learned pattern"
+            title={t("Remove this learned pattern")}
           >
-            Delete
+            {t("Delete")}
           </button>
         )}
       </div>

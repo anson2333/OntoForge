@@ -1,0 +1,248 @@
+[
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "73.2",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "reason_zh": "摘要73.2与后面表2同一实验重复；精确训练条件在后者。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.4",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "reason_zh": "摘要70.4与后面表3同一实验重复。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b0_2",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "5",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "reason_zh": "摘要5fps与表4同一VGG16推理实验重复。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b0_3",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_latency",
+    "value": "10",
+    "unit": "ms",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      2
+    ],
+    "reason_zh": "10ms仅是RPN候选生成的边际成本，模型自己也已说明，不属于完整检测器耗时。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "表1，ZF共享特征300 proposals，59.9。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "表1，ZF不共享300 proposals，58.7；不同于SS基线同值。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_2",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "56.8",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "表1，固定SS训练的ZF检测头+RPN-ZF 300 proposals，56.8。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_3",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "55.1",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "表1，同一固定检测头，100 proposals，55.1。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_4",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "52.1",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "表1，RPN-ZF去回归、300 proposals，52.1。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_5",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.2",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "59.2为ZF检测器配VGG16候选网络；主backbone不应以候选网络VGG16替代。",
+    "suggested_context_corrections": {
+      "backbone": "ZF",
+      "proposal_backbone": "VGG16"
+    },
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "69.9",
+    "unit": "percent",
+    "reference_ids": [
+      "R17"
+    ],
+    "source_pdf_pages": [
+      7,
+      9
+    ],
+    "reason_zh": "表2，VOC07训练、共享VGG16，69.9。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "73.2",
+    "unit": "percent",
+    "reference_ids": [
+      "R18"
+    ],
+    "source_pdf_pages": [
+      7,
+      9
+    ],
+    "reason_zh": "表2，07+12训练、共享VGG16，73.2。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b2_2",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R20"
+    ],
+    "source_pdf_pages": [
+      7,
+      9
+    ],
+    "reason_zh": "表3，07++12训练、共享VGG16，70.4。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b2_3",
+    "verdict": "supported",
+    "metric": "cv_detection:inference_latency",
+    "value": "196",
+    "unit": "ms",
+    "reference_ids": [
+      "R21"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "表4，K40、VGG16完整检测196ms，包含候选生成。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b2_4",
+    "verdict": "supported",
+    "metric": "cv_detection:inference_fps",
+    "value": "5",
+    "unit": "fps",
+    "reference_ids": [
+      "R22"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "表4，K40、VGG16完整检测5fps。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b2_5",
+    "verdict": "supported",
+    "metric": "cv_detection:inference_fps",
+    "value": "15",
+    "unit": "fps",
+    "reference_ids": [
+      "R24"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "表4，K40、ZF完整检测15fps。",
+    "suggested_context_corrections": {},
+    "human_verified": false
+  }
+]

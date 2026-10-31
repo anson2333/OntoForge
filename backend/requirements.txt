@@ -17,10 +17,12 @@ jsonrpcserver>=5.0.0,<6.0.0
 fastapi>=0.104.0,<0.116.0
 uvicorn[standard]>=0.24.0
 pypdf>=5.1.0
+fonttools>=4.0.0  # Decode embedded CFF font encodings in real literature PDFs
 
 # Testing
 pytest>=7.4.0,<10.0.0
 pytest-cov>=4.1.0
 pytest-asyncio>=0.21.0
-httpx>=0.25.0,<0.29.0  # Required for FastAPI TestClient
+httpx[socks]>=0.25.0,<0.29.0  # Test client, providers and corpus downloads; SOCKS proxies supported
+python-dotenv>=1.0.0
 testcontainers>=3.7.0  # Neo4j test containers for integration tests

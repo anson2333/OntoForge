@@ -5,6 +5,8 @@
 
 import { useState, useEffect } from 'react';
 import { BACKEND_URL, JSONRPC_URL } from './runtime_config';
+import { sspClient } from './ssp_client';
+import { useAuthStore } from './auth';
 
 export interface ServiceStatus {
   status: 'online' | 'offline' | 'degraded' | 'unknown';
@@ -21,6 +23,7 @@ export interface LLMStatus extends ServiceStatus {
 const CHECK_INTERVAL = 10000; // Check every 10 seconds
 
 export function useServiceStatus() {
+  const userId = useAuthStore(state => state.user?.user_id);
   const [backendStatus, setBackendStatus] = useState<ServiceStatus>({
     status: 'unknown',
     message: 'Checking...'
@@ -66,7 +69,7 @@ export function useServiceStatus() {
     try {
       const response = await fetch(JSONRPC_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(sspClient.getToken() ? { Authorization: `Bearer ${sspClient.getToken()}` } : {}) },
         body: JSON.stringify({
           jsonrpc: '2.0',
           method: 'getLLMStatus',
@@ -139,7 +142,7 @@ export function useServiceStatus() {
     const interval = setInterval(checkAllServices, CHECK_INTERVAL);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [userId]);
 
   return {
     backendStatus,

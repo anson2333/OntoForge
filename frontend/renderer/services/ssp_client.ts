@@ -571,6 +571,17 @@ class SSPClient {
   }
 
   /**
+   * Quality-filtered, path-explained ontology gap candidates
+   */
+  async analyzeResearchGaps(params: {
+    workspace_id: string;
+    include_machine_checked?: boolean;
+    limit?: number;
+  }): Promise<any> {
+    return this.request('analyzeResearchGaps', params);
+  }
+
+  /**
    * Validate domain pack configuration
    */
   async validateDomainPack(params: {
@@ -616,6 +627,7 @@ class SSPClient {
     workspace_id: string;
     domain_pack_namespace: string;
     upload_id: string;
+    preview_id: string;
     owner_id?: string;
     parse_options?: Record<string, any>;
   }): Promise<any> {

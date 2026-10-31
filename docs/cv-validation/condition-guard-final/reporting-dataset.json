@@ -1,0 +1,628 @@
+{
+  "notice": "Selected source-reviewed demonstration set, not exhaustive extraction or independent evaluation. Do not compare rows as controlled experiments.",
+  "records": [
+    {
+      "paper": "fast_rcnn",
+      "assertion_id": "assert_llm_voc_map50_b3_0",
+      "metric": "voc_map50",
+      "value": 66.9,
+      "unit": "percent",
+      "test_set": "VOC2007 test",
+      "training_data": "VOC07 trainval",
+      "detector_backbone": "VGG16",
+      "proposal_backbone": "not_applicable",
+      "review_source_pdf_pages": [
+        5,
+        7
+      ],
+      "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b3_0",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "66.9",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "detector_family": "Fast R-CNN",
+          "model_variant": "L (VGG16), multi-task, single-scale",
+          "training_data": "VOC07 trainval",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "shortest side s=600, longest capped 1000",
+          "evaluation_protocol": "VOC07 mAP",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "ablation",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "VGG16",
+            "detector_backbone": "VGG16",
+            "proposal_backbone": "unknown"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.85,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 3,
+          "model_output_format": "json",
+          "reasoning": "Table 6/7 column L multi-task single-scale shows VOC07 mAP 66.9."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p7_0",
+            "confidence_score": 0.85
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "fast_rcnn",
+      "assertion_id": "assert_llm_voc_map50_b3_1",
+      "metric": "voc_map50",
+      "value": 70.0,
+      "unit": "percent",
+      "test_set": "VOC2007 test",
+      "training_data": "VOC07 trainval + VOC12 trainval",
+      "detector_backbone": "VGG16",
+      "proposal_backbone": "not_applicable",
+      "review_source_pdf_pages": [
+        5,
+        8
+      ],
+      "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b3_1",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "70.0",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "detector_family": "Fast R-CNN",
+          "model_variant": "L (VGG16)",
+          "training_data": "VOC07 trainval + VOC12 trainval",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "VOC07 mAP",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "VGG16",
+            "detector_backbone": "VGG16",
+            "proposal_backbone": "unknown"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.85,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 3,
+          "model_output_format": "json",
+          "reasoning": "Expanded training improves VOC07 test mAP from 66.9% to 70.0%."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p8_0",
+            "confidence_score": 0.85
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "fast_rcnn",
+      "assertion_id": "assert_llm_voc_map50_b3_2",
+      "metric": "voc_map50",
+      "value": 68.8,
+      "unit": "percent",
+      "test_set": "VOC2010 test",
+      "training_data": "VOC07 trainval+test + VOC12 trainval",
+      "detector_backbone": "VGG16",
+      "proposal_backbone": "not_applicable",
+      "review_source_pdf_pages": [
+        5,
+        8
+      ],
+      "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b3_2",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "68.8",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "region_based",
+          "scenario": "voc2010_test",
+          "detector_family": "Fast R-CNN",
+          "model_variant": "L (VGG16)",
+          "training_data": "VOC07 trainval+test + VOC12 trainval (21.5k)",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "VOC10 mAP",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "VGG16",
+            "detector_backbone": "VGG16",
+            "proposal_backbone": "unknown"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.8,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 3,
+          "model_output_format": "json",
+          "reasoning": "VOC10 mAP improves from 66.1% to 68.8% with enlarged data."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p8_0",
+            "confidence_score": 0.8
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "faster_rcnn",
+      "assertion_id": "assert_llm_voc_map50_b2_0",
+      "metric": "voc_map50",
+      "value": 73.2,
+      "unit": "percent",
+      "test_set": "VOC2007 test",
+      "training_data": "VOC07 trainval + VOC12 trainval",
+      "detector_backbone": "VGG16",
+      "proposal_backbone": "VGG16",
+      "review_source_pdf_pages": [
+        7
+      ],
+      "source_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b2_0",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "73.2",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "detector_family": "Faster R-CNN",
+          "model_variant": "RPN+VGG, shared",
+          "training_data": "VOC 2007 trainval + VOC 2012 trainval",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "VOC mAP, integration convention unknown",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "VGG-16",
+            "detector_backbone": "VGG-16",
+            "proposal_backbone": "VGG-16"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent",
+            "proposal_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.9,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 2,
+          "model_output_format": "json",
+          "reasoning": "Table 2 shared RPN+VGG on 07+12, VOC07 test mAP 73.2."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p7_0",
+            "confidence_score": 0.9
+          },
+          {
+            "source_id": "chunk_p9_0",
+            "confidence_score": 0.9
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "faster_rcnn",
+      "assertion_id": "assert_llm_voc_map50_b2_1",
+      "metric": "voc_map50",
+      "value": 69.9,
+      "unit": "percent",
+      "test_set": "VOC2007 test",
+      "training_data": "VOC07 trainval",
+      "detector_backbone": "VGG16",
+      "proposal_backbone": "VGG16",
+      "review_source_pdf_pages": [
+        7
+      ],
+      "source_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b2_1",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "69.9",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "detector_family": "Faster R-CNN",
+          "model_variant": "RPN+VGG, shared",
+          "training_data": "VOC 2007 trainval",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "VOC mAP, integration convention unknown",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "VGG-16",
+            "detector_backbone": "VGG-16",
+            "proposal_backbone": "VGG-16"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent",
+            "proposal_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.9,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 2,
+          "model_output_format": "json",
+          "reasoning": "Table 2 shared RPN+VGG on VOC07, mAP 69.9."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p7_0",
+            "confidence_score": 0.9
+          },
+          {
+            "source_id": "chunk_p9_0",
+            "confidence_score": 0.9
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "faster_rcnn",
+      "assertion_id": "assert_llm_voc_map50_b2_2",
+      "metric": "voc_map50",
+      "value": 70.4,
+      "unit": "percent",
+      "test_set": "VOC2012 test",
+      "training_data": "VOC07 trainval+test + VOC12 trainval",
+      "detector_backbone": "VGG16",
+      "proposal_backbone": "VGG16",
+      "review_source_pdf_pages": [
+        7
+      ],
+      "source_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b2_2",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "70.4",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "region_based",
+          "scenario": "voc2012_test",
+          "detector_family": "Faster R-CNN",
+          "model_variant": "RPN+VGG, shared",
+          "training_data": "VOC 2007 trainval+test + VOC 2012 trainval",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "VOC mAP, integration convention unknown",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "VGG-16",
+            "detector_backbone": "VGG-16",
+            "proposal_backbone": "VGG-16"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent",
+            "proposal_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.9,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 2,
+          "model_output_format": "json",
+          "reasoning": "Table 3 shared RPN+VGG on 07++12, VOC12 test mAP 70.4."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p7_0",
+            "confidence_score": 0.9
+          },
+          {
+            "source_id": "chunk_p9_0",
+            "confidence_score": 0.9
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "yolo",
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "metric": "voc_map50",
+      "value": 54.5,
+      "unit": "percent",
+      "test_set": "VOC2012 test",
+      "training_data": "unknown",
+      "detector_backbone": "custom 24-conv + 2-FC",
+      "proposal_backbone": "not_applicable",
+      "review_source_pdf_pages": [
+        3,
+        6
+      ],
+      "source_sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b1_0",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "54.5",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "dense_regression",
+          "scenario": "voc2012_test",
+          "detector_family": "YOLO",
+          "model_variant": "unknown",
+          "training_data": "unknown",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "comp4 outside data allowed leaderboard, mean AP",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "detector_backbone_evidence": "unknown",
+          "proposal_backbone_evidence": "unknown",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "unknown",
+            "detector_backbone": "unknown",
+            "proposal_backbone": "unknown"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "model_variant",
+            "training_data",
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.95,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 1,
+          "model_output_format": "json",
+          "reasoning": "Explicit VOC 2012 test mAP cited in text and Table 1."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p6_0",
+            "confidence_score": 0.95
+          },
+          {
+            "source_id": "chunk_p7_0",
+            "confidence_score": 0.95
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    },
+    {
+      "paper": "yolo",
+      "assertion_id": "assert_llm_voc_map50_b1_1",
+      "metric": "voc_map50",
+      "value": 58.8,
+      "unit": "percent",
+      "test_set": "VOC2007 test",
+      "training_data": "unknown",
+      "detector_backbone": "custom 24-conv + 2-FC",
+      "proposal_backbone": "not_applicable",
+      "review_source_pdf_pages": [
+        3,
+        7
+      ],
+      "source_sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+      "original_model_assertion": {
+        "assertion_id": "assert_llm_voc_map50_b1_1",
+        "subject": "cv_detection:voc_map50",
+        "predicate": "equals",
+        "object": "58.8",
+        "unit": "percent",
+        "context_conditions": {
+          "method": "dense_regression",
+          "scenario": "voc2007_test",
+          "detector_family": "YOLO",
+          "model_variant": "unknown",
+          "training_data": "unknown",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown",
+          "input_resolution": "unknown",
+          "evaluation_protocol": "mAP on VOC 2007 test as in Table 2",
+          "hardware": "unknown",
+          "batch_size": "unknown",
+          "timing_scope": "not_applicable",
+          "result_role": "primary",
+          "detector_backbone_evidence": "unknown",
+          "proposal_backbone_evidence": "unknown",
+          "reported_experiment_conditions": {
+            "timing_scope": "not_applicable",
+            "backbone": "unknown",
+            "detector_backbone": "unknown",
+            "proposal_backbone": "unknown"
+          },
+          "condition_validation_issues": [
+            "detector_backbone_evidence_missing_or_inconsistent"
+          ],
+          "condition_validation": "needs_review",
+          "missing_context_keys": [
+            "model_variant",
+            "training_data",
+            "backbone",
+            "detector_backbone",
+            "proposal_backbone",
+            "input_resolution",
+            "hardware",
+            "batch_size"
+          ],
+          "review_required": true,
+          "confidence": 0.9,
+          "source": "llm_structured",
+          "extraction_method": "llm",
+          "batch_index": 1,
+          "model_output_format": "json",
+          "reasoning": "YOLO Table 2 mAP row for VOC 2007 test."
+        },
+        "evidence_links": [
+          {
+            "source_id": "chunk_p7_0",
+            "confidence_score": 0.9
+          }
+        ]
+      },
+      "review": {
+        "status": "AI-assisted local-v1 source review; requires researcher confirmation",
+        "human_verified": false,
+        "note": "Backbone supplemented from source; original unknown conditions are preserved in original_model_assertion. Accuracy rows have no inference timing meaning."
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 /**
  * Intent Metadata Form
  * Capture intent type, scope, and generalization hint during HITL actions
@@ -62,27 +63,27 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
   const getContextHelp = () => {
     switch (context) {
       case 'conflict_resolution':
-        return 'This intent will be captured with your conflict resolution decision.';
+        return t("This intent will be captured with your conflict resolution decision.");
       case 'unit_selection':
-        return 'This intent will be learned from your unit preference.';
+        return t("This intent will be learned from your unit preference.");
       case 'subdomain_classification':
-        return 'This intent will be associated with your subdomain classification.';
+        return t("This intent will be associated with your subdomain classification.");
       default:
-        return 'Capture metadata about this research decision.';
+        return t("Capture metadata about this research decision.");
     }
   };
 
   return (
     <form className="intent-metadata-form" onSubmit={handleSubmit}>
       <div className="form-header">
-        <h3>Capture Intent</h3>
+        <h3>{t("Capture Intent")}</h3>
         <p className="context-help">{getContextHelp()}</p>
       </div>
 
       <div className="form-body">
         <div className="form-group">
           <label htmlFor="intent-type">
-            Intent Type
+            {t("Intent Type")}
             <span className="required">*</span>
           </label>
           <select
@@ -91,17 +92,17 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
             onChange={(e) => setIntentType(e.target.value as any)}
             required
           >
-            <option value="correction">Correction - Tactical error fix</option>
-            <option value="preference">Preference - Context-specific choice</option>
-            <option value="priority">Priority - Cross-paper pattern</option>
-            <option value="constraint">Constraint - Absolute rule</option>
-            <option value="goal">Goal - Strategic objective</option>
+            <option value="correction">{t("Correction - Tactical error fix")}</option>
+            <option value="preference">{t("Preference - Context-specific choice")}</option>
+            <option value="priority">{t("Priority - Cross-paper pattern")}</option>
+            <option value="constraint">{t("Constraint - Absolute rule")}</option>
+            <option value="goal">{t("Goal - Strategic objective")}</option>
           </select>
         </div>
 
         <div className="form-group">
           <label htmlFor="intent-scope">
-            Scope
+            {t("Scope")}
             <span className="required">*</span>
           </label>
           <select
@@ -110,35 +111,35 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
             onChange={(e) => setIntentScope(e.target.value as any)}
             required
           >
-            <option value="local">Local - Apply to this paper only</option>
-            <option value="pattern">Pattern - Generalizable to similar cases</option>
-            <option value="global">Global - Apply to all future work</option>
+            <option value="local">{t("Local - Apply to this paper only")}</option>
+            <option value="pattern">{t("Pattern - Generalizable to similar cases")}</option>
+            <option value="global">{t("Global - Apply to all future work")}</option>
           </select>
         </div>
 
         {intentScope !== 'local' && (
           <div className="form-group">
             <label htmlFor="generalization-hint">
-              Generalization Hint
-              <span className="optional">(optional)</span>
+              {t("Generalization Hint")}
+              <span className="optional">{t("(optional)")}</span>
             </label>
             <textarea
               id="generalization-hint"
               value={generalizationHint}
               onChange={(e) => setGeneralizationHint(e.target.value)}
-              placeholder="E.g., 'Apply to all WDM networking papers' or 'When comparing bandwidth metrics'"
+              placeholder={t("E.g., 'Apply to all WDM networking papers' or 'When comparing bandwidth metrics'")}
               rows={2}
             />
             <small className="help-text">
-              Help the AI understand when to apply this pattern
+              {t("Help the AI understand when to apply this pattern")}
             </small>
           </div>
         )}
 
         <div className="form-group">
           <label htmlFor="confidence-override">
-            Confidence Override
-            <span className="optional">(optional)</span>
+            {t("Confidence Override")}
+            <span className="optional">{t("(optional)")}</span>
           </label>
           <div className="confidence-input">
             <input
@@ -157,20 +158,20 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
               type="button"
               className="btn-clear"
               onClick={() => setConfidenceOverride(undefined)}
-              title="Use default confidence"
+              title={t("Use default confidence")}
             >
               ✕
             </button>
           </div>
           <small className="help-text">
-            Override AI confidence for this decision
+            {t("Override AI confidence for this decision")}
           </small>
         </div>
 
         <div className="form-group">
           <label htmlFor="tags">
-            Tags
-            <span className="optional">(optional)</span>
+            {t("Tags")}
+            <span className="optional">{t("(optional)")}</span>
           </label>
           <div className="tag-input-container">
             <input
@@ -184,10 +185,10 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
                   addTag();
                 }
               }}
-              placeholder="Add tags (press Enter)"
+              placeholder={t("Add tags (press Enter)")}
             />
             <button type="button" className="btn-add-tag" onClick={addTag}>
-              Add
+              {t("Add")}
             </button>
           </div>
           {tags.length > 0 && (
@@ -199,7 +200,7 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
                     type="button"
                     className="tag-remove"
                     onClick={() => removeTag(tag)}
-                    aria-label={`Remove ${tag}`}
+                    aria-label={t('Remove {name}', { name: tag })}
                   >
                     ×
                   </button>
@@ -213,11 +214,11 @@ export const IntentMetadataForm: React.FC<IntentMetadataFormProps> = ({
       <div className="form-footer">
         {onCancel && (
           <button type="button" className="btn-cancel" onClick={onCancel}>
-            Skip Intent Capture
+            {t("Skip Intent Capture")}
           </button>
         )}
         <button type="submit" className="btn-save">
-          Save Intent
+          {t("Save Intent")}
         </button>
       </div>
 

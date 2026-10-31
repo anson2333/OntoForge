@@ -1,3 +1,4 @@
+import { t, uiLabel, localizeMessage, domainTitle } from '../../i18n';
 /**
  * Metric View
  * Focused detail surface for a metric selected from the workspace sidebar.
@@ -74,7 +75,7 @@ export const MetricView: React.FC<MetricViewProps> = ({
           .filter(Boolean)
       });
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : 'Failed to update metric');
+      setError(nextError instanceof Error ? nextError.message : t("Failed to update metric"));
     }
   };
 
@@ -82,40 +83,40 @@ export const MetricView: React.FC<MetricViewProps> = ({
     <div className="metric-view">
       <div className="metric-view-header">
         <HierarchyNav items={hierarchyItems} />
-        <div className="metric-context-pill">{domainPack.config.domain.name}</div>
+        <div className="metric-context-pill">{domainTitle(domainPack.config.domain.name)}</div>
       </div>
 
       <div className="metric-view-content">
         <div className="metric-title-block">
-          <div className="metric-kicker">Metric</div>
+          <div className="metric-kicker">{t("Metric")}</div>
           <h1>{metric.name.replace(/_/g, ' ')}</h1>
           <div className="metric-full-name">{metric.full_name}</div>
         </div>
 
         <div className="metric-summary-grid">
           <div className="metric-summary-item">
-            <span className="metric-summary-value">{metric.unit || 'unitless'}</span>
-            <span className="metric-summary-label">Expected Unit</span>
+            <span className="metric-summary-value">{metric.unit || t('Unitless')}</span>
+            <span className="metric-summary-label">{t("Expected Unit")}</span>
           </div>
           <div className="metric-summary-item">
-            <span className="metric-summary-value">{metric.value_type || metricDefinition?.value_type || 'value'}</span>
-            <span className="metric-summary-label">Value Type</span>
+            <span className="metric-summary-value">{uiLabel(metric.value_type || metricDefinition?.value_type || 'Value')}</span>
+            <span className="metric-summary-label">{t("Value Type")}</span>
           </div>
           <div className="metric-summary-item">
             <span className="metric-summary-value">{observations.length}</span>
-            <span className="metric-summary-label">Observed Papers</span>
+            <span className="metric-summary-label">{t("Observed Papers")}</span>
           </div>
           <div className="metric-summary-item">
             <span className="metric-summary-value">{evidenceCount}</span>
-            <span className="metric-summary-label">Evidence Links</span>
+            <span className="metric-summary-label">{t("Evidence Links")}</span>
           </div>
         </div>
 
         <div className="metric-section">
-          <h2>Edit Metric</h2>
+          <h2>{t("Edit Metric")}</h2>
           <form className="metric-editor-form" onSubmit={handleSave}>
             <label>
-              <span>Name</span>
+              <span>{t("Name")}</span>
               <input
                 value={draft.name}
                 onChange={event => setDraft(current => ({ ...current, name: event.target.value }))}
@@ -123,7 +124,7 @@ export const MetricView: React.FC<MetricViewProps> = ({
             </label>
 
             <label>
-              <span>Expected Unit</span>
+              <span>{t("Expected Unit")}</span>
               <input
                 value={draft.expected_unit}
                 onChange={event => setDraft(current => ({ ...current, expected_unit: event.target.value }))}
@@ -131,89 +132,89 @@ export const MetricView: React.FC<MetricViewProps> = ({
             </label>
 
             <label>
-              <span>Value Type</span>
+              <span>{t("Value Type")}</span>
               <select
                 value={draft.value_type}
                 onChange={event => setDraft(current => ({ ...current, value_type: event.target.value as MetricInput['value_type'] }))}
               >
-                <option value="float">Float</option>
-                <option value="int">Integer</option>
-                <option value="string">String</option>
-                <option value="bool">Boolean</option>
+                <option value="float">{t("Float")}</option>
+                <option value="int">{t("Integer")}</option>
+                <option value="string">{t("String")}</option>
+                <option value="bool">{t("Boolean")}</option>
               </select>
             </label>
 
             <label>
-              <span>Aliases</span>
+              <span>{t("Aliases")}</span>
               <input
                 value={aliasText}
                 onChange={event => setAliasText(event.target.value)}
-                placeholder="comma-separated aliases"
+                placeholder={t("comma-separated aliases")}
               />
             </label>
 
-            {error && <div className="metric-editor-error">{error}</div>}
+            {error && <div className="metric-editor-error">{localizeMessage(error)}</div>}
 
             <div className="metric-editor-actions">
-              <button type="submit">Save Changes</button>
+              <button type="submit">{t("Save Changes")}</button>
               <button
                 type="button"
                 className="danger"
                 onClick={() => {
-                  if (confirm(`Delete metric "${metric.name}"? Existing extracted values for this metric will be removed from the current local view.`)) {
+                  if (confirm(t('Delete metric "{name}"? Existing extracted values for this metric will be removed from the current local view.', { name: metric.name }))) {
                     onDelete(metric);
                   }
                 }}
               >
-                Delete Metric
+                {t("Delete Metric")}
               </button>
             </div>
           </form>
         </div>
 
         <div className="metric-section">
-          <h2>Definition</h2>
+          <h2>{t("Definition")}</h2>
           <dl className="metric-definition-list">
             <div>
-              <dt>Aliases</dt>
-              <dd>{metric.aliases.length > 0 ? metric.aliases.join(', ') : 'None'}</dd>
+              <dt>{t("Aliases")}</dt>
+              <dd>{metric.aliases.length > 0 ? metric.aliases.join(', ') : t("None")}</dd>
             </div>
             <div>
-              <dt>Namespace</dt>
+              <dt>{t("Namespace")}</dt>
               <dd>{metric.namespace}</dd>
             </div>
             <div>
-              <dt>Resolved Values</dt>
-              <dd>{resolvedCount} of {observations.length}</dd>
+              <dt>{t("Resolved Values")}</dt>
+              <dd>{resolvedCount} {t("of")} {observations.length}</dd>
             </div>
             <div>
-              <dt>Average Confidence</dt>
-              <dd>{observations.length > 0 ? `${Math.round(averageConfidence * 100)}%` : 'No observations'}</dd>
+              <dt>{t("Average Confidence")}</dt>
+              <dd>{observations.length > 0 ? `${Math.round(averageConfidence * 100)}%` : t("No observations")}</dd>
             </div>
           </dl>
         </div>
 
         <div className="metric-section">
-          <h2>Observed Values</h2>
+          <h2>{t("Observed Values")}</h2>
           {observations.length > 0 ? (
             <div className="metric-observation-table">
               <div className="metric-observation-row header">
-                <span>Paper</span>
-                <span>Value</span>
-                <span>Status</span>
-                <span>Confidence</span>
+                <span>{t("Paper")}</span>
+                <span>{t("Value")}</span>
+                <span>{t("Status")}</span>
+                <span>{t("Confidence")}</span>
               </div>
               {observations.map(({ paper, cell }) => (
                 <div className="metric-observation-row" key={paper.id}>
                   <span className="metric-paper-title">{paper.title}</span>
                   <span>{cell?.value ?? 'N/A'} {cell?.unit || metric.unit || ''}</span>
-                  <span>{cell?.status.replace(/_/g, ' ')}</span>
+                  <span>{cell ? uiLabel(cell.status) : ''}</span>
                   <span>{cell ? `${Math.round(cell.confidence * 100)}%` : 'N/A'}</span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="metric-empty-state">No extracted values for this metric yet.</div>
+            <div className="metric-empty-state">{t("No extracted values for this metric yet.")}</div>
           )}
         </div>
       </div>

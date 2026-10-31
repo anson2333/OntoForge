@@ -1,0 +1,22 @@
+{
+  "raw_candidates": {
+    "fast_rcnn": 8,
+    "faster_rcnn": 10,
+    "yolo": 5
+  },
+  "selected_reporting_rows": 8,
+  "condition_issue_counts": {
+    "detector_backbone_evidence_missing_or_inconsistent": 23,
+    "proposal_backbone_evidence_missing_or_inconsistent": 9,
+    "timing_scope_evidence_missing_or_inconsistent": 8
+  },
+  "fully_quote_grounded_candidates": 0,
+  "all_batches_stop": true,
+  "tests_passed": 45,
+  "frontend_type_check": "passed",
+  "limits": [
+    "Strict contiguous quote requirement downgraded many valid but unsupported conditions. This run does not demonstrate complete automatic semantic understanding.",
+    "YOLO 110 seconds is total runtime for 4952 images; its converted 110000ms candidate is not per-image latency, excluded from reporting set.",
+    "Duplicates, approximate summaries, incomplete or malformed candidate rows and baseline leakage remain possible."
+  ]
+}

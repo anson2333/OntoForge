@@ -473,6 +473,9 @@ class TestEvidenceAndDomainPackRpc:
                 "text": "The reconfiguration delay is 12.5 ms.",
                 "confidence": 0.93,
                 "bounding_box": {"page": 1, "x": 0, "y": 0, "width": 10, "height": 10},
+                "verification_status": "raw",
+                "modification_count": 0,
+                "last_modified_at": None,
             }
         ]
 

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * Matrix Cell Component
  * Individual cell showing value, status, and confidence
@@ -28,10 +29,10 @@ export default function MatrixCell({ cellData, onClick, isSelected }: MatrixCell
   };
 
   const statusLabels = {
-    pending: 'Pending',
-    resolved: 'Verified',
-    conflict: 'Conflict!',
-    locked: 'Locked'
+    pending: t('Pending'),
+    resolved: t('Verified'),
+    conflict: t('Conflict!'),
+    locked: t('Locked')
   };
 
   return (
@@ -53,7 +54,7 @@ export default function MatrixCell({ cellData, onClick, isSelected }: MatrixCell
         {statusLabels[cellData.status]}
       </div>
       <div style={{ fontSize: '0.75em', opacity: 0.6, marginTop: '4px' }}>
-        {cellData.evidenceCount} evidence · {(cellData.confidence * 100).toFixed(0)}% conf.
+        {cellData.evidenceCount} {t("evidence ·")} {(cellData.confidence * 100).toFixed(0)}{t("% conf.")}
       </div>
       {isSelected && (
         <div style={{

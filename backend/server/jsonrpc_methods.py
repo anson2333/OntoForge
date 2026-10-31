@@ -4,15 +4,18 @@ Handles Scientific Service Protocol methods.
 """
 
 import functools
+import base64
 import json
 import os
 import re
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Dict, Optional
 from datetime import datetime, timezone
 from uuid import uuid4
 from jsonrpcserver import method, Success, Error, serve, Result
 from backend.database import get_db, NodeRepository, EdgeRepository
+from backend.database.ontology_repository import OntologyRepository
 from backend.config import DomainPackLoader, RegistryManager, DomainPackValidator
 from backend.schemas.protocol import (
     SSPInitializeParams,
@@ -63,12 +66,19 @@ from backend.services.intent_learning_engine import IntentLearningEngine
 from backend.services.llm import build_server_capability_registry, get_default_provider, parse_user_intent
 from backend.services.pdf_ingestion_service import (
     commit_parsed_pdf,
+    authorize_pdf_upload,
+    load_domain_pack_config,
+    paper_source_path,
     load_pdf_upload,
     parse_pdf_with_domain_pack,
     store_pdf_upload,
 )
 from backend.services import auth_service
 from backend.services.coverage_analysis import analyze_workspace_coverage
+from backend.services.comparability import compare_experiments
+from backend.services.entity_resolution import EntityResolver
+from backend.services.gap_analysis import analyze_gap_candidates
+from backend.schemas.ontology import EntityMention, ExperimentRecord
 from backend.services.auth_service import (
     AuthError,
     CODE_AUTH_REQUIRED,
@@ -389,10 +399,111 @@ def removeWorkspaceMember(
 def getLLMStatus() -> Result:
     try:
         provider = get_default_provider()
-        response = GetLLMStatusResponse(**provider.get_status().model_dump())
+        configured = provider.is_configured()
+        from backend.services.llm_profiles import active_connection
+        identity = get_current_identity()
+        connection = active_connection(identity.user_id) if identity else None
+        response = GetLLMStatusResponse(provider=provider.name, model=provider.config.model,
+            enabled=provider.config.enabled, configured=configured, healthy=bool(configured and connection and connection.get("healthy")),
+            message=connection["message"] if configured and connection else ("已配置，尚未验证连接" if configured else "尚未配置模型或 API Key"))
         return Success(response.model_dump())
     except Exception as e:
         return Error(code=-32603, message=f"Failed to get LLM status: {str(e)}")
+
+
+def _profile_user():
+    identity = get_current_identity()
+    if identity is None:
+        raise AuthError(CODE_AUTH_REQUIRED, "Sign in to manage model endpoints")
+    return identity.user_id
+
+
+@method
+def listLLMProfiles() -> Result:
+    from backend.services.llm_profiles import list_profiles
+    return Success(list_profiles(_profile_user()))
+
+
+@method
+def listLLMPresets() -> Result:
+    from backend.services.llm_presets import PRESETS
+    _profile_user()
+    return Success({"presets": PRESETS, "verified_on": "2026-10-29"})
+
+
+@method
+async def saveLLMProfile(profile: Dict[str, Any], activate: bool = False) -> Result:
+    from backend.services.llm_profiles import ProfileInput, save_profile, draft_configuration, profile_configuration, record_connection
+    from pydantic import ValidationError
+    user = _profile_user()
+    try:
+        validated = ProfileInput.model_validate(profile)
+        connection = await _check_model_configuration(draft_configuration(user, validated))
+        if not connection["healthy"]:
+            return Error(code=-32006, message="未保存或启用：" + connection["message"])
+        saved = save_profile(user, validated, activate)
+        record_connection(profile_configuration(user, saved["id"]), True, connection["message"])
+        return Success({"profile": saved, "connection": connection})
+    except ValidationError as exc:
+        return Error(code=-32602, message="; ".join(f"{'.'.join(map(str, error['loc']))}: {error['msg']}" for error in exc.errors(include_input=False)))
+    except ValueError as exc:
+        return Error(code=-32004, message=str(exc))
+
+
+@method
+def activateLLMProfile(profile_id: Optional[str] = None) -> Result:
+    from backend.services.llm_profiles import activate_profile
+    user = _profile_user()
+    try:
+        return Success(activate_profile(user, profile_id))
+    except ValueError as exc:
+        return Error(code=-32004, message=str(exc))
+
+
+@method
+def deleteLLMProfile(profile_id: str) -> Result:
+    from backend.services.llm_profiles import delete_profile
+    user = _profile_user()
+    try:
+        return Success(delete_profile(user, profile_id))
+    except ValueError as exc:
+        return Error(code=-32004, message=str(exc))
+
+
+async def _check_model_configuration(config):
+    import time
+    from backend.services.llm.base import provider_from_config, StructuredOutputRequest
+    from backend.services.llm_errors import model_error
+    started = time.perf_counter()
+    provider = provider_from_config(config)
+    if not provider.is_configured():
+        return {"healthy": False, "seconds": 0, "message": "请填写对应厂商的 API Key 和模型名称"}
+    try:
+        test_limit = 1024 if config.provider == "anthropic" or config.vendor == "kimi" else 128
+        provider = provider_from_config(config.model_copy(update={"max_output_tokens": min(config.max_output_tokens or test_limit, test_limit)}))
+        result = await provider.invoke_structured(StructuredOutputRequest(
+            system_prompt="You are testing API connectivity. Reply briefly.",
+            user_prompt="Please reply: OK", response_schema_name="EndpointTest", metadata={"connection_probe": True},
+            response_schema={"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"]}))
+        healthy = bool((result.raw_text or "").strip())
+        message = "连接验证成功，模型已正常回复" if healthy else "接口已响应，但模型没有返回文本；请检查模型或增加最大输出 tokens"
+        provider.record_connection(healthy, message)
+        return {"healthy": healthy, "message": message, "seconds": round(time.perf_counter() - started, 3),
+                "usage": {key: value for key, value in result.usage.items() if isinstance(value, (int, float))}}
+    except Exception as exc:
+        error = model_error(exc)
+        provider.record_connection(False, error["message"])
+        return {"healthy": False, "seconds": round(time.perf_counter() - started, 3), "message": error["message"]}
+
+
+@method
+async def testLLMProfile(profile_id: str) -> Result:
+    from backend.services.llm_profiles import profile_configuration
+    user = _profile_user()
+    try:
+        return Success(await _check_model_configuration(profile_configuration(user, profile_id)))
+    except ValueError:
+        return Error(code=-32004, message="Profile not found or configuration invalid")
 
 
 @method
@@ -491,12 +602,8 @@ def parsePdfWithDomainPack(
         )
         if not workspace:
             raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
-        if upload_id and identity is not None:
-            upload = load_pdf_upload(upload_id)
-            if upload.owner_id and upload.owner_id != identity.user_id:
-                raise AuthError(CODE_FORBIDDEN, "Upload belongs to another user")
-            if upload.workspace_id and upload.workspace_id != workspace_id:
-                raise AuthError(CODE_FORBIDDEN, "Upload belongs to another workspace")
+        if upload_id:
+            authorize_pdf_upload(upload_id, workspace_id, identity.user_id if identity else None)
         if paper_uri:
             allow_local = os.getenv("ONTOFORGE_ALLOW_LOCAL_PAPER_URI", "false").lower() in {
                 "1", "true", "yes", "on"
@@ -515,7 +622,7 @@ def parsePdfWithDomainPack(
             upload_id=upload_id,
             paper_uri=paper_uri,
             raw_text=raw_text,
-            owner_id=owner_id,
+            owner_id=identity.user_id if identity else None,
             intent_context=intent_context,
             parse_options=parse_options or {},
         )
@@ -533,15 +640,19 @@ def commitParsedPdf(
     workspace_id: str,
     domain_pack_namespace: str,
     upload_id: str,
+    preview_id: str,
     owner_id: Optional[str] = None,
     parse_options: Optional[Dict[str, Any]] = None,
 ) -> Result:
     try:
+        identity = get_current_identity()
+        authorize_pdf_upload(upload_id, workspace_id, identity.user_id if identity else None)
         request = CommitParsedPdfParams(
             workspace_id=workspace_id,
             domain_pack_namespace=domain_pack_namespace,
             upload_id=upload_id,
-            owner_id=owner_id,
+            preview_id=preview_id,
+            owner_id=identity.user_id if identity else None,
             parse_options=parse_options or {},
         )
 
@@ -2035,6 +2146,219 @@ def getAssertions(workspace_id: str, paper_id: Optional[str] = None, metric_name
 
 @method
 @_authenticated
+def resolveEntityMentions(
+    workspace_id: str,
+    domain_pack_namespace: str,
+    mentions: list[dict[str, Any]],
+    persist: bool = True,
+    owner_id: Optional[str] = None,
+) -> Result:
+    """Resolve typed mentions with auditable decisions; fuzzy matches never auto-merge."""
+    try:
+        db = get_db()
+        node_repo = NodeRepository(db)
+        workspace = _get_accessible_workspace(node_repo, workspace_id, owner_id, write=persist)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        config = load_domain_pack_config(domain_pack_namespace)
+        if config is None:
+            return Error(code=-32602, message="Unknown domain pack")
+        resolver = EntityResolver(config)
+        decisions = []
+        repository = OntologyRepository(db)
+        with db.transaction() if persist else _null_context():
+            for payload in mentions[:500]:
+                mention = EntityMention(
+                    **{key: value for key, value in payload.items() if key not in {"workspace_id", "domain_id"}},
+                    workspace_id=workspace_id,
+                    domain_id=config.domain.id,
+                )
+                decision = resolver.resolve_mention(mention)
+                decisions.append(decision)
+                if persist:
+                    if decision.selected_entity_id and decision.candidates:
+                        candidate = next(
+                            item for item in decision.candidates
+                            if item.entity_id == decision.selected_entity_id
+                        )
+                        repository.merge_canonical_entity(
+                            entity_id=candidate.entity_id, entity_type=candidate.entity_type,
+                            workspace_id=workspace_id, domain_id=config.domain.id,
+                            canonical_name=candidate.canonical_name, aliases=[],
+                        )
+                    repository.persist_resolution(decision)
+        return Success({"decisions": [item.model_dump(mode="json") for item in decisions]})
+    except AuthError:
+        raise
+    except Exception as exc:
+        return Error(code=-32602, message=f"Entity resolution failed: {exc}")
+
+
+@contextmanager
+def _null_context():
+    yield
+
+
+@method
+@_authenticated
+def getExperiments(
+    workspace_id: str,
+    experiment_ids: Optional[list[str]] = None,
+    model_variant_id: Optional[str] = None,
+    limit: int = 100,
+    owner_id: Optional[str] = None,
+) -> Result:
+    try:
+        db = get_db()
+        workspace = _get_accessible_workspace(NodeRepository(db), workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        experiments = OntologyRepository(db).get_experiments(
+            workspace_id, experiment_ids=experiment_ids,
+            model_variant_id=model_variant_id, limit=limit,
+        )
+        return Success({"experiments": experiments, "count": len(experiments)})
+    except AuthError:
+        raise
+    except Exception as exc:
+        return Error(code=-32603, message=f"Failed to fetch experiments: {exc}")
+
+
+@method
+@_authenticated
+def compareExperiments(
+    workspace_id: str,
+    experiment_ids: list[str],
+    policy_id: str,
+    owner_id: Optional[str] = None,
+) -> Result:
+    try:
+        if len(experiment_ids) != 2 or experiment_ids[0] == experiment_ids[1]:
+            return Error(code=-32602, message="Exactly two distinct experiment_ids are required")
+        db = get_db()
+        workspace = _get_accessible_workspace(NodeRepository(db), workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        records = OntologyRepository(db).get_experiments(
+            workspace_id, experiment_ids=experiment_ids, limit=2,
+        )
+        indexed = {item["experiment"]["id"]: item["experiment"] for item in records}
+        if set(experiment_ids) != set(indexed):
+            return Error(code=-32004, message="Experiment not found in this workspace")
+        result = compare_experiments(
+            ExperimentRecord(**indexed[experiment_ids[0]]),
+            ExperimentRecord(**indexed[experiment_ids[1]]),
+            policy_id,
+        )
+        return Success({"comparison": result.model_dump(mode="json")})
+    except AuthError:
+        raise
+    except ValueError as exc:
+        return Error(code=-32602, message=str(exc))
+    except Exception as exc:
+        return Error(code=-32603, message=f"Comparison failed: {exc}")
+
+
+@method
+@_authenticated
+def getEntitySubgraph(
+    workspace_id: str,
+    entity_id: str,
+    limit: int = 100,
+    owner_id: Optional[str] = None,
+) -> Result:
+    try:
+        db = get_db()
+        workspace = _get_accessible_workspace(NodeRepository(db), workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        graph = OntologyRepository(db).get_entity_subgraph(workspace_id, entity_id, limit)
+        if graph["root"] is None:
+            return Error(code=-32004, message="Entity not found in this workspace")
+        return Success({"subgraph": graph})
+    except AuthError:
+        raise
+    except Exception as exc:
+        return Error(code=-32603, message=f"Subgraph query failed: {exc}")
+
+
+@method
+@_authenticated
+def reviewResolution(
+    workspace_id: str,
+    decision_id: str,
+    action: str,
+    reason: str,
+    owner_id: Optional[str] = None,
+) -> Result:
+    """Confirm or retract a mapping without deleting its mention or provenance."""
+    try:
+        if action not in {"confirm", "retract"}:
+            return Error(code=-32602, message="action must be confirm or retract")
+        if not reason.strip():
+            return Error(code=-32602, message="A review reason is required")
+        identity = _require_identity()
+        db = get_db()
+        workspace = _get_accessible_workspace(NodeRepository(db), workspace_id, owner_id, write=True)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not writable")
+        event_id = f"review_{uuid4().hex}"
+        now = datetime.now(timezone.utc).isoformat()
+        records = db.execute_query(
+            """
+            MATCH (d:ResolutionDecision {id: $decision_id, workspace_id: $workspace_id})
+            SET d.active = $active, d.reviewed_by = $actor_id
+            CREATE (event:ReviewEvent {
+              id: $event_id, workspace_id: $workspace_id, actor_id: $actor_id,
+              action: $action, reason: $reason, created_at: $created_at
+            })-[:REVIEWS]->(d)
+            RETURN properties(d) AS decision, properties(event) AS event
+            """,
+            {
+                "decision_id": decision_id, "workspace_id": workspace_id,
+                "active": action == "confirm", "actor_id": identity.user_id if identity else "local",
+                "event_id": event_id, "action": action, "reason": reason.strip(), "created_at": now,
+            },
+        )
+        if not records:
+            return Error(code=-32004, message="Resolution decision not found")
+        return Success({"decision": records[0]["decision"], "review_event": records[0]["event"]})
+    except AuthError:
+        raise
+    except Exception as exc:
+        return Error(code=-32603, message=f"Resolution review failed: {exc}")
+
+
+@method
+@_authenticated
+def analyzeResearchGaps(
+    workspace_id: str,
+    include_machine_checked: bool = False,
+    limit: int = 50,
+    owner_id: Optional[str] = None,
+) -> Result:
+    try:
+        db = get_db()
+        workspace = _get_accessible_workspace(NodeRepository(db), workspace_id, owner_id)
+        if not workspace:
+            raise AuthError(CODE_FORBIDDEN, "Workspace not found or not accessible")
+        trusted = {"human_verified"}
+        if include_machine_checked:
+            trusted.add("machine_checked")
+        report = analyze_gap_candidates(
+            OntologyRepository(db).get_gap_observations(workspace_id),
+            workspace_id=workspace_id, trusted_states=frozenset(trusted),
+            limit=max(0, min(int(limit), 200)),
+        )
+        return Success({"analysis": report})
+    except AuthError:
+        raise
+    except Exception as exc:
+        return Error(code=-32603, message=f"Research-gap analysis failed: {exc}")
+
+
+@method
+@_authenticated
 def getCoverageAnalysis(
     workspace_id: str,
     domain_pack_namespace: Optional[str] = None,
@@ -2113,6 +2437,27 @@ def getGapCandidates(
 
 @method
 @_authenticated
+def getPaperSource(workspace_id: str, paper_id: str, owner_id: Optional[str] = None) -> Result:
+    """Download the preserved original; workspace authorization is mandatory."""
+    db = get_db()
+    repo = NodeRepository(db)
+    if not _get_accessible_workspace(repo, workspace_id, owner_id):
+        raise AuthError(CODE_FORBIDDEN, "Workspace not accessible")
+    paper = repo.get_node_by_id(paper_id, "PaperNode")
+    if not paper or paper.get("workspace_id") != workspace_id:
+        raise AuthError(CODE_FORBIDDEN, "Paper not accessible")
+    try:
+        path = paper_source_path(paper_id)
+        if not path.exists():
+            return Error(code=-32004, message="Original PDF unavailable for this legacy or demo paper")
+        return Success({"file_name": f"{paper_id}.pdf", "content_type": "application/pdf",
+                        "content_base64": base64.b64encode(path.read_bytes()).decode("ascii")})
+    except ValueError as exc:
+        return Error(code=-32004, message=str(exc))
+
+
+@method
+@_authenticated
 def getEvidence(
     workspace_id: str,
     paper_id: str,
@@ -2143,6 +2488,9 @@ def getEvidence(
                e.raw_text AS raw_text,
                e.latex_string AS latex_string,
                e.bounding_box AS bounding_box,
+               e.verification_status AS verification_status,
+               e.modification_count AS modification_count,
+               e.last_modified_at AS last_modified_at,
                r.confidence_score AS confidence
         """
         records = db.execute_query(
@@ -2194,6 +2542,9 @@ def getEvidence(
                     "text": record.get("latex_string") or record.get("raw_text") or "",
                     "confidence": record.get("confidence") or 0.0,
                     "bounding_box": bounding_box or {},
+                    "verification_status": record.get("verification_status") or "raw",
+                    "modification_count": record.get("modification_count") or 0,
+                    "last_modified_at": record.get("last_modified_at"),
                 }
             )
 

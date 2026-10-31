@@ -1,0 +1,369 @@
+{
+  "paper": "yolo",
+  "paper_metadata": {
+    "title": "You Only Look Once:",
+    "authors": [
+      "Unknown authors"
+    ],
+    "year": 2015,
+    "venue": "Unknown venue",
+    "doi": null,
+    "provenance_hash": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09"
+  },
+  "source_sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+  "diagnostics": {
+    "batch_count": 3,
+    "failed_batches": [],
+    "warnings": [],
+    "errors": [],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "prompt_tokens": 5236,
+        "completion_tokens": 187,
+        "total_tokens": 5423,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 3572
+      },
+      {
+        "prompt_tokens": 5963,
+        "completion_tokens": 681,
+        "total_tokens": 6644,
+        "prompt_tokens_details": {
+          "cached_tokens": 1792
+        },
+        "prompt_cache_hit_tokens": 1792,
+        "prompt_cache_miss_tokens": 4171
+      },
+      {
+        "prompt_tokens": 4479,
+        "completion_tokens": 240,
+        "total_tokens": 4719,
+        "prompt_tokens_details": {
+          "cached_tokens": 1792
+        },
+        "prompt_cache_hit_tokens": 1792,
+        "prompt_cache_miss_tokens": 2687
+      }
+    ],
+    "input_characters": 34746,
+    "finish_reasons": [
+      "stop",
+      "stop",
+      "stop"
+    ],
+    "output_formats": [
+      "json",
+      "json",
+      "json"
+    ],
+    "model_seconds": 12.811101,
+    "retryable": false,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "deepseek-flash",
+    "parse_seconds": 0.571184,
+    "total_seconds": 13.383828,
+    "pages": 9,
+    "chunks": 9,
+    "pdf_bytes": 5550305
+  },
+  "assertions": [
+    {
+      "assertion_id": "assert_llm_inference_fps_b0_0",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "45",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "unknown",
+        "detector_family": "YOLO",
+        "model_variant": "unknown",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "448x448",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "unknown",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "scenario",
+          "model_variant",
+          "training_data",
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.75,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Abstract states YOLO processes images at 45 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.75
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "54.5",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2012_test",
+        "detector_family": "YOLO",
+        "model_variant": "YOLO",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Explicit VOC 2012 test mAP of 54.5"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        },
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.8",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2007_test",
+        "detector_family": "YOLO",
+        "model_variant": "YOLO",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Table 2 YOLO VOC 2007 test mAP 58.8"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b1_2",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "45",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2007_test",
+        "detector_family": "YOLO",
+        "model_variant": "YOLO",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia Titan X GPU",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "45 fps on Titan X; end-to-end single evaluation stated"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        },
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b2_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "59.1",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "dense_regression",
+        "scenario": "voc2007_test",
+        "detector_family": "YOLO",
+        "model_variant": "YOLO (best version)",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "unknown",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "YOLO base mAP 59.1 on VOC 2007 test, Table 3"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p8_0",
+          "confidence_score": 0.85
+        }
+      ]
+    }
+  ],
+  "chunk_pages": {
+    "chunk_p1_0": 1,
+    "chunk_p2_0": 2,
+    "chunk_p3_0": 3,
+    "chunk_p4_0": 4,
+    "chunk_p5_0": 5,
+    "chunk_p6_0": 6,
+    "chunk_p7_0": 7,
+    "chunk_p8_0": 8,
+    "chunk_p9_0": 9
+  }
+}

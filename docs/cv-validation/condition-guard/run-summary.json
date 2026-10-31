@@ -1,0 +1,1337 @@
+{
+  "workspace_id": "workspace_cv目标检测___实验条件校验与汇报_保留_20ff80d9",
+  "config_sha256": "a382f8cdff6f4fd1589d82da83c59f15cadaca704576cdda7706eb6ee496d16c",
+  "model": "deepseek-flash",
+  "provider": "openai_compatible",
+  "vendor": "deepseek",
+  "profile_name": "DeepSeek（DS）",
+  "profile_fingerprint": "ef439362702b47b77cbc38a83f42c51199c917aa36e7de93cd77226d67a66d85",
+  "source_sha256": {
+    "backend/schemas/domain_pack.py": "4d5f0ebb35d91c920f886f4ac149f809e70933ec201432d4fedbd76eeef1ce7b",
+    "backend/services/llm/semantic_extractor.py": "32c4d53adb0c60e2df15d43b2740952dff4b7ddca5fa3736778456911970a0ef",
+    "backend/services/pdf_ingestion_service.py": "d6be134ce4b9447539fd08e4ad4a19eaaf8d63e06d264311241c98617cf017ec",
+    "backend/configs/domain-pack-cv-detection.yaml": "7aec4373701abadaeab6f1978a2a57a5f8ae475425730585780bd1e6ff8324bc"
+  },
+  "max_output_tokens": 4096,
+  "timeout_seconds": 120,
+  "papers": {
+    "fast_rcnn": {
+      "file_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "upload_id": "upload_bc97e97c382642ec8999cebb2b9b8a16",
+      "file_name": "fast_rcnn.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 728919,
+      "sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+      "expires_at": "2026-10-31T03:35:06.547038+00:00",
+      "seconds": 26.86,
+      "preview_id": "preview_0d19b5cb445c4e7e9a3f327fe0456ab6",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 5,
+        "failed_batches": [],
+        "warnings": [],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "prompt_tokens": 4289,
+            "completion_tokens": 368,
+            "total_tokens": 4657,
+            "prompt_tokens_details": {
+              "cached_tokens": 640
+            },
+            "prompt_cache_hit_tokens": 640,
+            "prompt_cache_miss_tokens": 3649
+          },
+          {
+            "prompt_tokens": 4635,
+            "completion_tokens": 6,
+            "total_tokens": 4641,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 2843
+          },
+          {
+            "prompt_tokens": 5791,
+            "completion_tokens": 1402,
+            "total_tokens": 7193,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 3999
+          },
+          {
+            "prompt_tokens": 4525,
+            "completion_tokens": 1416,
+            "total_tokens": 5941,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 2733
+          },
+          {
+            "prompt_tokens": 3469,
+            "completion_tokens": 6,
+            "total_tokens": 3475,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 1677
+          }
+        ],
+        "input_characters": 43430,
+        "finish_reasons": [
+          "stop",
+          "stop",
+          "stop",
+          "stop",
+          "stop"
+        ],
+        "output_formats": [
+          "json",
+          "json",
+          "json",
+          "json",
+          "json"
+        ],
+        "model_seconds": 26.195495,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "deepseek-flash",
+        "parse_seconds": 0.599724,
+        "total_seconds": 26.799452,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 728919
+      },
+      "assertion_count": 14,
+      "extraction_method": "llm",
+      "commit": {
+        "status": "committed",
+        "workspace_id": "workspace_cv目标检测___实验条件校验与汇报_保留_20ff80d9",
+        "domain_pack_namespace": "cv_detection",
+        "upload_id": "upload_bc97e97c382642ec8999cebb2b9b8a16",
+        "paper_id": "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+        "chunks_created": 9,
+        "formulas_created": 0,
+        "assertions_created": 14,
+        "warnings": [
+          "Page-only source locations; precise PDF bounding boxes are unavailable."
+        ]
+      }
+    },
+    "faster_rcnn": {
+      "file_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "upload_id": "upload_d85e476fd7124268bffa11b94e2a9a66",
+      "file_name": "faster_rcnn.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 2368067,
+      "sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+      "expires_at": "2026-10-31T03:35:34.156130+00:00",
+      "seconds": 26.89,
+      "preview_id": "preview_f7b93be9284d4527b9ef438ff81a4f87",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 4,
+        "failed_batches": [],
+        "warnings": [],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "prompt_tokens": 4764,
+            "completion_tokens": 643,
+            "total_tokens": 5407,
+            "prompt_tokens_details": {
+              "cached_tokens": 1664
+            },
+            "prompt_cache_hit_tokens": 1664,
+            "prompt_cache_miss_tokens": 3100
+          },
+          {
+            "prompt_tokens": 5314,
+            "completion_tokens": 1782,
+            "total_tokens": 7096,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 3522
+          },
+          {
+            "prompt_tokens": 6569,
+            "completion_tokens": 1424,
+            "total_tokens": 7993,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 4777
+          },
+          {
+            "prompt_tokens": 2993,
+            "completion_tokens": 340,
+            "total_tokens": 3333,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 1201
+          }
+        ],
+        "input_characters": 39241,
+        "finish_reasons": [
+          "stop",
+          "stop",
+          "stop",
+          "stop"
+        ],
+        "output_formats": [
+          "json",
+          "json",
+          "json",
+          "json"
+        ],
+        "model_seconds": 25.941578,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "deepseek-flash",
+        "parse_seconds": 0.875035,
+        "total_seconds": 26.81817,
+        "pages": 10,
+        "chunks": 13,
+        "pdf_bytes": 2368067
+      },
+      "assertion_count": 16,
+      "extraction_method": "llm",
+      "commit": {
+        "status": "committed",
+        "workspace_id": "workspace_cv目标检测___实验条件校验与汇报_保留_20ff80d9",
+        "domain_pack_namespace": "cv_detection",
+        "upload_id": "upload_d85e476fd7124268bffa11b94e2a9a66",
+        "paper_id": "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+        "chunks_created": 13,
+        "formulas_created": 0,
+        "assertions_created": 16,
+        "warnings": [
+          "Page-only source locations; precise PDF bounding boxes are unavailable."
+        ]
+      }
+    },
+    "yolo": {
+      "file_sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+      "upload_id": "upload_052174bf42de4c9182a703f6cf4d2970",
+      "file_name": "yolo.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 5550305,
+      "sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+      "expires_at": "2026-10-31T03:36:02.097213+00:00",
+      "seconds": 13.437,
+      "preview_id": "preview_bdceac1fd66f48f499f99dee0163285f",
+      "status": "parsed",
+      "diagnostics": {
+        "batch_count": 3,
+        "failed_batches": [],
+        "warnings": [],
+        "errors": [],
+        "skipped_batches": [],
+        "usage": [
+          {
+            "prompt_tokens": 5236,
+            "completion_tokens": 187,
+            "total_tokens": 5423,
+            "prompt_tokens_details": {
+              "cached_tokens": 1664
+            },
+            "prompt_cache_hit_tokens": 1664,
+            "prompt_cache_miss_tokens": 3572
+          },
+          {
+            "prompt_tokens": 5963,
+            "completion_tokens": 681,
+            "total_tokens": 6644,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 4171
+          },
+          {
+            "prompt_tokens": 4479,
+            "completion_tokens": 240,
+            "total_tokens": 4719,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_cache_hit_tokens": 1792,
+            "prompt_cache_miss_tokens": 2687
+          }
+        ],
+        "input_characters": 34746,
+        "finish_reasons": [
+          "stop",
+          "stop",
+          "stop"
+        ],
+        "output_formats": [
+          "json",
+          "json",
+          "json"
+        ],
+        "model_seconds": 12.811101,
+        "retryable": false,
+        "model_called": true,
+        "provider": "openai_compatible",
+        "model": "deepseek-flash",
+        "parse_seconds": 0.571184,
+        "total_seconds": 13.383828,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 5550305
+      },
+      "assertion_count": 5,
+      "extraction_method": "llm",
+      "commit": {
+        "status": "committed",
+        "workspace_id": "workspace_cv目标检测___实验条件校验与汇报_保留_20ff80d9",
+        "domain_pack_namespace": "cv_detection",
+        "upload_id": "upload_052174bf42de4c9182a703f6cf4d2970",
+        "paper_id": "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182",
+        "chunks_created": 9,
+        "formulas_created": 0,
+        "assertions_created": 5,
+        "warnings": [
+          "Page-only source locations; precise PDF bounding boxes are unavailable."
+        ]
+      }
+    }
+  },
+  "pilot_zhipu_interval_seconds": 65,
+  "coverage": {
+    "coverage": {
+      "metrics": [
+        "voc_map50",
+        "coco_ap",
+        "coco_ap_small",
+        "coco_ap75",
+        "inference_fps",
+        "inference_latency"
+      ],
+      "methods": [
+        "region_based",
+        "dense_regression",
+        "multibox"
+      ],
+      "scenarios": [
+        "voc2007_test",
+        "voc2010_test",
+        "voc2012_test",
+        "coco_test_dev",
+        "coco_val",
+        "unknown"
+      ],
+      "matrix": [
+        {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 16,
+              "assertion_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b2_0",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b2_1",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b3_0",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b3_1",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b3_2",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b3_3",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b3_4",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b3_5",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b0_0",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b1_0",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b1_1",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b1_2",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b1_3",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b1_4",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b1_5",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b2_0"
+              ],
+              "paper_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233"
+              ]
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 1,
+              "assertion_ids": [
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_inference_latency_b3_0"
+              ],
+              "paper_ids": [
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233"
+              ]
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2010_test",
+          "cells": {
+            "voc_map50": {
+              "count": 2,
+              "assertion_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b2_2",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b2_3"
+              ],
+              "paper_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb"
+              ]
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 4,
+              "assertion_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b0_0",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_voc_map50_b2_4",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b0_1",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_voc_map50_b2_1"
+              ],
+              "paper_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233"
+              ]
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "unknown",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 3,
+              "assertion_ids": [
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_inference_fps_b0_2",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_inference_fps_b2_3",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_inference_fps_b2_4"
+              ],
+              "paper_ids": [
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233"
+              ]
+            },
+            "inference_latency": {
+              "count": 4,
+              "assertion_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_inference_latency_b0_1",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb::assert_llm_inference_latency_b2_5",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_inference_latency_b2_2",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233::assert_llm_inference_latency_b2_5"
+              ],
+              "paper_ids": [
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_f9ef98777f2039257fa7fe05b5e234953a188b90b5f6ed1bdf953bec34e7ddbb",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233",
+                "paper_84221125a3247b7df497334f621d41fafff3abadd7fed1e44ec408e6c3f82233"
+              ]
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 2,
+              "assertion_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182::assert_llm_voc_map50_b1_1",
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182::assert_llm_voc_map50_b2_0"
+              ],
+              "paper_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182",
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182"
+              ]
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 1,
+              "assertion_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182::assert_llm_inference_fps_b1_2"
+              ],
+              "paper_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182"
+              ]
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2010_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 1,
+              "assertion_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182::assert_llm_voc_map50_b1_0"
+              ],
+              "paper_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182"
+              ]
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "unknown",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 1,
+              "assertion_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182::assert_llm_inference_fps_b0_0"
+              ],
+              "paper_ids": [
+                "paper_9f7de24148209c3deac1d4e52cf57c4fbffc0040ae906de04ad6b6e7f4244182"
+              ]
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2010_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "unknown",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        }
+      ],
+      "coverage": {
+        "covered_cells": 10,
+        "total_cells": 108,
+        "ratio": 0.0926,
+        "by_metric": {
+          "voc_map50": {
+            "covered_cells": 5,
+            "total_cells": 18
+          },
+          "coco_ap": {
+            "covered_cells": 0,
+            "total_cells": 18
+          },
+          "coco_ap_small": {
+            "covered_cells": 0,
+            "total_cells": 18
+          },
+          "coco_ap75": {
+            "covered_cells": 0,
+            "total_cells": 18
+          },
+          "inference_fps": {
+            "covered_cells": 3,
+            "total_cells": 18
+          },
+          "inference_latency": {
+            "covered_cells": 2,
+            "total_cells": 18
+          }
+        },
+        "by_method": {
+          "region_based": {
+            "covered_cells": 6,
+            "total_cells": 36
+          },
+          "dense_regression": {
+            "covered_cells": 4,
+            "total_cells": 36
+          },
+          "multibox": {
+            "covered_cells": 0,
+            "total_cells": 36
+          }
+        },
+        "by_scenario": {
+          "voc2007_test": {
+            "covered_cells": 4,
+            "total_cells": 18
+          },
+          "voc2010_test": {
+            "covered_cells": 1,
+            "total_cells": 18
+          },
+          "voc2012_test": {
+            "covered_cells": 2,
+            "total_cells": 18
+          },
+          "coco_test_dev": {
+            "covered_cells": 0,
+            "total_cells": 18
+          },
+          "coco_val": {
+            "covered_cells": 0,
+            "total_cells": 18
+          },
+          "unknown": {
+            "covered_cells": 3,
+            "total_cells": 18
+          }
+        }
+      },
+      "gaps": [
+        {
+          "method": "region_based",
+          "scenario": "unknown",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 6,
+          "scenario_activity": 3,
+          "score": 60
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "unknown",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 4,
+          "scenario_activity": 3,
+          "score": 48
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 6,
+          "scenario_activity": 4,
+          "score": 44
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_test_dev",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 6,
+          "scenario_activity": 0,
+          "score": 42
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_val",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 6,
+          "scenario_activity": 0,
+          "score": 42
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2010_test",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 4,
+          "scenario_activity": 1,
+          "score": 36
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2012_test",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 6,
+          "scenario_activity": 2,
+          "score": 36
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2010_test",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 6,
+          "scenario_activity": 1,
+          "score": 32
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_test_dev",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 4,
+          "scenario_activity": 0,
+          "score": 30
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_val",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 4,
+          "scenario_activity": 0,
+          "score": 30
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2007_test",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 0,
+          "scenario_activity": 4,
+          "score": 30
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2012_test",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 4,
+          "scenario_activity": 2,
+          "score": 28
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_test_dev",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 6,
+          "scenario_activity": 0,
+          "score": 28
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_val",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 6,
+          "scenario_activity": 0,
+          "score": 28
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2007_test",
+          "metric": "inference_latency",
+          "metric_demand": 2,
+          "method_activity": 4,
+          "scenario_activity": 4,
+          "score": 27
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2012_test",
+          "metric": "inference_latency",
+          "metric_demand": 2,
+          "method_activity": 6,
+          "scenario_activity": 2,
+          "score": 27
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "unknown",
+          "metric": "inference_latency",
+          "metric_demand": 2,
+          "method_activity": 4,
+          "scenario_activity": 3,
+          "score": 24
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2010_test",
+          "metric": "inference_fps",
+          "metric_demand": 3,
+          "method_activity": 4,
+          "scenario_activity": 1,
+          "score": 24
+        },
+        {
+          "method": "multibox",
+          "scenario": "unknown",
+          "metric": "voc_map50",
+          "metric_demand": 5,
+          "method_activity": 0,
+          "scenario_activity": 3,
+          "score": 24
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2010_test",
+          "metric": "inference_latency",
+          "metric_demand": 2,
+          "method_activity": 6,
+          "scenario_activity": 1,
+          "score": 24
+        }
+      ],
+      "gap_count": 98
+    }
+  },
+  "complete": true
+}

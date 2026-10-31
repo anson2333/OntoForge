@@ -1,3 +1,4 @@
+import { t, uiLabel, getLocale, localizeMessage, domainTitle } from '../../i18n';
 /**
  * Domain Pack Node Component
  * Collapsible tree node showing domain pack details, papers, metrics, and subdomains
@@ -95,7 +96,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
   };
 
   const handleRemoveDomainPack = () => {
-    if (confirm(`Remove domain pack "${domainPack.config.domain.name}"?`)) {
+    if (confirm(t('Remove domain pack "{name}"?', { name: domainPack.config.domain.name }))) {
       removeDomainPack(domainPack.namespace);
     }
     setMenuOpen(false);
@@ -183,7 +184,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
           <div className="pack-info">
             <div className="pack-name-row">
               <span className="pack-icon">📦</span>
-              <span className="pack-name">{domainPack.config.domain.name}</span>
+              <span className="pack-name">{domainTitle(domainPack.config.domain.name)}</span>
               <span className="pack-namespace">{domainPack.namespace}</span>
             </div>
           </div>
@@ -193,7 +194,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
           <button
             className={`btn-icon btn-menu ${menuOpen ? 'active' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
-            title="Domain pack actions"
+            title={t("Domain pack actions")}
             aria-haspopup="menu"
             aria-expanded={menuOpen}
           >
@@ -204,11 +205,11 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
             <div className="pack-menu" role="menu">
               <button className="pack-menu-item" onClick={handleToggleActive} role="menuitem">
                 <span className="menu-item-icon">{isActive ? '◌' : '●'}</span>
-                <span>{isActive ? 'Hide from matrix' : 'Show in matrix'}</span>
+                <span>{isActive ? t("Hide from matrix") : t("Show in matrix")}</span>
               </button>
               <button className="pack-menu-item danger" onClick={handleRemoveDomainPack} role="menuitem">
                 <span className="menu-item-icon">×</span>
-                <span>Remove domain pack</span>
+                <span>{t("Remove domain pack")}</span>
               </button>
             </div>
           )}
@@ -222,7 +223,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
               <div className="section-header-title">
                 <span className="expand-icon-small">{showPapers ? '▼' : '▶'}</span>
                 <span className="section-icon">📄</span>
-                <span className="section-label">Papers</span>
+                <span className="section-label">{t("Papers")}</span>
               </div>
               <span className="section-count">{paperCount}</span>
               <div
@@ -233,7 +234,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                 <button
                   type="button"
                   className="section-action-btn"
-                  title="Add PDF to this domain"
+                  title={t("Add PDF to this domain")}
                   onMouseDown={event => event.stopPropagation()}
                   onClick={event => {
                     event.stopPropagation();
@@ -268,7 +269,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                     fontSize: '12px',
                     color: '#ffb74d'
                   }}>
-                    ⚠️ LLM service disabled: Papers will be ingested with basic rule-based classification. For AI-powered subdomain classification, configure LLM in .env file.
+                    {t("⚠️ LLM service disabled: Papers will be ingested with basic rule-based classification. For AI-powered subdomain classification, configure LLM in .env file.")}
                   </div>
                 )}
                 <div
@@ -335,16 +336,16 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                           >
                             <span className="paper-main">
                               <span className="paper-title">{entry.value.title}</span>
-                              <span className="paper-subtitle">{subtitle || 'Awaiting preview metadata'}</span>
+                              <span className="paper-subtitle">{subtitle || t("Awaiting preview metadata")}</span>
                             </span>
-                            <span className="paper-status" data-status={paperStatus}>{paperStatus.replace(/_/g, ' ')}</span>
+                            <span className="paper-status" data-status={paperStatus}>{uiLabel(paperStatus)}</span>
                             {typeof paperYear === 'number' && <span className="paper-year">{paperYear}</span>}
                           </button>
                           {!isPersistedPaper && entry.value.status === 'error' && (
                             <button
                               type="button"
                               className="paper-retry-btn"
-                              title="Retry import preview"
+                              title={t("Retry import preview")}
                               onClick={event => {
                                 event.stopPropagation();
                                 retryPaperImport(entry.value.id);
@@ -356,7 +357,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                           <button
                             type="button"
                             className="paper-remove-btn"
-                            title="Remove paper from sidebar"
+                            title={t("Remove paper from sidebar")}
                             onClick={event => {
                               event.stopPropagation();
                               setPaperPendingDeletion(entry);
@@ -369,7 +370,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                     })}
                   </ul>
                 ) : (
-                  <p className="empty-message">Drop PDF files here or use + to add a paper to this domain</p>
+                  <p className="empty-message">{t("Drop PDF files here or use + to add a paper to this domain")}</p>
                 )}
                 </div>
               </>
@@ -387,7 +388,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
               <div className="section-header-title">
                 <span className="expand-icon-small">{showMetrics ? '▼' : '▶'}</span>
                 <span className="section-icon">📊</span>
-                <span className="section-label">Metrics</span>
+                <span className="section-label">{t("Metrics")}</span>
               </div>
               <span className="section-count">{domainPack.metrics.length}</span>
               <div
@@ -398,7 +399,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                 <button
                   type="button"
                   className="section-action-btn"
-                  title="Add metric to this domain"
+                  title={t("Add metric to this domain")}
                   onClick={() => {
                     setShowMetrics(true);
                     selectMetrics(domainPack.namespace, 'add');
@@ -438,7 +439,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                 <div className="section-header-title">
                   <span className="expand-icon-small">{showSubdomains ? '▼' : '▶'}</span>
                   <span className="section-icon">🏷️</span>
-                  <span className="section-label">Subdomains</span>
+                  <span className="section-label">{t("Subdomains")}</span>
                 </div>
                 <span className="section-count">{subdomains.length}</span>
               </div>
@@ -476,26 +477,26 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
         <div className="paper-delete-overlay" onClick={() => setPaperPendingDeletion(null)}>
           <div className="paper-delete-dialog" onClick={event => event.stopPropagation()}>
             <div className="paper-delete-titlebar">
-              <span>Delete Paper</span>
+              <span>{t("Delete Paper")}</span>
               <button
                 type="button"
                 className="paper-delete-close"
                 onClick={() => setPaperPendingDeletion(null)}
-                aria-label="Close delete dialog"
+                aria-label={t("Close delete dialog")}
               >
                 ×
               </button>
             </div>
             <div className="paper-delete-body">
               <div className="paper-delete-row">
-                <span className="paper-delete-label">Title:</span>
+                <span className="paper-delete-label">{t("Title:")}</span>
                 <span className="paper-delete-value">{paperPendingDeletion.value.title}</span>
               </div>
               <div className="paper-delete-row">
-                <span className="paper-delete-label">Number of evidences:</span>
+                <span className="paper-delete-label">{t("Number of evidences:")}</span>
                 <span className="paper-delete-value">{getEntryEvidenceCount(paperPendingDeletion)}</span>
               </div>
-              <div className="paper-delete-warning">Deletion is not recoverable. Proceed?</div>
+              <div className="paper-delete-warning">{t("Deletion is not recoverable. Proceed?")}</div>
             </div>
             <div className="paper-delete-actions">
               <button
@@ -503,7 +504,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                 className="paper-delete-btn secondary"
                 onClick={() => setPaperPendingDeletion(null)}
               >
-                Cancel
+                {t("Cancel")}
               </button>
               <button
                 type="button"
@@ -517,7 +518,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                   setPaperPendingDeletion(null);
                 }}
               >
-                Delete
+                {t("Delete")}
               </button>
             </div>
           </div>
@@ -556,7 +557,7 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
 
             const formatDate = (isoString: string) => {
               const date = new Date(isoString);
-              return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+              return date.toLocaleDateString(getLocale(), { year: 'numeric', month: 'short', day: 'numeric' });
             };
 
             // For successfully ingested papers
@@ -567,12 +568,12 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                     <div className="tooltip-info">
                       {paper.ingested_at && (
                         <div className="tooltip-meta" style={{ fontSize: '13px', textAlign: 'center', padding: '8px' }}>
-                          <strong>Ingested:</strong> {formatDate(paper.ingested_at)}
+                          <strong>{t("Ingested:")}</strong> {formatDate(paper.ingested_at)}
                         </div>
                       )}
                       {!paper.ingested_at && (
                         <div className="tooltip-meta" style={{ fontSize: '12px', textAlign: 'center', padding: '8px', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
-                          Import date not available
+                          {t("Import date not available")}
                         </div>
                       )}
                     </div>
@@ -585,11 +586,11 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
             if (!paperImport) return null;
 
             const statusLabels: Record<string, string> = {
-              queued: 'Queued for processing',
-              validating: 'Validating and extracting preview',
-              preview_ready: 'Ready to commit',
-              ingesting: 'Committing to workspace',
-              error: 'Import failed'
+              queued: t("Queued for processing"),
+              validating: t("Validating and extracting preview"),
+              preview_ready: t("Ready to commit"),
+              ingesting: t("Committing to workspace"),
+              error: t('Import failed')
             };
 
             return (
@@ -603,8 +604,8 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                 <div className="tooltip-body">
                   {paperImport.status === 'error' && paperImport.error_message && (
                     <div className="tooltip-error">
-                      <div className="tooltip-section-title">Error:</div>
-                      <div className="tooltip-error-message">{paperImport.error_message}</div>
+                      <div className="tooltip-section-title">{t("Error:")}</div>
+                      <div className="tooltip-error-message">{localizeMessage(paperImport.error_message)}</div>
                     </div>
                   )}
 
@@ -613,25 +614,25 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                       <div className="tooltip-stats">
                         <div className="stat">
                           <span className="stat-value">{paperImport.preview.chunk_count}</span>
-                          <span className="stat-label">Chunks</span>
+                          <span className="stat-label">{t("Chunks")}</span>
                         </div>
                         <div className="stat">
                           <span className="stat-value">{paperImport.preview.formula_count}</span>
-                          <span className="stat-label">Formulas</span>
+                          <span className="stat-label">{t("Formulas")}</span>
                         </div>
                         <div className="stat">
                           <span className="stat-value">{paperImport.preview.assertion_count}</span>
-                          <span className="stat-label">Assertions</span>
+                          <span className="stat-label">{t("Assertions")}</span>
                         </div>
                       </div>
                       {paperImport.preview.authors && paperImport.preview.authors.length > 0 && (
                         <div className="tooltip-meta">
-                          <strong>Authors:</strong> {paperImport.preview.authors.join(', ')}
+                          <strong>{t("Authors:")}</strong> {paperImport.preview.authors.join(', ')}
                         </div>
                       )}
                       {paperImport.preview.year && (
                         <div className="tooltip-meta">
-                          <strong>Year:</strong> {paperImport.preview.year}
+                          <strong>{t("Year:")}</strong> {paperImport.preview.year}
                         </div>
                       )}
                     </div>
@@ -640,19 +641,19 @@ export const DomainPackNode: React.FC<DomainPackNodeProps> = ({
                   {(paperImport.status === 'queued' || paperImport.status === 'validating' || paperImport.status === 'ingesting') && (
                     <div className="tooltip-info">
                       <div className="tooltip-file-info">
-                        <div><strong>File:</strong> {paperImport.file_name}</div>
-                        <div><strong>Size:</strong> {formatFileSize(paperImport.file_size)}</div>
+                        <div><strong>{t("File:")}</strong> {paperImport.file_name}</div>
+                        <div><strong>{t("Size:")}</strong> {formatFileSize(paperImport.file_size)}</div>
                       </div>
                       {paperImport.status === 'validating' && (
-                        <div className="tooltip-message">⏳ Extracting text and analyzing content...</div>
+                        <div className="tooltip-message">{t("⏳ Extracting text and analyzing content...")}</div>
                       )}
                       {paperImport.status === 'ingesting' && paperImport.preview && (
                         <div className="tooltip-stats">
                           <div className="stat">
                             <span className="stat-value">{paperImport.preview.assertion_count}</span>
-                            <span className="stat-label">Assertions</span>
+                            <span className="stat-label">{t("Assertions")}</span>
                           </div>
-                          <div className="tooltip-message">⚙️ Building knowledge graph...</div>
+                          <div className="tooltip-message">{t("⚙️ Building knowledge graph...")}</div>
                         </div>
                       )}
                     </div>

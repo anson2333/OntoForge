@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * StatusIndicator - Minimal status indicator for services
  * Shows a colored dot with tooltip on hover
@@ -27,14 +28,14 @@ export function StatusIndicator({ status, label, tooltip }: StatusIndicatorProps
   const getStatusText = () => {
     switch (status) {
       case 'online':
-        return 'Online';
+        return t("Online");
       case 'degraded':
-        return 'Degraded';
+        return t("Degraded");
       case 'offline':
-        return 'Offline';
+        return t("Offline");
       case 'unknown':
       default:
-        return 'Unknown';
+        return t("Unknown");
     }
   };
 
@@ -47,7 +48,7 @@ export function StatusIndicator({ status, label, tooltip }: StatusIndicatorProps
         fontSize: '12px',
         cursor: 'default'
       }}
-      title={tooltip || `${label}: ${getStatusText()}`}
+      title={tooltip ? t(tooltip) : `${label}: ${getStatusText()}`}
     >
       <div
         style={{

@@ -1,5 +1,31 @@
 /* Domain Pack View */
 
+.domain-pack-import-guide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--panel-bg);
+}
+.domain-pack-import-guide h2 { margin: 0 0 8px; font-size: 18px; }
+.domain-pack-import-guide p { margin: 6px 0 0; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.domain-pack-import-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.domain-pack-import-actions button {
+  padding: 10px 16px;
+  color: var(--text-primary);
+  background: var(--app-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.domain-pack-import-actions .upload-primary { background: #1672d4; border-color: #1672d4; color: white; }
+.domain-pack-import-actions button:hover { filter: brightness(1.15); }
+
 .domain-pack-view {
   flex: 1;
   display: flex;

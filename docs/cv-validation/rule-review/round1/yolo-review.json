@@ -1,0 +1,218 @@
+[
+  {
+    "assertion_id": "assert_llm_inference_fps_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "45",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "摘要45 FPS与第7页精确信息为同一速度结果的重复概述。保留后者及硬件信息，不重复计数。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "54.5",
+    "unit": "percent",
+    "reference_ids": [
+      "R25"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "第6页表1的YOLO总体mAP为54.5%，不是逐类别列，测试集为VOC2012。输入分辨率等额外条件须核对另外的正文证据。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_2",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "62.5",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "既违反单检测器范围，也读错表格：第6页融合模型总体mAP是70.4%，62.5是YOLO行的person类别AP，不能作为融合模型或总体mAP。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.8",
+    "unit": "percent",
+    "reference_ids": [
+      "R26"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2 YOLO行的总体mAP为58.8%，标题明确VOC2007 test。其他实验条件仍未知，不补猜。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "74.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      8
+    ],
+    "review_source_pdf_pages": [
+      8
+    ],
+    "reason_zh": "第8页74.7%是Fast R-CNN + YOLO融合结果，不是单独YOLO的准确率，本轮单检测器规则应排除。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_fps",
+    "value": "45",
+    "unit": "fps",
+    "reference_ids": [
+      "R27"
+    ],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页4.2节支持Titan X上的45 FPS，但YOLO是单网络完整检测流程，应与排除独立proposal步骤的Fast R-CNN耗时区分；表2标题可补充VOC2007场景。",
+    "suggested_context_corrections": {
+      "timing_scope": "end_to_end",
+      "scenario": "voc2007_test",
+      "model_variant": "YOLO v1"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_3",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "54.5",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      6,
+      7
+    ],
+    "reason_zh": "第7页4.1节的54.5%重复第6页表1同一VOC2012实验；合并证据，不作为第二次独立测量。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_4",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.02",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_5",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.45",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_6",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.09",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_7",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.48",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b1_8",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_fps",
+    "value": "0.11",
+    "unit": "fps",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      7
+    ],
+    "review_source_pdf_pages": [
+      7
+    ],
+    "reason_zh": "第7页表2的R-CNN或Fast R-CNN速度比较基线，不是YOLO自身结果，不能写到YOLO贡献指标中。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  }
+]

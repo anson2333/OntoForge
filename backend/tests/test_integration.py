@@ -17,11 +17,12 @@ def neo4j_container():
     """
     Provide a Neo4j instance for integration tests.
 
-    If ``ONTOFORGE_TEST_NEO4J_URI`` (or ``NEO4J_URI``) points at a running
+    If ``ONTOFORGE_TEST_NEO4J_URI`` points at a running isolated test
     instance it is used directly, otherwise a Docker test container is started.
     Integration tests are skipped when neither is available.
     """
-    external_uri = os.getenv("ONTOFORGE_TEST_NEO4J_URI") or os.getenv("NEO4J_URI")
+    # The fixture erases all nodes: never fall back to the application's database.
+    external_uri = os.getenv("ONTOFORGE_TEST_NEO4J_URI")
     if external_uri:
         os.environ["NEO4J_URI"] = external_uri
         os.environ.setdefault("NEO4J_USER", "neo4j")

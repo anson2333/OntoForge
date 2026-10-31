@@ -1,3 +1,4 @@
+import { t, domainTitle } from '../../i18n';
 /**
  * Domain Pack Filter Component
  * Multi-select dropdown to filter matrix view by active domain packs
@@ -49,14 +50,14 @@ export const DomainPackFilter: React.FC = () => {
 
   const getFilterLabel = () => {
     if (activeDomainPacks.length === 0) {
-      return 'No domain packs selected';
+      return t("No domain packs selected");
     } else if (activeDomainPacks.length === domainPacks.length) {
-      return `All domain packs (${domainPacks.length})`;
+      return t('All domain packs ({count})', { count: domainPacks.length });
     } else if (activeDomainPacks.length === 1) {
       const pack = domainPacks.find(p => p.namespace === activeDomainPacks[0]);
-      return pack ? `${pack.namespace} only` : '1 domain pack';
+      return pack ? t('{name} only', { name: pack.namespace }) : t("1 domain pack");
     } else {
-      return `${activeDomainPacks.length} of ${domainPacks.length} domain packs`;
+      return t('{active} of {total} domain packs', { active: activeDomainPacks.length, total: domainPacks.length });
     }
   };
 
@@ -66,7 +67,7 @@ export const DomainPackFilter: React.FC = () => {
 
   return (
     <div className="domain-pack-filter" ref={dropdownRef}>
-      <div className="filter-label">Active Domain Packs:</div>
+      <div className="filter-label">{t("Active Domain Packs:")}</div>
       
       <button 
         className="filter-dropdown-trigger"
@@ -79,8 +80,8 @@ export const DomainPackFilter: React.FC = () => {
       {isOpen && (
         <div className="filter-dropdown-menu">
           <div className="dropdown-header">
-            <button className="btn-text" onClick={selectAll}>Select All</button>
-            <button className="btn-text" onClick={deselectAll}>Clear</button>
+            <button className="btn-text" onClick={selectAll}>{t("Select All")}</button>
+            <button className="btn-text" onClick={deselectAll}>{t("Clear")}</button>
           </div>
 
           <div className="dropdown-options">
@@ -99,11 +100,11 @@ export const DomainPackFilter: React.FC = () => {
                   <div className="option-content">
                     <span className="option-icon">📦</span>
                     <div className="option-info">
-                      <span className="option-name">{pack.config.domain.name}</span>
+                      <span className="option-name">{domainTitle(pack.config.domain.name)}</span>
                       <span className="option-namespace">{pack.namespace}</span>
                     </div>
                     <span className="option-metric-count">
-                      {pack.metrics.length} metrics
+                      {pack.metrics.length} {t("metrics")}
                     </span>
                   </div>
                 </label>
@@ -114,10 +115,10 @@ export const DomainPackFilter: React.FC = () => {
           {activeDomainPacks.length > 0 && (
             <div className="dropdown-footer">
               <span className="active-count">
-                {activeDomainPacks.length} active • {' '}
+                {activeDomainPacks.length} {t("active •")} {' '}
                 {domainPacks
                   .filter(p => activeDomainPacks.includes(p.namespace))
-                  .reduce((sum, p) => sum + p.metrics.length, 0)} total metrics
+                  .reduce((sum, p) => sum + p.metrics.length, 0)} {t("total metrics")}
               </span>
             </div>
           )}

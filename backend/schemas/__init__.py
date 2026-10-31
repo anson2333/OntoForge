@@ -68,6 +68,23 @@ from .protocol import (
     GetLLMStatusResponse,
 )
 from .domain_pack import DomainPackConfig
+from .ontology import (
+    EntityType,
+    SupportStatus,
+    QualityState,
+    ResolutionKind,
+    EvidenceItem,
+    FieldSupport,
+    EvidenceBundle,
+    EntityMention,
+    EntityResolutionDecision,
+    SourceVersionRecord,
+    ExtractionRunRecord,
+    ExperimentRecord,
+    MeasurementRecord,
+    ComparabilityResult,
+    GapCandidate,
+)
 
 __all__ = [
     # Nodes
@@ -133,4 +150,19 @@ __all__ = [
     "GetLLMStatusResponse",
     # Config
     "DomainPackConfig",
+    "EntityType",
+    "SupportStatus",
+    "QualityState",
+    "ResolutionKind",
+    "EvidenceItem",
+    "FieldSupport",
+    "EvidenceBundle",
+    "EntityMention",
+    "EntityResolutionDecision",
+    "SourceVersionRecord",
+    "ExtractionRunRecord",
+    "ExperimentRecord",
+    "MeasurementRecord",
+    "ComparabilityResult",
+    "GapCandidate",
 ]

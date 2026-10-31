@@ -117,6 +117,16 @@ async function main() {
     log('步骤 6: 领域包详情');
     await page.locator('.workspace-domain-row').first().click();
     await page.locator('.domain-pack-view').waitFor({ state: 'visible' });
+    const upload = page.getByRole('button', { name: '上传论文 PDF', exact: true });
+    await upload.waitFor({ state: 'visible' });
+    const chooserReady = page.waitForEvent('filechooser');
+    await upload.click();
+    const chooser = await chooserReady;
+    if (!chooser.isMultiple()) throw new Error('PDF upload must allow multiple papers');
+    await chooser.setFiles([]);
+    await page.getByRole('button', { name: '配置模型接口', exact: true }).click();
+    await page.getByRole('dialog', { name: '模型接口设置' }).waitFor({ state: 'visible' });
+    await page.getByRole('button', { name: '关闭接口设置', exact: true }).click();
     await shot('06-domain-pack');
 
     log(`演示结束，截图目录: ${screenshotDir}`);

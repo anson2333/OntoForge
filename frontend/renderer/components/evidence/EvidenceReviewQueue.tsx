@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 /**
  * EvidenceReviewQueue Component
  * Priority review queue for evidence needing attention
@@ -24,7 +25,7 @@ export function getReviewQueueItem(evidence: Evidence): QueueItem | null {
     return {
       evidence,
       priority: 'high',
-      reason: `Low confidence: ${(evidence.confidence_score * 100).toFixed(0)}%`
+      reason: 'Low confidence: {value}%'
     };
   }
 
@@ -58,7 +59,7 @@ export function getReviewQueueItem(evidence: Evidence): QueueItem | null {
     return {
       evidence,
       priority: 'low',
-      reason: `Medium confidence: ${(evidence.confidence_score * 100).toFixed(0)}%`
+      reason: 'Medium confidence: {value}%'
     };
   }
 
@@ -106,9 +107,9 @@ export default function EvidenceReviewQueue({ evidenceList, onReview }: Evidence
 
   const getPriorityLabel = (priority: string) => {
     switch (priority) {
-      case 'high': return 'High Priority';
-      case 'medium': return 'Medium Priority';
-      case 'low': return 'Low Priority';
+      case 'high': return t("High Priority");
+      case 'medium': return t("Medium Priority");
+      case 'low': return t("Low Priority");
       default: return priority;
     }
   };
@@ -117,19 +118,19 @@ export default function EvidenceReviewQueue({ evidenceList, onReview }: Evidence
     <div className="evidence-review-queue">
       {/* Header */}
       <div className="queue-header">
-        <h3>🔍 Review Queue</h3>
+        <h3>{t("🔍 Review Queue")}</h3>
         <div className="queue-stats">
           <span className="stat high">
-            🔴 High: <strong>{stats.high}</strong>
+            {t("🔴 High:")} <strong>{stats.high}</strong>
           </span>
           <span className="stat medium">
-            🟡 Medium: <strong>{stats.medium}</strong>
+            {t("🟡 Medium:")} <strong>{stats.medium}</strong>
           </span>
           <span className="stat low">
-            🟢 Low: <strong>{stats.low}</strong>
+            {t("🟢 Low:")} <strong>{stats.low}</strong>
           </span>
           <span className="stat total">
-            Total: <strong>{stats.total}</strong>
+            {t("Total:")} <strong>{stats.total}</strong>
           </span>
         </div>
       </div>
@@ -139,8 +140,8 @@ export default function EvidenceReviewQueue({ evidenceList, onReview }: Evidence
         {queueItems.length === 0 ? (
           <div className="empty-queue">
             <div className="success-icon">✓</div>
-            <h4>All Caught Up!</h4>
-            <p>No evidence items need your attention right now.</p>
+            <h4>{t("All Caught Up!")}</h4>
+            <p>{t("No evidence items need your attention right now.")}</p>
           </div>
         ) : (
           <div className="queue-list">
@@ -158,13 +159,13 @@ export default function EvidenceReviewQueue({ evidenceList, onReview }: Evidence
                         </span>
                         <span className="item-title">
                           {item.evidence.type === 'chunk' ? '📄' : '📐'}{' '}
-                          {item.evidence.type === 'chunk' ? 'Chunk' : 'Formula'} #{item.evidence.id.split('#')[1]}
+                          {item.evidence.type === 'chunk' ? t("Chunk") : t("Formula")} #{item.evidence.id.split('#')[1]}
                         </span>
                         <span className="item-location">
-                          Page {item.evidence.bounding_box.page}
+                          {t("Page")} {item.evidence.bounding_box.page}
                         </span>
                         <span className="reason-chip">
-                          {item.reason}
+                          {t(item.reason, { value: (item.evidence.confidence_score * 100).toFixed(0) })}
                         </span>
                       </div>
                       <div className="item-confidence">
@@ -179,7 +180,7 @@ export default function EvidenceReviewQueue({ evidenceList, onReview }: Evidence
 
                     {item.evidence.supporting_assertion_id && (
                       <div className="item-metadata">
-                        <span className="metadata-label">Supporting:</span>
+                        <span className="metadata-label">{t("Supporting:")}</span>
                         <span className="metadata-value">{item.evidence.supporting_assertion_id}</span>
                       </div>
                     )}
@@ -199,7 +200,7 @@ export default function EvidenceReviewQueue({ evidenceList, onReview }: Evidence
                       className="review-btn"
                       onClick={() => onReview(item.evidence.id)}
                     >
-                      Review Now →
+                      {t("Review Now →")}
                     </button>
                   </div>
                 </div>

@@ -1,0 +1,211 @@
+[
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "exclude",
+    "metric": "cv_detection:voc_map50",
+    "value": "66",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "第1页引言的66%是VOC2012结果的取整概述，表3精确值为65.7%或68.4%（不同训练集）。该段没有给出训练集，模型却填成VOC2012。与精确表格结果重复，不进入比较。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b0_1",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_latency",
+    "value": "300",
+    "unit": "ms",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      1
+    ],
+    "reason_zh": "第1页0.3秒是排除候选框生成的近似概述；第6页表4给出更具体的320ms与SVD变体220ms。保留为原文概述，不与精确实验条目并列。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.0",
+    "unit": "percent",
+    "reference_ids": [
+      "R02"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "70.0%总体mAP正确，但模型把表1的07+12写成07++12。二者在论文中不是同一训练范围，须明确为VOC07 trainval + VOC12 trainval，不包含VOC07 test。",
+    "suggested_context_corrections": {
+      "training_data": "VOC07 trainval + VOC12 trainval (07+12)"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.9",
+    "unit": "percent",
+    "reference_ids": [
+      "R01"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "68.8",
+    "unit": "percent",
+    "reference_ids": [
+      "R04"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "总体mAP和测试集正确，但原文07++12包含VOC07 trainval+test与VOC12 trainval。模型只写VOC07 trainval和VOC12 trainval，遗漏了VOC07 test，影响公平比较。",
+    "suggested_context_corrections": {
+      "training_data": "VOC07 trainval+test + VOC12 trainval (07++12)"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_3",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "65.7",
+    "unit": "percent",
+    "reference_ids": [
+      "R05"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_4",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "68.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R06"
+    ],
+    "source_pdf_pages": [
+      5
+    ],
+    "reason_zh": "总体mAP和测试集正确，但原文07++12包含VOC07 trainval+test与VOC12 trainval。模型只写VOC07 trainval和VOC12 trainval，遗漏了VOC07 test，影响公平比较。",
+    "suggested_context_corrections": {
+      "training_data": "VOC07 trainval+test + VOC12 trainval (07++12)"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b1_5",
+    "verdict": "supported",
+    "metric": "cv_detection:inference_latency",
+    "value": "320",
+    "unit": "ms",
+    "reference_ids": [
+      "R09"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b1_6",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "100",
+    "unit": "ms",
+    "reference_ids": [
+      "R07"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "100ms数值对应表4的S模型，但第5页4.1节说明S是CaffeNet，不是VGG16。",
+    "suggested_context_corrections": {
+      "model_variant": "Fast R-CNN S (CaffeNet)",
+      "backbone": "CaffeNet",
+      "source_table": "Table 4",
+      "result_role": "primary"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b1_7",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "150",
+    "unit": "ms",
+    "reference_ids": [
+      "R08"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "150ms数值对应表4的M模型，但第5页4.1节说明M是VGG_CNN_M_1024，不是VGG16。",
+    "suggested_context_corrections": {
+      "model_variant": "Fast R-CNN M (VGG_CNN_M_1024)",
+      "backbone": "VGG_CNN_M_1024",
+      "source_table": "Table 4",
+      "result_role": "primary"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_8",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "66.6",
+    "unit": "percent",
+    "reference_ids": [
+      "R15"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "数值、单位、模型主结果及测试集与原文表格一致。硬件、batch 等缺项仍保持未知，不据此做无条件跨论文排名。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b1_9",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_latency",
+    "value": "220",
+    "unit": "ms",
+    "reference_ids": [
+      "R12"
+    ],
+    "source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "220ms是表4的0.22s换算；图2标注223ms。模型用图2的223ms解释表4的220ms，来源说明矛盾，不能把两者当精确相等。",
+    "suggested_context_corrections": {
+      "source_table": "Table 4",
+      "model_variant": "Fast R-CNN L + truncated SVD",
+      "backbone": "VGG16",
+      "reasoning": "Table 4 reports 0.22 seconds/image = 220 milliseconds/image; Figure 2 separately reports 223 ms."
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  }
+]

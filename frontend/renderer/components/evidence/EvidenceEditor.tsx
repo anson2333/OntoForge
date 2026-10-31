@@ -1,3 +1,4 @@
+import { t, uiLabel } from '../../i18n';
 /**
  * EvidenceEditor Component
  * Inline editing interface with PDF comparison view
@@ -41,7 +42,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
   const handleSave = async () => {
     // Allow saving if either text changed OR submitting for review
     if (!hasChanges && !submitForReview) {
-      alert('No changes to save.');
+      alert(t("No changes to save."));
       return;
     }
 
@@ -63,7 +64,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
       await onSave(modifications, metadata);
     } catch (error) {
       console.error('Failed to save:', error);
-      alert('Failed to save changes. Please try again.');
+      alert(t("Failed to save changes. Please try again."));
     } finally {
       setIsSaving(false);
     }
@@ -92,7 +93,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
         {/* Header */}
         <div className="editor-header">
           <h3>
-            Editing {evidence.type === 'chunk' ? 'Chunk' : 'Formula'} #{evidence.id.split('#')[1]}
+            {t("Editing")} {evidence.type === 'chunk' ? t("Chunk") : t("Formula")} #{evidence.id.split('#')[1]}
           </h3>
           <button className="close-btn" onClick={onCancel}>✕</button>
         </div>
@@ -101,20 +102,20 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
         <div className="editor-content">
           {/* Left: immutable extraction source */}
           <div className="pdf-comparison">
-            <h4>Source Evidence</h4>
+            <h4>{t("Source Evidence")}</h4>
             <div className="pdf-viewer">
               <div className="pdf-placeholder">
-                <p>PDF page {evidence.bounding_box.page || 'unknown'}</p>
+                <p>{t("PDF page")} {evidence.bounding_box.page || 'unknown'}</p>
                 <p className="pdf-coords">
-                  Region: {evidence.bounding_box.box.join(', ')}
+                  {t("Region:")} {evidence.bounding_box.coordinate_precision === 'page_only' ? t("unavailable (page only)") : evidence.bounding_box.box.join(', ')}
                 </p>
                 <blockquote className="source-evidence-text">
-                  {originalText || 'No extracted source text is available.'}
+                  {originalText || t("No extracted source text is available.")}
                 </blockquote>
               </div>
             </div>
             <div className="confidence-display">
-              <span>Original Confidence:</span>
+              <span>{t("Original Confidence:")}</span>
               <span className={`confidence-value ${
                 evidence.confidence_score >= 0.9 ? 'high' :
                 evidence.confidence_score >= 0.7 ? 'medium' : 'low'
@@ -126,29 +127,29 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
 
           {/* Right: Editable Text */}
           <div className="text-editor">
-            <h4>Edit Text</h4>
+            <h4>{t("Edit Text")}</h4>
             <textarea
               className={evidence.type === 'formula' ? 'formula-editor' : 'chunk-editor'}
               value={editedText}
               onChange={(e) => setEditedText(e.target.value)}
               rows={12}
-              placeholder={`Edit the ${evidence.type} text here...`}
+              placeholder={t('Edit {type} text here...', { type: uiLabel(evidence.type) })}
             />
             
             <div className="editor-metadata">
               <div className="metadata-field">
-                <label htmlFor="change-notes">Change Notes (Optional):</label>
+                <label htmlFor="change-notes">{t("Change Notes (Optional):")}</label>
                 <textarea
                   id="change-notes"
                   value={changeNotes}
                   onChange={(e) => setChangeNotes(e.target.value)}
                   rows={3}
-                  placeholder="Describe what you changed and why..."
+                  placeholder={t("Describe what you changed and why...")}
                 />
               </div>
 
               <div className="metadata-field">
-                <label htmlFor="confidence-override">Confidence in correction:</label>
+                <label htmlFor="confidence-override">{t("Confidence in correction:")}</label>
                 <div className="confidence-slider">
                   <input
                     type="range"
@@ -166,7 +167,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
               </div>
 
               <div className="metadata-field">
-                <label>Tags (Optional):</label>
+                <label>{t("Tags (Optional):")}</label>
                 <div className="tag-selector">
                   {commonTags.map(tag => (
                     <button
@@ -174,7 +175,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
                       className={`tag-btn ${tags.includes(tag) ? 'active' : ''}`}
                       onClick={() => handleToggleTag(tag)}
                     >
-                      {tag.replace(/_/g, ' ')}
+                      {uiLabel(tag)}
                     </button>
                   ))}
                 </div>
@@ -187,7 +188,7 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
                     checked={submitForReview}
                     onChange={(e) => setSubmitForReview(e.target.checked)}
                   />
-                  Submit for review by another user
+                  {t("Submit for review by another user")}
                 </label>
               </div>
             </div>
@@ -201,28 +202,28 @@ export default function EvidenceEditor({ evidence, onSave, onCancel }: EvidenceE
             onClick={onCancel}
             disabled={isSaving}
           >
-            ↶ Cancel
+            {t("↶ Cancel")}
           </button>
           <button
             className="action-btn save"
             onClick={handleSave}
             disabled={(!hasChanges && !submitForReview) || isSaving}
           >
-            {isSaving ? 'Saving...' : submitForReview ? '📤 Save & Request Review' : '✓ Save & Mark Verified'}
+            {isSaving ? t("Saving...") : submitForReview ? t("📤 Save & Request Review") : t("✓ Save & Mark Verified")}
           </button>
         </div>
 
         {/* Change Preview */}
         {hasChanges && (
           <div className="change-preview">
-            <h4>Change Preview</h4>
+            <h4>{t("Change Preview")}</h4>
             <div className="diff-view">
               <div className="diff-removed">
-                <strong>- Original:</strong>
+                <strong>{t("- Original:")}</strong>
                 <pre>{originalText}</pre>
               </div>
               <div className="diff-added">
-                <strong>+ Edited:</strong>
+                <strong>{t("+ Edited:")}</strong>
                 <pre>{editedText}</pre>
               </div>
             </div>

@@ -46,6 +46,7 @@ class SyncASGIClient:
 def isolate_auth_store(tmp_path, monkeypatch):
     """Keep the user registry out of the repository during tests."""
     monkeypatch.setenv("ONTOFORGE_USER_STORE", str(tmp_path / "users.json"))
+    monkeypatch.setenv("ONTOFORGE_LLM_PROFILE_STORE", str(tmp_path / "llm-profiles.json"))
     monkeypatch.setenv("ONTOFORGE_SEED_DEMO_USER", "false")
     monkeypatch.setenv("ONTOFORGE_AUTH_REQUIRED", "true")
     yield

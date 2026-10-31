@@ -71,6 +71,7 @@ export interface PaperImportEntry {
   created_at: string;
   status: 'queued' | 'validating' | 'preview_ready' | 'ingesting' | 'error';
   upload_id?: string;
+  preview_id?: string;
   warning?: string;
   error_message?: string;
   markdown_text?: string;
@@ -114,8 +115,12 @@ export interface Evidence {
   id: string;
   text: string;
   confidence: number;
+  verification_status?: 'raw' | 'under_correction' | 'pending_verification' | 'verified' | 'rejected';
+  modification_count?: number;
+  last_modified_at?: string;
   boundingBox?: {
     page: number;
+    coordinate_precision?: string;
     x: number;
     y: number;
     width: number;
@@ -1066,12 +1071,15 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
                 entry.id === paperImport.id
                   ? {
                       ...entry,
-                      status: 'preview_ready',
                       upload_id: upload.upload_id,
+                      preview_id: parseResult.preview_id,
                       title: preview.title,
                       markdown_text: parseResult?.markdown_text || undefined,
                       preview,
                       warning,
+                      error_message: parseResult.status === 'needs_review'
+                        ? (warning || 'Extraction needs review. Retry before committing.') : undefined,
+                      status: parseResult.status === 'needs_review' ? 'error' : 'preview_ready',
                     }
                   : entry
               )
@@ -1113,6 +1121,30 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
       if (paperImport.local_file) {
         get().enqueuePaperImports(paperImport.domain_pack_namespace, [paperImport.local_file], paperImport.source);
         get().removePaperImport(paperImportId);
+      } else if (paperImport.upload_id) {
+        void (async () => {
+          try {
+            const parsed = await sspClient.parsePdfWithDomainPack({
+              workspace_id: paperImport.workspace_id, domain_pack_namespace: paperImport.domain_pack_namespace,
+              upload_id: paperImport.upload_id, owner_id: get().currentOwnerId
+            });
+            set(state => ({ paperImports: state.paperImports.map(entry => entry.id === paperImportId ? {
+              ...entry, preview_id: parsed.preview_id, preview: buildImportPreviewFromBackend(parsed, entry.file_name),
+              markdown_text: parsed.markdown_text, warning: parsed.warnings?.join(' '),
+              status: parsed.status === 'parsed' ? 'preview_ready' : 'error',
+              error_message: parsed.status === 'parsed' ? undefined : 'Extraction needs review; see warnings.'
+            } : entry) }));
+          } catch (error) {
+            set(state => ({ paperImports: state.paperImports.map(entry => entry.id === paperImportId ? {
+              ...entry, status: 'error', error_message: `${error instanceof Error ? error.message : 'Preview failed'}. Re-upload the PDF if its temporary upload expired.`
+            } : entry) }));
+          }
+          persistWorkspacePaperImports(paperImport.workspace_id, get().paperImports);
+        })();
+      } else {
+        set(state => ({ paperImports: state.paperImports.map(entry => entry.id === paperImportId ? {
+          ...entry, status: 'error', error_message: 'Re-upload the original PDF to retry.'
+        } : entry) }));
       }
     },
 
@@ -1121,7 +1153,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
       if (!paperImport) {
         return;
       }
-      if (!paperImport.upload_id) {
+      if (!paperImport.upload_id || !paperImport.preview_id) {
         throw new Error('This paper import has no backend upload reference. Re-upload the file before committing.');
       }
 
@@ -1142,6 +1174,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
           workspace_id: paperImport.workspace_id,
           domain_pack_namespace: paperImport.domain_pack_namespace,
           upload_id: paperImport.upload_id,
+          preview_id: paperImport.preview_id,
           owner_id: get().currentOwnerId,
         });
 
@@ -1358,9 +1391,13 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
             id: item.id,
             text: item.text || '',
             confidence: item.confidence ?? 0,
+            verification_status: item.verification_status,
+            modification_count: item.modification_count,
+            last_modified_at: item.last_modified_at,
             boundingBox: location
               ? {
                   page: Number(location.page ?? 0),
+                  coordinate_precision: location.coordinate_precision,
                   x: coords ? coords[0] : Number(location.x ?? 0),
                   y: coords ? coords[1] : Number(location.y ?? 0),
                   width: coords ? Math.max(0, coords[2] - coords[0]) : Number(location.width ?? 0),
@@ -1371,7 +1408,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
         });
       } catch (error) {
         console.warn('Failed to fetch evidence from backend:', error);
-        return [];
+        throw error;
       }
     },
 
@@ -1436,7 +1473,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => {
       const newFullName = `${namespace}:${metricName}`;
       const nextDefinitions = pack.config.core_metrics.map(item =>
         item.name === originalName
-          ? { ...metric, name: metricName }
+          ? { ...item, ...metric, name: metricName }
           : item
       );
       const updatedPack = updateDomainPackMetricDefinitions(pack, nextDefinitions);

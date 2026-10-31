@@ -1,3 +1,4 @@
+import { t, uiLabel } from '../../i18n';
 /**
  * Workspace Sidebar Component
  * Tree-based navigation showing workspace → domain packs → papers/subdomains
@@ -20,7 +21,7 @@ interface WorkspaceSidebarProps {
 
 const getWorkspaceTag = (status: string, isSelected: boolean) => {
   if (isSelected) {
-    return { label: 'Active', tone: 'active' };
+    return { label: t("Active"), tone: 'active' };
   }
 
   if (status === 'archived' || status === 'readonly') {
@@ -120,14 +121,14 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
         {/* Workspace Header with Create Button */}
         <div className="workspace-header">
           <div className="workspace-details">
-            <h3 className="workspace-name">Workspace</h3>
+            <h3 className="workspace-name">{t("Workspace")}</h3>
           </div>
           <div className="workspace-header-actions">
             <button
               className="workspace-create-btn"
               onClick={() => setShowCreateWorkspaceModal(true)}
-              title="Create workspace"
-              aria-label="Create workspace"
+              title={t("Create workspace")}
+              aria-label={t("Create workspace")}
             >
               +
             </button>
@@ -135,8 +136,8 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
               <button
                 className="workspace-close-btn"
                 onClick={onClose}
-                title="Hide workspace sidebar"
-                aria-label="Hide workspace sidebar"
+                title={t("Hide workspace sidebar")}
+                aria-label={t("Hide workspace sidebar")}
               >
                 ×
               </button>
@@ -145,7 +146,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
         </div>
 
         <div className="no-workspace">
-          <p>Click + to create workspace</p>
+          <p>{t("Click + to create workspace")}</p>
         </div>
         {showCreateWorkspaceModal && (
           <CreateWorkspaceModal
@@ -175,13 +176,13 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
   };
 
   const handleDeleteWorkspace = async (workspaceId: string, workspaceName: string) => {
-    if (confirm(`Delete workspace "${workspaceName}"?\n\nThis will remove the workspace and all its domain packs, papers, and assertions. This action cannot be undone.`)) {
+    if (confirm(t('Delete workspace "{name}"? This removes all its domains, papers and assertions and cannot be undone.', { name: workspaceName }))) {
       try {
         await deleteWorkspace(workspaceId);
         setWorkspaceMenuOpen(null);
       } catch (error) {
         console.error('Failed to delete workspace:', error);
-        alert('Failed to delete workspace. See console for details.');
+        alert(t("Failed to delete workspace. See console for details."));
       }
     }
     setWorkspaceMenuOpen(null);
@@ -240,14 +241,14 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
       {/* Workspace Header */}
       <div className="workspace-header">
         <div className="workspace-details" onClick={selectRoot}>
-          <h3 className="workspace-name">Workspace</h3>
+          <h3 className="workspace-name">{t("Workspace")}</h3>
         </div>
         <div className="workspace-header-actions">
           <button
             className="workspace-create-btn"
             onClick={() => setShowCreateWorkspaceModal(true)}
-            title="Create workspace"
-            aria-label="Create workspace"
+            title={t("Create workspace")}
+            aria-label={t("Create workspace")}
           >
             +
           </button>
@@ -255,8 +256,8 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
           <button
             className="workspace-close-btn"
             onClick={onClose}
-            title="Hide workspace sidebar"
-            aria-label="Hide workspace sidebar"
+            title={t("Hide workspace sidebar")}
+            aria-label={t("Hide workspace sidebar")}
           >
             ×
           </button>
@@ -294,7 +295,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                 <button
                   className={`btn-icon btn-workspace-menu ${isMenuOpen ? 'active' : ''}`}
                   onClick={() => setWorkspaceMenuOpen(isMenuOpen ? null : item.id)}
-                  title="Workspace actions"
+                  title={t("Workspace actions")}
                   aria-haspopup="menu"
                   aria-expanded={isMenuOpen}
                 >
@@ -312,7 +313,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                       role="menuitem"
                     >
                       <span className="menu-item-icon">◎</span>
-                      <span>Manage access</span>
+                      <span>{t("Manage access")}</span>
                     </button>
                     <button 
                       className="workspace-menu-item danger" 
@@ -320,7 +321,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                       role="menuitem"
                     >
                       <span className="menu-item-icon">×</span>
-                      <span>Delete workspace</span>
+                      <span>{t("Delete workspace")}</span>
                     </button>
                   </div>
                 )}
@@ -333,12 +334,12 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                   <div className="tree-node branch-node domain-pack-branch">
                     <div className="tree-node-main">
                       <span className="expand-icon">▼</span>
-                      <span className="tree-node-label">Domain Packs</span>
+                      <span className="tree-node-label">{t("Domain Packs")}</span>
                       <span className="tree-node-count">{domainPacks.length}</span>
                     </div>
                     <button 
                       className="btn-add-domain-pack" 
-                      title="Add Domain Pack"
+                      title={t("Add Domain Pack")}
                       onClick={() => setShowAddModal(true)}
                     >
                       +
@@ -363,7 +364,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
 
                   {domainPacks.length === 0 && (
                     <div className="tree-empty-state">
-                      <p>No domain packs loaded</p>
+                      <p>{t("No domain packs loaded")}</p>
                     </div>
                   )}
                 </div>
@@ -373,7 +374,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                     <div className="tree-node branch-node" onClick={() => setTaxonomyExpanded(!taxonomyExpanded)}>
                       <div className="tree-node-main">
                         <span className="expand-icon">{taxonomyExpanded ? '▼' : '▶'}</span>
-                        <span className="tree-node-label">Taxonomy Filters</span>
+                        <span className="tree-node-label">{t("Taxonomy Filters")}</span>
                       </div>
                       {hasActiveFilters && (
                         <button 
@@ -382,9 +383,9 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                             e.stopPropagation();
                             handleClearAllFilters();
                           }}
-                          title="Clear all filters"
+                          title={t("Clear all filters")}
                         >
-                          Clear
+                          {t("Clear")}
                         </button>
                       )}
                     </div>
@@ -397,7 +398,7 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                           return (
                             <div key={dimension.name} className="taxonomy-dimension tree-node-leaf-group">
                               <div className="tree-node leaf-node taxonomy-dimension-label">
-                                <span className="tree-node-label">{dimension.name.replace(/_/g, ' ')}</span>
+                                <span className="tree-node-label">{uiLabel(dimension.name)}</span>
                               </div>
                               <div className="dimension-values tree-children">
                                 {dimension.values.map(value => {
@@ -415,8 +416,8 @@ export const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({ onClose }) =
                                       }}
                                       className={`taxonomy-value-btn ${isSelected ? 'selected' : ''}`}
                                       title={hasSubdomain 
-                                        ? `Subdomain: ${hasSubdomain}` 
-                                        : 'No subdomain mapping'}
+                                        ? t('Subdomain: {name}', { name: hasSubdomain })
+                                        : t("No subdomain mapping")}
                                     >
                                       {value}
                                     </button>

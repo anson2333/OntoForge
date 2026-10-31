@@ -1,3 +1,4 @@
+import { t, uiLabel, domainTitle } from '../../i18n';
 /**
  * Workspace View
  * Detail surface for a selected workspace.
@@ -29,7 +30,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
     <div className="workspace-view">
       <div className="workspace-view-header">
         <HierarchyNav items={hierarchyItems} />
-        <div className="workspace-context-pill">{workspace.status}</div>
+        <div className="workspace-context-pill">{uiLabel(workspace.status)}</div>
       </div>
 
       <div className="workspace-view-content">
@@ -41,21 +42,21 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
         <div className="workspace-summary-grid">
           <div className="workspace-summary-item">
             <span>{domainPacks.length}</span>
-            <label>Domain Packs</label>
+            <label>{t("Domain Packs")}</label>
           </div>
           <div className="workspace-summary-item">
             <span>{papers.length}</span>
-            <label>Papers</label>
+            <label>{t("Papers")}</label>
           </div>
           <div className="workspace-summary-item">
             <span>{paperImports.length}</span>
-            <label>Pending Imports</label>
+            <label>{t("Pending Imports")}</label>
           </div>
         </div>
 
         <section className="workspace-panel">
           <div className="workspace-panel-header">
-            <h2>Domain Packs</h2>
+            <h2>{t("Domain Packs")}</h2>
           </div>
           {domainPacks.length > 0 ? (
             <div className="workspace-domain-list">
@@ -70,17 +71,17 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                     onClick={() => onOpenDomainPack(pack.namespace)}
                   >
                     <span>
-                      <strong>{pack.config.domain.name}</strong>
+                      <strong>{domainTitle(pack.config.domain.name)}</strong>
                       <small>{pack.namespace}</small>
                     </span>
-                    <span>{pack.metrics.length} metrics</span>
-                    <span>{packPaperCount + packImportCount} papers</span>
+                    <span>{pack.metrics.length} {t("metrics")}</span>
+                    <span>{packPaperCount + packImportCount} {t("papers")}</span>
                   </button>
                 );
               })}
             </div>
           ) : (
-            <div className="workspace-empty-state">No domain packs are attached to this workspace.</div>
+            <div className="workspace-empty-state">{t("No domain packs are attached to this workspace.")}</div>
           )}
         </section>
       </div>

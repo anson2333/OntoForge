@@ -1,0 +1,128 @@
+{
+  "paper": "fast_rcnn",
+  "diagnostics": {
+    "batch_count": 5,
+    "failed_batches": [
+      0,
+      2,
+      3
+    ],
+    "warnings": [
+      "模型抽取第 1/5 批失败。模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。",
+      "模型抽取第 3/5 批失败。模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。",
+      "模型抽取第 4/5 批失败。模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。"
+    ],
+    "errors": [
+      {
+        "http_status": null,
+        "message": "模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。",
+        "retryable": true,
+        "abort_remaining": false
+      },
+      {
+        "http_status": null,
+        "message": "模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。",
+        "retryable": true,
+        "abort_remaining": false
+      },
+      {
+        "http_status": null,
+        "message": "模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。",
+        "retryable": true,
+        "abort_remaining": false
+      }
+    ],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "prompt_tokens": 4132,
+        "completion_tokens": 4096,
+        "total_tokens": 8228,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 4096
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4132
+      },
+      {
+        "prompt_tokens": 4478,
+        "completion_tokens": 282,
+        "total_tokens": 4760,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 115
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 2814
+      },
+      {
+        "prompt_tokens": 5634,
+        "completion_tokens": 4096,
+        "total_tokens": 9730,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 4096
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 3970
+      },
+      {
+        "prompt_tokens": 4368,
+        "completion_tokens": 4096,
+        "total_tokens": 8464,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 4096
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 2704
+      },
+      {
+        "prompt_tokens": 3312,
+        "completion_tokens": 137,
+        "total_tokens": 3449,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 1648
+      }
+    ],
+    "input_characters": 43430,
+    "finish_reasons": [
+      "length",
+      "stop",
+      "length",
+      "length",
+      "stop"
+    ],
+    "output_formats": [
+      "json",
+      "json"
+    ],
+    "model_seconds": 81.958832,
+    "retryable": true,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "deepseek-flash",
+    "parse_seconds": 0.531391,
+    "total_seconds": 82.502813,
+    "pages": 9,
+    "chunks": 9,
+    "pdf_bytes": 728919
+  },
+  "assertion_count": 0,
+  "committed": false
+}

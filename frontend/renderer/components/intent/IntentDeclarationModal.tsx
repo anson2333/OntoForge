@@ -1,3 +1,4 @@
+import { t, uiLabel, localizeMessage } from '../../i18n';
 /**
  * Intent Declaration Modal
  * UI for explicit research intent declaration (Section 2.6.2)
@@ -60,7 +61,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
   const handleParseIntent = async () => {
     const trimmedMessage = message.trim();
     if (!trimmedMessage) {
-      setError('Enter a freeform intent description before analyzing it.');
+      setError("Enter a freeform intent description before analyzing it.");
       return;
     }
 
@@ -117,7 +118,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
       }
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Failed to declare intent');
+      setError(err.message || t("Failed to declare intent"));
     } finally {
       setIsSubmitting(false);
     }
@@ -135,21 +136,21 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
         }}
       >
         <div className="modal-header">
-          <h2>Declare Research Intent</h2>
+          <h2>{t("Declare Research Intent")}</h2>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
 
         <form onSubmit={handleSubmit} className="intent-form">
           <div className="composer-card" style={{ minHeight: parsedIntent ? 180 : 260 }}>
             <div className="composer-header">
-              <label htmlFor="intent-message">Intent Message</label>
-              <span className="composer-hint">Step 1: describe the intent in plain language</span>
+              <label htmlFor="intent-message">{t("Intent Message")}</label>
+              <span className="composer-hint">{t("Step 1: describe the intent in plain language")}</span>
             </div>
             <textarea
               id="intent-message"
               value={message}
               onChange={(e) => handleMessageChange(e.target.value)}
-              placeholder="E.g., find most cited papers in the recent 3 years in optical access networks"
+              placeholder={t("E.g., find most cited papers in the recent 3 years in optical access networks")}
               rows={3}
               className="message-input"
               style={{
@@ -168,7 +169,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
                 onClick={handleParseIntent}
                 disabled={isParsing || isSubmitting}
               >
-                {isParsing ? 'Analyzing...' : parsedIntent ? 'Re-analyze' : 'Analyze with LLM'}
+                {isParsing ? t('Analyzing...') : parsedIntent ? t('Re-analyze') : t('Analyze with LLM')}
               </button>
             </div>
           </div>
@@ -177,50 +178,50 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
             <div className="parsed-card">
               <div className="parsed-card-header">
                 <div>
-                  <h3>Parsed Intent</h3>
-                  <p>Step 2: review and edit before confirming</p>
+                  <h3>{t("Parsed Intent")}</h3>
+                  <p>{t("Step 2: review and edit before confirming")}</p>
                 </div>
                 <div className="parsed-badges">
-                  <span className="parsed-badge">{intentType}</span>
-                  <span className="parsed-badge">{intentScope}</span>
+                  <span className="parsed-badge">{uiLabel(intentType)}</span>
+                  <span className="parsed-badge">{uiLabel(intentScope)}</span>
                   <span className="parsed-badge emphasis">{parsedConfidence}%</span>
                 </div>
               </div>
 
               <div className="compact-grid compact-grid-two">
                 <div className="form-group compact-group">
-                  <label htmlFor="intent-type">Intent Type</label>
+                  <label htmlFor="intent-type">{t("Intent Type")}</label>
                   <select
                     id="intent-type"
                     value={intentType}
                     onChange={(e) => setIntentType(e.target.value as any)}
                     required
                   >
-                    <option value="correction">Correction</option>
-                    <option value="preference">Preference</option>
-                    <option value="priority">Priority</option>
-                    <option value="constraint">Constraint</option>
-                    <option value="goal">Goal</option>
+                    <option value="correction">{t("Correction")}</option>
+                    <option value="preference">{t("Preference")}</option>
+                    <option value="priority">{t("Priority")}</option>
+                    <option value="constraint">{t("Constraint")}</option>
+                    <option value="goal">{t("Goal")}</option>
                   </select>
                 </div>
 
                 <div className="form-group compact-group">
-                  <label htmlFor="intent-scope">Scope</label>
+                  <label htmlFor="intent-scope">{t("Scope")}</label>
                   <select
                     id="intent-scope"
                     value={intentScope}
                     onChange={(e) => setIntentScope(e.target.value as any)}
                     required
                   >
-                    <option value="local">Local</option>
-                    <option value="pattern">Pattern</option>
-                    <option value="global">Global</option>
+                    <option value="local">{t("Local")}</option>
+                    <option value="pattern">{t("Pattern")}</option>
+                    <option value="global">{t("Global")}</option>
                   </select>
                 </div>
               </div>
 
               <div className="form-group compact-group">
-                <label htmlFor="description">Description</label>
+                <label htmlFor="description">{t("Description")}</label>
                 <textarea
                   id="description"
                   value={description}
@@ -231,7 +232,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
               </div>
 
               <div className="form-group compact-group">
-                <label htmlFor="constraints">Constraints (JSON)</label>
+                <label htmlFor="constraints">{t("Constraints (JSON)")}</label>
                 <textarea
                   id="constraints"
                   value={constraints}
@@ -243,7 +244,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
 
               <div className="compact-grid compact-grid-two">
                 <div className="form-group compact-group">
-                  <label htmlFor="active-from">Active From</label>
+                  <label htmlFor="active-from">{t("Active From")}</label>
                   <input
                     type="date"
                     id="active-from"
@@ -254,7 +255,7 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
                 </div>
 
                 <div className="form-group compact-group">
-                  <label htmlFor="active-until">Active Until</label>
+                  <label htmlFor="active-until">{t("Active Until")}</label>
                   <input
                     type="date"
                     id="active-until"
@@ -267,16 +268,16 @@ export const IntentDeclarationModal: React.FC<IntentDeclarationModalProps> = ({
           )}
 
           {error && (
-            <div className="error-message">{error}</div>
+            <div className="error-message">{localizeMessage(error)}</div>
           )}
 
           <div className="modal-footer">
             <button type="button" className="btn-secondary" onClick={onClose}>
-              Cancel
+              {t("Cancel")}
             </button>
             {parsedIntent && (
               <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? 'Confirming...' : 'Confirm Intent'}
+                {isSubmitting ? t("Confirming...") : t("Confirm Intent")}
               </button>
             )}
           </div>

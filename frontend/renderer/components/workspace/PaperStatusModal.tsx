@@ -1,3 +1,4 @@
+import { t, uiLabel, localizeMessage } from '../../i18n';
 /**
  * Paper Status Modal
  * Displays different UI based on paper state:
@@ -45,34 +46,34 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
     return (
       <div className="paper-status-content">
         <div className="status-section">
-          <h3>Paper Information</h3>
+          <h3>{t("Paper Information")}</h3>
           <div className="paper-meta">
             <div className="meta-row">
-              <span className="meta-label">Title:</span>
+              <span className="meta-label">{t("Title:")}</span>
               <span className="meta-value">{paper.title}</span>
             </div>
             {paper.authors.length > 0 && (
               <div className="meta-row">
-                <span className="meta-label">Authors:</span>
+                <span className="meta-label">{t("Authors:")}</span>
                 <span className="meta-value">{paper.authors.join(', ')}</span>
               </div>
             )}
             {paper.venue && (
               <div className="meta-row">
-                <span className="meta-label">Venue:</span>
-                <span className="meta-value">{paper.venue}</span>
+                <span className="meta-label">{t("Venue:")}</span>
+                <span className="meta-value">{paper.venue === 'Unknown venue' ? t('Unknown venue') : paper.venue}</span>
               </div>
             )}
             {paper.year && (
               <div className="meta-row">
-                <span className="meta-label">Year:</span>
+                <span className="meta-label">{t("Year:")}</span>
                 <span className="meta-value">{paper.year}</span>
               </div>
             )}
             <div className="meta-row">
-              <span className="meta-label">Status:</span>
+              <span className="meta-label">{t("Status:")}</span>
               <span className="meta-value status-badge" data-status={paper.ingestion_status}>
-                {paper.ingestion_status.replace(/_/g, ' ')}
+                {uiLabel(paper.ingestion_status)}
               </span>
             </div>
           </div>
@@ -84,11 +85,11 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
               className="btn-primary"
               onClick={() => onOpenPDF(paper.id)}
             >
-              Open PDF
+              {t("Open PDF")}
             </button>
           )}
           <button className="btn-secondary" onClick={onClose}>
-            Close
+            {t("Close")}
           </button>
         </div>
       </div>
@@ -115,12 +116,12 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
               {status === 'queued' ? '⏳' : '⏱️'}
             </div>
             <h3 style={{ marginTop: '16px', marginBottom: '8px' }}>
-              {status === 'queued' ? 'Queued for Processing' : 'Validating PDF'}
+              {status === 'queued' ? t("Queued for Processing") : t("Validating PDF")}
             </h3>
             <p className="status-message" style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
               {status === 'queued'
-                ? 'Your PDF is in the queue and will be processed shortly.'
-                : 'Extracting text, formulas, and metadata from PDF...'}
+                ? t("Your PDF is in the queue and will be processed shortly.")
+                : t("Extracting text, formulas, and metadata from PDF...")}
             </p>
             
             <div className="file-info" style={{
@@ -130,15 +131,15 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
               border: '1px solid var(--border-color)'
             }}>
               <div className="meta-row" style={{ marginBottom: '12px' }}>
-                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>File:</span>
+                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>{t("File:")}</span>
                 <span className="meta-value" style={{ 
                   wordBreak: 'break-word',
                   fontFamily: 'monospace',
                   fontSize: '13px'
-                }}>{file_name || 'Unknown'}</span>
+                }}>{file_name || t("Unknown")}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>Size:</span>
+                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>{t("Size:")}</span>
                 <span className="meta-value">{formatFileSize(file_size)}</span>
               </div>
             </div>
@@ -156,13 +157,13 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                   marginRight: '8px',
                   verticalAlign: 'middle'
                 }} />
-                This may take a few moments depending on PDF size and complexity
+                {t("This may take a few moments depending on PDF size and complexity")}
               </div>
             )}
           </div>
           <div className="modal-actions">
             <button className="btn-secondary" onClick={onClose}>
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>
@@ -182,15 +183,15 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
           <div className="status-section error-section">
             <div className="status-icon-large error" style={{ fontSize: '48px' }}>❌</div>
             <h3 style={{ marginTop: '16px', marginBottom: '8px', color: 'var(--error-color)' }}>
-              Import Failed
+              {t("Import Failed")}
             </h3>
             <p className="status-message" style={{ marginBottom: '24px' }}>
-              The PDF could not be processed. Please review the details below.
+              {t("The PDF could not be processed. Please review the details below.")}
             </p>
             
             {error_message && (
               <div className="error-details" style={{ marginBottom: '20px' }}>
-                <h4>Error Details</h4>
+                <h4>{t("Error Details")}</h4>
                 <pre className="error-message-box" style={{
                   background: 'var(--background-secondary)',
                   padding: '12px',
@@ -201,7 +202,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                   wordBreak: 'break-word',
                   maxHeight: '150px',
                   overflow: 'auto'
-                }}>{error_message}</pre>
+                }}>{localizeMessage(error_message)}</pre>
               </div>
             )}
 
@@ -213,15 +214,15 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
               marginBottom: '20px'
             }}>
               <div className="meta-row" style={{ marginBottom: '12px' }}>
-                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>File:</span>
+                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>{t("File:")}</span>
                 <span className="meta-value" style={{ 
                   wordBreak: 'break-word',
                   fontFamily: 'monospace',
                   fontSize: '13px'
-                }}>{file_name || 'Unknown'}</span>
+                }}>{file_name || t("Unknown")}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>Size:</span>
+                <span className="meta-label" style={{ fontWeight: 600, minWidth: '60px' }}>{t("Size:")}</span>
                 <span className="meta-value">{formatFileSize(file_size)}</span>
               </div>
             </div>
@@ -232,23 +233,23 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
               borderRadius: '6px',
               padding: '16px'
             }}>
-              {error_message?.includes('File reference lost') ? (
+              {error_message?.includes(t("File reference lost")) ? (
                 <>
-                  <h4 style={{ marginTop: 0, marginBottom: '12px', fontSize: '14px' }}>What to do</h4>
+                  <h4 style={{ marginTop: 0, marginBottom: '12px', fontSize: '14px' }}>{t("What to do")}</h4>
                   <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    <li style={{ marginBottom: '8px' }}>Close this dialog and click "Dismiss" to clear this failed import</li>
-                    <li style={{ marginBottom: '8px' }}>Drop the PDF file into the workspace sidebar again</li>
-                    <li>The import will restart from the beginning</li>
+                    <li style={{ marginBottom: '8px' }}>{t("Close this dialog and click \"Dismiss\" to clear this failed import")}</li>
+                    <li style={{ marginBottom: '8px' }}>{t("Drop the PDF file into the workspace sidebar again")}</li>
+                    <li>{t("The import will restart from the beginning")}</li>
                   </ul>
                 </>
               ) : (
                 <>
-                  <h4 style={{ marginTop: 0, marginBottom: '12px', fontSize: '14px' }}>Common Issues</h4>
+                  <h4 style={{ marginTop: 0, marginBottom: '12px', fontSize: '14px' }}>{t("Common Issues")}</h4>
                   <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    <li style={{ marginBottom: '8px' }}>PDF may be corrupted or password-protected</li>
-                    <li style={{ marginBottom: '8px' }}>PDF may not contain extractable text (scanned images)</li>
-                    <li style={{ marginBottom: '8px' }}>Backend service may be experiencing issues</li>
-                    <li>Domain pack configuration may be invalid</li>
+                    <li style={{ marginBottom: '8px' }}>{t("PDF may be corrupted or password-protected")}</li>
+                    <li style={{ marginBottom: '8px' }}>{t("PDF may not contain extractable text (scanned images)")}</li>
+                    <li style={{ marginBottom: '8px' }}>{t("Backend service may be experiencing issues")}</li>
+                    <li>{t("Domain pack configuration may be invalid")}</li>
                   </ul>
                 </>
               )}
@@ -256,7 +257,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
           </div>
 
           <div className="modal-actions">
-            {error_message?.includes('File reference lost') ? (
+            {error_message?.includes(t("File reference lost")) ? (
               onDismiss && (
                 <button
                   className="btn-primary"
@@ -265,7 +266,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     onClose();
                   }}
                 >
-                  Dismiss
+                  {t("Dismiss")}
                 </button>
               )
             ) : (
@@ -277,12 +278,12 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     onClose();
                   }}
                 >
-                  Retry Import
+                  {t("Retry Import")}
                 </button>
               )
             )}
             <button className="btn-secondary" onClick={onClose}>
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>
@@ -295,9 +296,9 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
         <div className="paper-status-content">
           <div className="status-section">
             <div className="status-icon-large" style={{ fontSize: '48px' }}>⚙️</div>
-            <h3 style={{ marginTop: '16px', marginBottom: '8px' }}>Committing to Workspace</h3>
+            <h3 style={{ marginTop: '16px', marginBottom: '8px' }}>{t("Committing to Workspace")}</h3>
             <p className="status-message" style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
-              Building knowledge graph and creating assertion nodes...
+              {t("Building knowledge graph and creating assertion nodes...")}
             </p>
             
             {preview && (
@@ -322,7 +323,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Text Chunks</span>
+                  }}>{t("Text Chunks")}</span>
                 </div>
                 <div className="stat-item" style={{ textAlign: 'center' }}>
                   <span className="stat-value" style={{
@@ -336,7 +337,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Formulas</span>
+                  }}>{t("Formulas")}</span>
                 </div>
                 <div className="stat-item" style={{ textAlign: 'center' }}>
                   <span className="stat-value" style={{
@@ -350,7 +351,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Assertions</span>
+                  }}>{t("Assertions")}</span>
                 </div>
               </div>
             )}
@@ -367,12 +368,12 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                 marginRight: '8px',
                 verticalAlign: 'middle'
               }} />
-              Please wait while the paper is being committed...
+              {t("Please wait while the paper is being committed...")}
             </div>
           </div>
           <div className="modal-actions">
             <button className="btn-secondary" onClick={onClose}>
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>
@@ -386,10 +387,10 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
           <div className="status-section">
             <div className="status-icon-large" style={{ fontSize: '48px', color: 'var(--success-color)' }}>✓</div>
             <h3 style={{ marginTop: '16px', marginBottom: '8px', color: 'var(--success-color)' }}>
-              Preview Ready
+              {t("Preview Ready")}
             </h3>
             <p className="status-message" style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
-              PDF has been successfully parsed and analyzed. Review the extracted content below.
+              {t("PDF has been successfully parsed and analyzed. Review the extracted content below.")}
             </p>
 
             {warning && (
@@ -404,12 +405,12 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                 gap: '8px'
               }}>
                 <span className="warning-icon" style={{ fontSize: '20px' }}>⚠️</span>
-                <span style={{ fontSize: '13px', flex: 1 }}>{warning}</span>
+                <span style={{ fontSize: '13px', flex: 1 }}>{localizeMessage(warning)}</span>
               </div>
             )}
 
             <div className="preview-details">
-              <h4 style={{ marginTop: 0, marginBottom: '16px', fontSize: '14px' }}>Extracted Content</h4>
+              <h4 style={{ marginTop: 0, marginBottom: '16px', fontSize: '14px' }}>{t("Extracted Content")}</h4>
               <div className="preview-stats" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
@@ -432,7 +433,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Text Chunks</span>
+                  }}>{t("Text Chunks")}</span>
                 </div>
                 <div className="stat-item" style={{ textAlign: 'center' }}>
                   <span className="stat-value" style={{
@@ -446,7 +447,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Formulas</span>
+                  }}>{t("Formulas")}</span>
                 </div>
                 <div className="stat-item" style={{ textAlign: 'center' }}>
                   <span className="stat-value" style={{
@@ -460,7 +461,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Assertions</span>
+                  }}>{t("Assertions")}</span>
                 </div>
                 <div className="stat-item" style={{ textAlign: 'center' }}>
                   <span className="stat-value" style={{
@@ -474,7 +475,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                     display: 'block',
                     fontSize: '12px',
                     color: 'var(--text-secondary)'
-                  }}>Evidence Links</span>
+                  }}>{t("Evidence Links")}</span>
                 </div>
               </div>
 
@@ -485,24 +486,24 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                 border: '1px solid var(--border-color)'
               }}>
                 <div className="meta-row" style={{ marginBottom: preview.venue ? '12px' : '0' }}>
-                  <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>Title:</span>
+                  <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>{t("Title:")}</span>
                   <span className="meta-value">{preview.title}</span>
                 </div>
                 {preview.authors && preview.authors.length > 0 && (
                   <div className="meta-row" style={{ marginBottom: preview.venue ? '12px' : '0' }}>
-                    <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>Authors:</span>
+                    <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>{t("Authors:")}</span>
                     <span className="meta-value">{preview.authors.join(', ')}</span>
                   </div>
                 )}
                 {preview.venue && (
                   <div className="meta-row" style={{ marginBottom: '12px' }}>
-                    <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>Venue:</span>
+                    <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>{t("Venue:")}</span>
                     <span className="meta-value">{preview.venue}</span>
                   </div>
                 )}
                 {preview.year && (
                   <div className="meta-row">
-                    <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>Year:</span>
+                    <span className="meta-label" style={{ fontWeight: 600, minWidth: '80px' }}>{t("Year:")}</span>
                     <span className="meta-value">{preview.year}</span>
                   </div>
                 )}
@@ -519,7 +520,7 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
               textAlign: 'center'
             }}>
               <p style={{ margin: 0 }}>
-                Click <strong>"Commit to Workspace"</strong> to add this paper to your knowledge graph.
+                {t("Click")} <strong>{t("\"Commit to Workspace\"")}</strong> {t("to add this paper to your knowledge graph.")}
               </p>
             </div>
           </div>
@@ -533,11 +534,11 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
                   onClose();
                 }}
               >
-                Commit to Workspace
+                {t("Commit to Workspace")}
               </button>
             )}
             <button className="btn-secondary" onClick={onClose}>
-              Cancel
+              {t("Cancel")}
             </button>
           </div>
         </div>
@@ -553,24 +554,24 @@ export const PaperStatusModal: React.FC<PaperStatusModalProps> = ({
     }
     if (isImport && paperImport) {
       // Use title if available, otherwise use file_name, never use ID
-      return paperImport.title || paperImport.file_name || 'Paper Import';
+      return paperImport.title || paperImport.file_name || t("Paper Import");
     }
-    return 'Paper Details';
+    return t("Paper Details");
   };
 
   const getModalSubtitle = () => {
     if (isImport && paperImport) {
       const statusLabels = {
-        queued: 'Queued for processing',
-        validating: 'Validating and extracting preview',
-        preview_ready: 'Ready to commit',
-        ingesting: 'Committing to workspace',
-        error: 'Import failed'
+        queued: t("Queued for processing"),
+        validating: t("Validating and extracting preview"),
+        preview_ready: t("Ready to commit"),
+        ingesting: t("Committing to workspace"),
+        error: t('Import failed')
       };
       return statusLabels[paperImport.status] || paperImport.status;
     }
     if (isPaper && paper) {
-      return paper.ingestion_status === 'ingested' ? 'Ingested' : 'Error';
+      return paper.ingestion_status === 'ingested' ? t("Ingested") : t("Error");
     }
     return '';
   };

@@ -1,0 +1,197 @@
+{
+  "cutoff": "2016-06-30",
+  "date_basis": "arXiv first public submission, not conference year",
+  "version_policy": "v1 for every paper; immutable historical input",
+  "papers": [
+    {
+      "id": "rcnn",
+      "title": "Rich feature hierarchies for accurate object detection and semantic segmentation",
+      "arxiv_id": "1311.2524",
+      "first_public_date": "2013-11-11",
+      "venue": "CVPR 2014",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1311.2524",
+      "pdf_url": "https://arxiv.org/pdf/1311.2524v1"
+    },
+    {
+      "id": "multibox",
+      "title": "Scalable Object Detection using Deep Neural Networks",
+      "arxiv_id": "1312.2249",
+      "first_public_date": "2013-12-08",
+      "venue": "CVPR 2014",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1312.2249",
+      "pdf_url": "https://arxiv.org/pdf/1312.2249v1"
+    },
+    {
+      "id": "sppnet",
+      "title": "Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition",
+      "arxiv_id": "1406.4729",
+      "first_public_date": "2014-06-18",
+      "venue": "ECCV 2014",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1406.4729",
+      "pdf_url": "https://arxiv.org/pdf/1406.4729v1"
+    },
+    {
+      "id": "fast_rcnn",
+      "title": "Fast R-CNN",
+      "arxiv_id": "1504.08083",
+      "first_public_date": "2015-04-30",
+      "venue": "ICCV 2015",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1504.08083",
+      "pdf_url": "https://arxiv.org/pdf/1504.08083v1"
+    },
+    {
+      "id": "multi_region",
+      "title": "Object detection via a multi-region & semantic segmentation-aware CNN model",
+      "arxiv_id": "1505.01749",
+      "first_public_date": "2015-05-07",
+      "venue": "ICCV 2015",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1505.01749",
+      "pdf_url": "https://arxiv.org/pdf/1505.01749v1"
+    },
+    {
+      "id": "faster_rcnn",
+      "title": "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks",
+      "arxiv_id": "1506.01497",
+      "first_public_date": "2015-06-04",
+      "venue": "NeurIPS 2015",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1506.01497",
+      "pdf_url": "https://arxiv.org/pdf/1506.01497v1"
+    },
+    {
+      "id": "yolo",
+      "title": "You Only Look Once: Unified, Real-Time Object Detection",
+      "arxiv_id": "1506.02640",
+      "first_public_date": "2015-06-08",
+      "venue": "CVPR 2016",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1506.02640",
+      "pdf_url": "https://arxiv.org/pdf/1506.02640v1"
+    },
+    {
+      "id": "ssd",
+      "title": "SSD: Single Shot MultiBox Detector",
+      "arxiv_id": "1512.02325",
+      "first_public_date": "2015-12-08",
+      "venue": "ECCV 2016",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1512.02325",
+      "pdf_url": "https://arxiv.org/pdf/1512.02325v1"
+    },
+    {
+      "id": "ion",
+      "title": "Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks",
+      "arxiv_id": "1512.04143",
+      "first_public_date": "2015-12-14",
+      "venue": "CVPR 2016",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1512.04143",
+      "pdf_url": "https://arxiv.org/pdf/1512.04143v1"
+    },
+    {
+      "id": "hypernet",
+      "title": "HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection",
+      "arxiv_id": "1604.00600",
+      "first_public_date": "2016-04-03",
+      "venue": "CVPR 2016",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1604.00600",
+      "pdf_url": "https://arxiv.org/pdf/1604.00600v1"
+    },
+    {
+      "id": "ohem",
+      "title": "Training Region-based Object Detectors with Online Hard Example Mining",
+      "arxiv_id": "1604.03540",
+      "first_public_date": "2016-04-12",
+      "venue": "CVPR 2016",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1604.03540",
+      "pdf_url": "https://arxiv.org/pdf/1604.03540v1"
+    },
+    {
+      "id": "rfcn",
+      "title": "R-FCN: Object Detection via Region-based Fully Convolutional Networks",
+      "arxiv_id": "1605.06409",
+      "first_public_date": "2016-05-20",
+      "venue": "NeurIPS 2016",
+      "split": "historical",
+      "source_url": "https://arxiv.org/abs/1605.06409",
+      "pdf_url": "https://arxiv.org/pdf/1605.06409v1"
+    },
+    {
+      "id": "fpn",
+      "title": "Feature Pyramid Networks for Object Detection",
+      "arxiv_id": "1612.03144",
+      "first_public_date": "2016-12-09",
+      "venue": "CVPR 2017",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/1612.03144",
+      "pdf_url": "https://arxiv.org/pdf/1612.03144v1"
+    },
+    {
+      "id": "yolo9000",
+      "title": "YOLO9000: Better, Faster, Stronger",
+      "arxiv_id": "1612.08242",
+      "first_public_date": "2016-12-25",
+      "venue": "CVPR 2017",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/1612.08242",
+      "pdf_url": "https://arxiv.org/pdf/1612.08242v1"
+    },
+    {
+      "id": "retinanet",
+      "title": "Focal Loss for Dense Object Detection",
+      "arxiv_id": "1708.02002",
+      "first_public_date": "2017-08-07",
+      "venue": "ICCV 2017",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/1708.02002",
+      "pdf_url": "https://arxiv.org/pdf/1708.02002v1"
+    },
+    {
+      "id": "cascade_rcnn",
+      "title": "Cascade R-CNN: Delving into High Quality Object Detection",
+      "arxiv_id": "1712.00726",
+      "first_public_date": "2017-12-03",
+      "venue": "CVPR 2018",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/1712.00726",
+      "pdf_url": "https://arxiv.org/pdf/1712.00726v1"
+    },
+    {
+      "id": "cornernet",
+      "title": "CornerNet: Detecting Objects as Paired Keypoints",
+      "arxiv_id": "1808.01244",
+      "first_public_date": "2018-08-03",
+      "venue": "ECCV 2018",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/1808.01244",
+      "pdf_url": "https://arxiv.org/pdf/1808.01244v1"
+    },
+    {
+      "id": "fcos",
+      "title": "FCOS: Fully Convolutional One-Stage Object Detection",
+      "arxiv_id": "1904.01355",
+      "first_public_date": "2019-04-02",
+      "venue": "ICCV 2019",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/1904.01355",
+      "pdf_url": "https://arxiv.org/pdf/1904.01355v1"
+    },
+    {
+      "id": "detr",
+      "title": "End-to-End Object Detection with Transformers",
+      "arxiv_id": "2005.12872",
+      "first_public_date": "2020-05-26",
+      "venue": "ECCV 2020",
+      "split": "holdout",
+      "source_url": "https://arxiv.org/abs/2005.12872",
+      "pdf_url": "https://arxiv.org/pdf/2005.12872v1"
+    }
+  ]
+}

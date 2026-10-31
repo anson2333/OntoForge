@@ -1,0 +1,11 @@
+{
+  "files": {
+    "backend/services/llm/condition_validation.py": "c6ebfc448d9a0e567ba9d54822e4b9465e393c6f6eda3e7a6b47241493e42283",
+    "backend/services/llm/semantic_extractor.py": "fce4f0a9803a5e337fe7ad84ec1f89c5c3124b48a6f9a169f9a8ff780c76aa9d",
+    "backend/services/llm/base.py": "b650c4795d19ddf9db7576f06a592253015805741e74daba393490021edf0baf",
+    "backend/schemas/domain_pack.py": "4d5f0ebb35d91c920f886f4ac149f809e70933ec201432d4fedbd76eeef1ce7b",
+    "backend/configs/domain-pack-cv-detection.yaml": "a4d184b3dead1f0f3b99cca8ae539d173294dbf0659b0e33f4023c85468339db"
+  },
+  "tests_passed": 45,
+  "notice": "Exact quote grounding and conservative condition downgrade; not semantic correctness proof."
+}

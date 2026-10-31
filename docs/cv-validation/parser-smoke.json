@@ -1,0 +1,245 @@
+{
+  "purpose": "Real PDF parser smoke and timing only; no LLM calls, gold annotations or gap prediction",
+  "results": [
+    {
+      "id": "rcnn",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 1.105762,
+        "total_seconds": 1.114088,
+        "pages": 10,
+        "chunks": 16,
+        "pdf_bytes": 2760719
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "multibox",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.352449,
+        "total_seconds": 0.355927,
+        "pages": 8,
+        "chunks": 9,
+        "pdf_bytes": 4427654
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "sppnet",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.78394,
+        "total_seconds": 0.789903,
+        "pages": 11,
+        "chunks": 12,
+        "pdf_bytes": 4092703
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "fast_rcnn",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.486431,
+        "total_seconds": 0.493781,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 728919
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "multi_region",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.807217,
+        "total_seconds": 0.819873,
+        "pages": 17,
+        "chunks": 25,
+        "pdf_bytes": 8717534
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "faster_rcnn",
+      "status": "parsed",
+      "assertion_source": "heuristic",
+      "assertions": 1,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.655054,
+        "total_seconds": 0.660436,
+        "pages": 10,
+        "chunks": 13,
+        "pdf_bytes": 2368067
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "LLM extraction was unavailable; assertions were produced by the rule-based heuristic extractor."
+      ]
+    },
+    {
+      "id": "yolo",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.430418,
+        "total_seconds": 0.435689,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 5550305
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "ssd",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.950596,
+        "total_seconds": 0.960127,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 552861
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "ion",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.707545,
+        "total_seconds": 0.716033,
+        "pages": 11,
+        "chunks": 11,
+        "pdf_bytes": 1763412
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "hypernet",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.501424,
+        "total_seconds": 0.507489,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 1827266
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "ohem",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 0.502892,
+        "total_seconds": 0.507562,
+        "pages": 9,
+        "chunks": 9,
+        "pdf_bytes": 965877
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    },
+    {
+      "id": "rfcn",
+      "status": "parsed",
+      "assertion_source": "none",
+      "assertions": 0,
+      "diagnostics": {
+        "model_called": false,
+        "model_seconds": 0.0,
+        "usage": [],
+        "parse_seconds": 3.401567,
+        "total_seconds": 3.407249,
+        "pages": 11,
+        "chunks": 11,
+        "pdf_bytes": 9013379
+      },
+      "warnings": [
+        "Page-only source locations; precise PDF bounding boxes are unavailable.",
+        "No domain-grounded assertions were extracted from the parsed chunks."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+schema_version: '1.0'
+ontology:
+  rule_version: cv-ontology-1.0
+  entities:
+  - id: model.fast_rcnn
+    entity_type: Model
+    name: Fast R-CNN
+    aliases: [Fast RCNN]
+  - id: model.faster_rcnn
+    entity_type: Model
+    name: Faster R-CNN
+    aliases: [Faster RCNN]
+  - id: model.yolo
+    entity_type: Model
+    name: YOLO
+    aliases: [You Only Look Once]
+  - id: variant.fast_rcnn.default
+    entity_type: ModelVariant
+    name: Fast R-CNN
+    aliases: [Fast RCNN]
+    parent_id: model.fast_rcnn
+  - id: variant.faster_rcnn.default
+    entity_type: ModelVariant
+    name: Faster R-CNN
+    aliases: [Faster RCNN]
+    parent_id: model.faster_rcnn
+  - id: variant.faster_rcnn.svd
+    entity_type: ModelVariant
+    name: Faster R-CNN SVD
+    aliases: [Faster RCNN with SVD, Faster R-CNN (SVD)]
+    parent_id: model.faster_rcnn
+  - id: variant.yolo.default
+    entity_type: ModelVariant
+    name: YOLO
+    aliases: [You Only Look Once]
+    parent_id: model.yolo
+  - id: component.rpn
+    entity_type: Component
+    name: Region Proposal Network
+    aliases: [RPN, proposal network]
+    role: proposal_generator
+  - id: component.detection_head
+    entity_type: Component
+    name: Detection Head
+    aliases: [detector head, classification head]
+    role: detector_head
+  - id: backbone.vgg16
+    entity_type: Backbone
+    name: VGG16
+    aliases: [VGG-16, VGG 16]
+  - id: backbone.zf
+    entity_type: Backbone
+    name: ZF
+    aliases: [ZF-net, Zeiler-Fergus]
+  - id: dataset.voc
+    entity_type: Dataset
+    name: PASCAL VOC
+    aliases: [VOC, Pascal Visual Object Classes]
+  - id: split.voc2007_test
+    entity_type: DatasetSplit
+    name: VOC 2007 test
+    aliases: [VOC07 test, voc2007_test]
+  - id: split.voc2007_trainval
+    entity_type: DatasetSplit
+    name: VOC 2007 trainval
+    aliases: [VOC07 trainval, VOC07]
+  - id: split.voc2012_trainval
+    entity_type: DatasetSplit
+    name: VOC 2012 trainval
+    aliases: [VOC12 trainval, VOC12]
+  - id: split.voc07_12
+    entity_type: DatasetSplit
+    name: VOC07+12
+    aliases: [07+12, VOC 2007 trainval + VOC 2012 trainval]
+    members: [split.voc2007_trainval, split.voc2012_trainval]
+  - id: split.voc07pp12
+    entity_type: DatasetSplit
+    name: VOC07++12
+    aliases: [07++12, VOC 2007 trainval+test + VOC 2012 trainval]
+  - id: split.voc2010_test
+    entity_type: DatasetSplit
+    name: VOC 2010 test
+    aliases: [VOC10 test, voc2010_test]
+  - id: split.voc2012_test
+    entity_type: DatasetSplit
+    name: VOC 2012 test
+    aliases: [VOC12 test, voc2012_test]
+  - id: split.coco_test_dev
+    entity_type: DatasetSplit
+    name: COCO test-dev
+    aliases: [coco_test_dev, COCO test dev]
+  - id: split.coco_val
+    entity_type: DatasetSplit
+    name: COCO val
+    aliases: [coco_val, COCO validation]
+  relation_rules:
+  - relation_type: HAS_VARIANT
+    source_type: Model
+    target_type: ModelVariant
+  - relation_type: HAS_COMPONENT
+    source_type: ModelVariant
+    target_type: Component
+  - relation_type: USES_BACKBONE
+    source_type: Component
+    target_type: Backbone
+  - relation_type: HAS_SPLIT
+    source_type: Dataset
+    target_type: DatasetSplit
+  - relation_type: HAS_MEMBER
+    source_type: DatasetSplit
+    target_type: DatasetSplit
+domain:
+  id: domain.vision.cv_detection
+  name: 目标检测：准确率与推理速度
+  taxonomy_tree:
+  - name: method
+    description: Classify the detector being measured, not the paper's cited baselines. Fast/Faster R-CNN and SPPnet are region_based;
+      YOLO is dense_regression; SSD/MultiBox are multibox. Use unknown if unsupported.
+    values:
+    - region_based
+    - dense_regression
+    - multibox
+  - name: scenario
+    description: Dataset and evaluation split. Never merge different VOC years or COCO splits. Speed-only statements without
+      a named benchmark use unknown.
+    values:
+    - voc2007_test
+    - voc2010_test
+    - voc2012_test
+    - coco_test_dev
+    - coco_val
+core_metrics:
+- name: voc_map50
+  description: Absolute overall detection mAP at IoU 0.5 on a named PASCAL VOC test split. Not per-class AP, recall, relative
+    improvement or COCO averaged AP. Record VOC year and evaluation protocol; unknown when the text does not specify the AP
+    integration convention.
+  expected_unit: percent
+  aliases:
+  - VOC mAP
+  - VOC AP50
+  - PASCAL VOC mAP
+  value_type: float
+  minimum: 0
+  maximum: 100
+- name: coco_ap
+  description: Absolute COCO detection AP averaged over IoU 0.50:0.05:0.95. Never treat AP50, AP75, AP_small or VOC mAP as
+    this metric.
+  expected_unit: percent
+  aliases:
+  - COCO AP
+  - COCO mAP
+  - COCO AP50:95
+  value_type: float
+  minimum: 0
+  maximum: 100
+- name: coco_ap_small
+  description: Absolute COCO AP for small objects under the standard COCO small-area definition and averaged IoU protocol.
+    A qualitative claim about small objects is not a measurement.
+  expected_unit: percent
+  aliases:
+  - AP_small
+  - APs
+  value_type: float
+  minimum: 0
+  maximum: 100
+- name: coco_ap75
+  description: Absolute COCO AP at IoU 0.75, not VOC AP50 or COCO averaged AP.
+  expected_unit: percent
+  aliases:
+  - AP75
+  - COCO AP75
+  value_type: float
+  minimum: 0
+  maximum: 100
+- name: inference_fps
+  description: Explicitly reported inference frames per second for the evaluated detector. Preserve hardware, batch size,
+    input resolution, model variant and timing_scope. Do not calculate FPS from latency or from a dataset-total runtime.
+  expected_unit: fps
+  aliases:
+  - frames per second
+  - frame rate
+  - detection FPS
+  value_type: float
+  minimum: 0
+- name: inference_latency
+  description: Explicitly reported per-image detector inference time, including detector_only_excludes_proposals when stated.
+    Distinguish this from end_to_end inference. Exclude individual-layer/proposal-only times, training time, speedup ratios
+    and total time for a whole test set. Return the original value/unit; the application converts seconds to milliseconds
+    explicitly.
+  expected_unit: ms
+  aliases:
+  - milliseconds per image
+  - test time per image
+  - inference time per image
+  value_type: float
+  minimum: 0
+  unit_conversions:
+    s: 1000
+    us: 0.001
+validation:
+  required_context_keys:
+  - method
+  - scenario
+  - detector_family
+  - model_variant
+  - training_data
+  - backbone
+  - detector_backbone
+  - proposal_backbone
+  - input_resolution
+  - evaluation_protocol
+  - hardware
+  - batch_size
+  - timing_scope
+  - result_role
+  require_numeric_evidence: true
+  mark_missing_context: true
+  require_condition_evidence: true
+  unit_normalization:
+    percent:
+    - percent
+    - '%'
+    - percentage
+    fps:
+    - fps
+    - FPS
+    - frames/s
+    - frames per second
+    ms:
+    - ms
+    - milliseconds
+    - millisecond
+    - msec
+    - ms/image
+    s:
+    - s
+    - sec
+    - second
+    - seconds
+    - s/im
+    - s/image
+    - seconds per image
+    us:
+    - us
+    - microsecond
+    - microseconds
+  extraction_instructions:
+  - Separate detector_backbone from proposal_backbone. backbone means detector_backbone only.
+    Do not copy a proposal network backbone into the detector field. Unknown is acceptable.
+  - For each known detector_backbone and proposal_backbone, provide detector_backbone_evidence
+    or proposal_backbone_evidence as an object with source_chunk_id and quote. Copy an exact
+    contiguous quote naming the backbone AND its detector or proposal role. Otherwise use unknown.
+  - Every speed row requires timing_scope_evidence with source_chunk_id and an exact contiguous
+    quote explicitly supporting the timing scope. end_to_end requires wording such as including all steps;
+    detector_only_excludes_proposals requires explicit proposal exclusion. For proposal generation only
+    use proposal_only; for other component timings use component_only. These component-only rows are excluded.
+    A table total or a GPU name alone does not prove end_to_end. Use unknown when scope is not explicit.
+  - 'Task scope: compare the paper authors own single-detector aggregate accuracy and inference speed. Include measured author
+    ablations with a distinct model_variant. Exclude cited baseline/comparison rows and other papers results; result_role
+    must be primary or ablation. Exclude ensemble/fusion rows from this single-detector collection.'
+  - Include all listed context_conditions keys and the extra evidence objects required above. method and scenario use the canonical taxonomy values. detector_family
+    identifies Fast R-CNN, Faster R-CNN, YOLO, SSD, etc. Never use a backbone name as a detector family.
+  - Copy the original reported numeric value and unit without calculating conversions or reciprocals. Absolute percent accuracy
+    is distinct from percentage-point improvements and relative gains; never put a gain into voc_map50 or coco_ap.
+  - Separate VOC 2007, VOC 2010 and VOC 2012; preserve training_data such as VOC07 vs VOC07+12. Do not infer the VOC integration
+    convention, test resolution, batch size or speed dataset from model memory.
+  - For accuracy rows use timing_scope=not_applicable. For speed use end_to_end, detector_only_excludes_proposals or unknown.
+    GPU/hardware and timing scope must come from supporting evidence, not assumptions. Faster R-CNN proposal/layer timings
+    are not total detector latency.
+  - A table value is usable only with its row label and column header. Cite every source chunk needed for value, model, dataset
+    and units. Preserve source_table and concise reasoning. Do not substitute an abstract rounded value for a precise table
+    result, or combine values from different versions of a paper.
+  - Missing or ambiguous context must be unknown; retain the measurement for review rather than inventing missing conditions.
+    Do not transfer hardware, training split or backbone across unrelated experiments.
+  - Return at most 6 distinct measurements per batch. Prioritize main overall mAP, reported detector latency and FPS; then
+    author ablations. Never output per-class scores, training hours, training speedup, theoretical recall, literature baselines
+    or repeated copies of one experiment. Keep reasoning to at most 12 words per result.
+  - The complete Faster R-CNN architecture includes the RPN and its detection head; do not label it as the standalone Fast
+    R-CNN baseline. timing_scope=end_to_end means including the detector and any proposal stage; use detector_only_excludes_proposals
+    ONLY when proposal generation is explicitly excluded. For a detector without a separate proposal stage, do not label its
+    own complete pass as excluding proposals.
+  document_families:
+    fast_rcnn:
+    - Fast R-CNN
+    - Fast RCNN
+    faster_rcnn:
+    - Faster R-CNN
+    - Faster RCNN
+    yolo:
+    - YOLO
+    - You Only Look Once
+    ssd:
+    - SSD
+    - Single Shot MultiBox Detector
+    rcnn:
+    - R-CNN
+    - Rich feature hierarchies
+    sppnet:
+    - SPP-net
+    - Spatial Pyramid Pooling
+    multibox:
+    - MultiBox
+    - Scalable Object Detection
+  excluded_result_roles:
+  - baseline
+  - comparison
+  - ensemble
+  - fusion
+  excluded_result_terms:
+  - ensemble
+  - model fusion
+  - detector fusion
+  - model combination
+  - combined model
+  max_batch_characters: 14000

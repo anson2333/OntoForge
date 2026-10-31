@@ -1,3 +1,4 @@
+import { t, localizeMessage } from '../../i18n';
 /**
  * Add Domain Pack Modal
  * Allows users to add a domain pack either by:
@@ -50,7 +51,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
         setSelectedFile(file);
         setError(null);
       } else {
-        setError('Please select a valid YAML (.yaml, .yml) or JSON (.json) file');
+        setError("领域包只接受 YAML / JSON 指标与分类规则。论文 PDF 请关闭此窗口，在领域详情页点击“上传论文 PDF”。");
         setSelectedFile(null);
       }
     }
@@ -78,14 +79,14 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
       const { valid, errors, config } = validationResult;
       
       if (!valid) {
-        throw new Error(`Domain pack validation failed:\n${errors.join('\n')}`);
+        throw new Error(t('Domain pack validation failed: {errors}', { errors: errors.join('\n') }));
       }
 
       // Validation passed, use the parsed config from backend
       await onAddDomainPack(config, 'file');
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load domain pack file');
+      setError(err instanceof Error ? err.message : t("Failed to load domain pack file"));
     } finally {
       setIsProcessing(false);
     }
@@ -109,7 +110,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
       await onAddDomainPack(bootstrappedConfig, 'bootstrap');
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to bootstrap domain pack');
+      setError(err instanceof Error ? err.message : t("Failed to bootstrap domain pack"));
     } finally {
       setIsProcessing(false);
     }
@@ -133,7 +134,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
       <div className="add-domain-pack-modal" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="modal-header">
-          <h2>Add Domain Pack</h2>
+          <h2>{t("Add Domain Pack")}</h2>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
@@ -143,13 +144,13 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
             className={`tab-btn ${activeTab === 'file' ? 'active' : ''}`}
             onClick={() => setActiveTab('file')}
           >
-            📁 Upload File
+            {t("📁 Upload File")}
           </button>
           <button
             className={`tab-btn ${activeTab === 'bootstrap' ? 'active' : ''}`}
             onClick={() => setActiveTab('bootstrap')}
           >
-            ✨ Bootstrap from Proposal
+            {t("✨ Bootstrap from Proposal")}
           </button>
         </div>
 
@@ -158,7 +159,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
           {activeTab === 'file' ? (
             <div className="file-upload-section">
               <p className="section-description">
-                Upload a domain pack configuration file (YAML or JSON format)
+                {t("领域包是指标和分类规则，上传 YAML / JSON。论文 PDF 请在领域详情页点击“上传论文 PDF”。")}
               </p>
               
               <div className="file-input-wrapper">
@@ -170,7 +171,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
                   disabled={isProcessing}
                 />
                 <label htmlFor="domain-pack-file" className="file-input-label">
-                  {selectedFile ? selectedFile.name : 'Choose file...'}
+                  {selectedFile ? selectedFile.name : t('Choose file...')}
                 </label>
               </div>
 
@@ -189,12 +190,12 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
           ) : (
             <div className="bootstrap-section">
               <p className="section-description">
-                Describe your research domain or proposal. The system will generate a domain pack configuration automatically.
+                {t("Describe your research domain or proposal. The system will generate a domain pack configuration automatically.")}
               </p>
               
               <textarea
                 className="proposal-input"
-                placeholder="Enter your research proposal or domain description here...&#10;&#10;Example: I'm researching quantum network architectures for distributed computing. Key metrics include entanglement fidelity, quantum bit error rate, and decoherence time. The network will use different topologies like star and mesh configurations."
+                placeholder={t("Enter your research proposal or domain description here...&#10;&#10;Example: I'm researching quantum network architectures for distributed computing. Key metrics include entanglement fidelity, quantum bit error rate, and decoherence time. The network will use different topologies like star and mesh configurations.")}
                 value={proposalText}
                 onChange={(e) => setProposalText(e.target.value)}
                 disabled={isProcessing}
@@ -203,7 +204,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
 
               <div className="bootstrap-note">
                 <span className="note-icon">💡</span>
-                <span>The AI will analyze your text and extract domain concepts, metrics, and taxonomy structures.</span>
+                <span>{t("The AI will analyze your text and extract domain concepts, metrics, and taxonomy structures.")}</span>
               </div>
             </div>
           )}
@@ -211,7 +212,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
           {error && (
             <div className="error-message">
               <span className="error-icon">⚠️</span>
-              <span>{error}</span>
+              <span>{localizeMessage(error)}</span>
             </div>
           )}
         </div>
@@ -223,7 +224,7 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
             onClick={onClose}
             disabled={isProcessing}
           >
-            Cancel
+            {t("Cancel")}
           </button>
           <button
             className="btn-primary"
@@ -233,10 +234,10 @@ export const AddDomainPackModal: React.FC<AddDomainPackModalProps> = ({
             {isProcessing ? (
               <>
                 <span className="spinner">⏳</span>
-                {activeTab === 'file' ? 'Loading...' : 'Generating...'}
+                {activeTab === 'file' ? t('Loading...') : t('Generating...')}
               </>
             ) : (
-              activeTab === 'file' ? 'Add Domain Pack' : 'Bootstrap & Add'
+              activeTab === 'file' ? t('Add Domain Pack') : t('Bootstrap & Add')
             )}
           </button>
         </div>

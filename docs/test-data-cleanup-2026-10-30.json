@@ -1,0 +1,15 @@
+{
+  "deleted_test_workspaces": [
+    "workspace_真实模型全流程验收_2026_10_30_107ac6b7",
+    "workspace_真实模型全流程验收_2026_10_30_270e8f7d",
+    "workspace_真实模型全流程验收_2026_10_30_576cc49a",
+    "workspace_真实模型全流程验收_2026_10_30_8cb2be82",
+    "workspace_真实模型全流程验收_2026_10_30_dfc5103c"
+  ],
+  "preserved_workspaces": [
+    {
+      "id": "workspace_cv_759e6523",
+      "name": "cv"
+    }
+  ]
+}

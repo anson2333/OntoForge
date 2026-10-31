@@ -9,6 +9,7 @@ from .base import (
     NullLLMProvider,
     MockLLMProvider,
     OpenAICompatibleProvider,
+    AnthropicProvider,
     OllamaProvider,
     get_default_provider,
 )
@@ -32,6 +33,7 @@ __all__ = [
     "NullLLMProvider",
     "MockLLMProvider",
     "OpenAICompatibleProvider",
+    "AnthropicProvider",
     "OllamaProvider",
     "get_default_provider",
     "CapabilityDefinition",

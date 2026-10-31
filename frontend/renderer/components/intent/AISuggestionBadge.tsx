@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 /**
  * AI Suggestion Badge
  * Visual indicator for AI-suggested conflict resolutions
@@ -25,8 +26,8 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
   const confidenceColor = suggestion.confidence >= 0.8 ? '#4dff8a' : 
                          suggestion.confidence >= 0.6 ? '#ffc04d' : '#ff6b6b';
   
-  const confidenceLevel = suggestion.confidence >= 0.8 ? 'High' : 
-                          suggestion.confidence >= 0.6 ? 'Medium' : 'Low';
+  const confidenceLevel = suggestion.confidence >= 0.8 ? t("High") :
+                          suggestion.confidence >= 0.6 ? t("Medium") : t("Low");
 
   const handleAccept = async () => {
     setIsProcessing(true);
@@ -54,7 +55,7 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
     return (
       <span className="ai-suggestion-badge inline" onClick={() => setIsExpanded(!isExpanded)}>
         <span className="badge-icon">🤖</span>
-        <span className="badge-text">AI Suggested</span>
+        <span className="badge-text">{t("AI Suggested")}</span>
         <span className="confidence-indicator" style={{ color: confidenceColor }}>
           {(suggestion.confidence * 100).toFixed(0)}%
         </span>
@@ -68,16 +69,16 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
         <div className="badge-icon-large">🤖</div>
         <div className="badge-content">
           <div className="badge-title">
-            <span>AI-Suggested Resolution</span>
+            <span>{t("AI-Suggested Resolution")}</span>
             <span className="confidence-badge" style={{ backgroundColor: confidenceColor }}>
               {confidenceLevel} ({(suggestion.confidence * 100).toFixed(0)}%)
             </span>
           </div>
           <div className="badge-subtitle">
-            Based on {suggestion.matched_intent_patterns.length} learned pattern(s)
+            {t("Based on")} {suggestion.matched_intent_patterns.length} {t("learned pattern(s)")}
           </div>
         </div>
-        <button className="expand-btn" aria-label="Expand suggestion">
+        <button className="expand-btn" aria-label={t("Expand suggestion")}>
           {isExpanded ? '▼' : '▶'}
         </button>
       </div>
@@ -85,13 +86,13 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
       {isExpanded && (
         <div className="badge-details">
           <div className="detail-section">
-            <h4>Reasoning</h4>
+            <h4>{t("Reasoning")}</h4>
             <p className="reasoning-text">{suggestion.reasoning}</p>
           </div>
 
           {suggestion.matched_intent_patterns.length > 0 && (
             <div className="detail-section">
-              <h4>Matched Patterns</h4>
+              <h4>{t("Matched Patterns")}</h4>
               <div className="pattern-chips">
                 {suggestion.matched_intent_patterns.map((patternId) => (
                   <span key={patternId} className="pattern-chip" title={patternId}>
@@ -103,7 +104,7 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
           )}
 
           <div className="detail-section">
-            <h4>Recommended Assertion</h4>
+            <h4>{t("Recommended Assertion")}</h4>
             <div className="assertion-id">
               <code>{suggestion.recommended_assertion_id}</code>
             </div>
@@ -112,7 +113,7 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
           {suggestion.user_can_override && (
             <div className="action-section">
               <p className="override-notice">
-                You can review and override this suggestion if needed.
+                {t("You can review and override this suggestion if needed.")}
               </p>
               <div className="action-buttons">
                 <button
@@ -120,14 +121,14 @@ export const AISuggestionBadge: React.FC<AISuggestionBadgeProps> = ({
                   onClick={handleAccept}
                   disabled={isProcessing}
                 >
-                  {isProcessing ? 'Applying...' : 'Accept Suggestion'}
+                  {isProcessing ? t("Applying...") : t("Accept Suggestion")}
                 </button>
                 <button
                   className="btn-reject"
                   onClick={handleReject}
                   disabled={isProcessing}
                 >
-                  {isProcessing ? 'Rejecting...' : 'Reject & Choose Manually'}
+                  {isProcessing ? t("Rejecting...") : t("Reject & Choose Manually")}
                 </button>
               </div>
             </div>

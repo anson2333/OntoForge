@@ -1,0 +1,33 @@
+.llm-settings { position: fixed; inset: 0; margin: auto; width: min(960px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; border: 1px solid var(--border-color); border-radius: 10px; background: var(--panel-bg, #252a31); color: var(--text-primary, #eee); box-shadow: 0 24px 80px #0008; }
+.llm-settings::backdrop { background: #0009; }
+.llm-settings > header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border-color); }
+.llm-settings h2 { margin: 0 0 5px; font-size: 19px; }
+.llm-settings h3 { margin: 0 0 16px; font-size: 16px; }
+.llm-settings header p, .llm-hint { color: var(--text-secondary, #a5adba); font-size: 12px; line-height: 1.6; margin: 4px 0; }
+.llm-settings-current { padding: 12px 22px; background: var(--surface-bg, #1d2228); font-size: 13px; }
+.llm-settings-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); }
+.llm-settings aside { padding: 18px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; }
+.llm-settings form { padding: 20px 24px; min-width: 0; }
+.llm-settings fieldset { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.llm-settings label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; min-width: 0; }
+.llm-settings input, .llm-settings select { padding: 9px 10px; width: 100%; box-sizing: border-box; border: 1px solid var(--border-color); border-radius: 5px; background: var(--surface-bg, #1d2228); color: inherit; font: inherit; }
+.llm-settings input:focus, .llm-settings select:focus { outline: 2px solid #4d91dd; outline-offset: 1px; }
+.llm-settings small { color: var(--text-secondary, #a5adba); font-size: 11px; line-height: 1.6; }
+.llm-full { grid-column: 1 / -1; }
+.llm-advanced summary { cursor: pointer; font-size: 13px; color: var(--text-secondary); }
+.llm-advanced-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; margin-top: 15px; }
+.llm-settings .llm-checkbox { flex-direction: row; align-items: center; }
+.llm-checkbox input { width: auto; }
+.llm-settings button { border: 1px solid var(--border-color); border-radius: 5px; background: var(--surface-bg, #303841); color: inherit; padding: 8px 12px; cursor: pointer; font: inherit; font-size: 12px; }
+.llm-settings button:disabled { opacity: .5; cursor: default; }
+.llm-settings .llm-primary { background: #2765a8; border-color: #4b95e3; color: #fff; }
+.llm-settings .llm-delete, .llm-error { color: #f99; }
+.llm-profile { text-align: left; display: flex; flex-direction: column; gap: 4px; }
+.llm-profile span { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.llm-profile small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.llm-profile em { color: #8bd6ae; font-size: 10px; font-style: normal; }
+.llm-settings .selected { border-color: #4b95e3; background: #2765a833; }
+.llm-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+.llm-settings-feedback { font-size: 13px; overflow-wrap: anywhere; }
+.llm-settings-feedback p { margin: 12px 0; }
+@media (max-width: 700px) { .llm-settings-body { grid-template-columns: 1fr; } .llm-settings aside { border-right: 0; border-bottom: 1px solid var(--border-color); } .llm-settings fieldset { grid-template-columns: 1fr; } }

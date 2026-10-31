@@ -43,6 +43,19 @@
   font-size: 11px;
 }
 
+.coverage-controls .coverage-quality-toggle {
+  height: 34px;
+  padding: 0 10px;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--surface-bg);
+  color: var(--text-primary);
+}
+
+.coverage-quality-toggle input { margin: 0; }
+
 .coverage-controls select,
 .coverage-controls button {
   height: 34px;
@@ -119,6 +132,25 @@
 .coverage-table td.uncovered { color: var(--text-muted); text-align: center; }
 .coverage-table .gap-score { color: var(--warning-text); font-weight: 700; }
 .gap-table th:first-child, .gap-table td:first-child { min-width: 54px; width: 54px; text-align: center; }
+
+.coverage-quality-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  background: var(--panel-bg-muted);
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.coverage-quality-summary strong { color: var(--text-primary); }
+.ontology-gap-table th:nth-child(3), .ontology-gap-table td:nth-child(3) { min-width: 360px; white-space: normal; }
+.ontology-gap-claim strong, .ontology-gap-claim span { display: block; }
+.ontology-gap-claim strong { font-weight: 500; }
+.ontology-gap-claim span { margin-top: 4px; color: var(--text-secondary); }
+.coverage-scope-note { margin: 8px 0 0; color: var(--text-secondary); font-size: 11px; }
 
 .coverage-state { padding: 28px; border: 1px solid var(--border-color); color: var(--text-secondary); background: var(--panel-bg); }
 .coverage-error { color: var(--danger-text); border-color: var(--danger-color); }

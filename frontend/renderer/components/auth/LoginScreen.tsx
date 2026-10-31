@@ -1,3 +1,4 @@
+import { t, LanguageSelector, localizeMessage } from '../../i18n';
 /**
  * Sign-in / registration screen.
  * Shown whenever no valid backend session is available.
@@ -69,12 +70,13 @@ export function LoginScreen() {
           gap: '14px'
         }}
       >
+        <LanguageSelector />
         <div>
           <h1 style={{ margin: 0, fontSize: '22px' }}>OntoForge</h1>
           <p style={{ margin: '6px 0 0', fontSize: '13px', opacity: 0.7 }}>
             {mode === 'login'
-              ? 'Sign in to open your research workspaces.'
-              : 'Create an account to start building your evidence graph.'}
+              ? t('Sign in to open your research workspaces.')
+              : t('Create an account to start building your evidence graph.')}
           </p>
         </div>
 
@@ -97,13 +99,13 @@ export function LoginScreen() {
                 color: mode === candidate ? '#ffffff' : 'var(--text-primary)'
               }}
             >
-              {candidate === 'login' ? 'Sign in' : 'Register'}
+              {candidate === 'login' ? t('Sign in') : t('Register')}
             </button>
           ))}
         </div>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
-          Username
+          {t("Username")}
           <input
             style={inputStyle}
             value={username}
@@ -115,7 +117,7 @@ export function LoginScreen() {
 
         {mode === 'register' && (
           <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
-            Display name (optional)
+            {t("Display name (optional)")}
             <input
               style={inputStyle}
               value={displayName}
@@ -126,7 +128,7 @@ export function LoginScreen() {
         )}
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
-          Password
+          {t("Password")}
           <input
             style={inputStyle}
             type="password"
@@ -148,7 +150,7 @@ export function LoginScreen() {
               backgroundColor: 'rgba(244, 135, 113, 0.12)'
             }}
           >
-            {error}
+            {localizeMessage(error)}
           </div>
         )}
 
@@ -168,15 +170,15 @@ export function LoginScreen() {
           }}
         >
           {isSubmitting
-            ? 'Please wait...'
+            ? t('Please wait...')
             : mode === 'login'
-              ? 'Sign in'
-              : 'Create account'}
+              ? t('Sign in')
+              : t('Create account')}
         </button>
 
         {mode === 'login' && (
           <p style={{ margin: 0, fontSize: '12px', opacity: 0.6 }}>
-            First run seeds a demo account: <strong>demo / demo1234</strong>
+            {t("First run seeds a demo account:")} <strong>demo / demo1234</strong>
           </p>
         )}
       </form>

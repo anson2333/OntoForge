@@ -1,3 +1,5 @@
+import { t, LanguageSelector, useLanguage } from './i18n';
+import LLMSettingsModal from './components/settings/LLMSettingsModal';
 import { useState, useEffect } from 'react';
 import MatrixGrid from './components/MatrixGrid';
 import DigitalMicroscope from './components/DigitalMicroscope';
@@ -21,6 +23,7 @@ import { intentService } from './services/intent_service';
 import { useServiceStatus } from './services/service_status';
 
 function App() {
+  useLanguage();
   const [activeTab, setActiveTab] = useState<TabId>('matrix');
   const [selectedCell, setSelectedCell] = useState<{paperId: string, metricName: string} | null>(null);
   const [showIntentModal, setShowIntentModal] = useState(false);
@@ -35,8 +38,9 @@ function App() {
   });
   const workspace = useWorkspaceStore();
   const auth = useAuthStore();
+  const [showLLMSettings, setShowLLMSettings] = useState(false);
   const windowTitle = 'OntoForge';
-  const { backendStatus, llmStatus } = useServiceStatus();
+  const { backendStatus, llmStatus, refresh: refreshServiceStatus } = useServiceStatus();
 
   // Calculate ingestion progress
   const ingestingPapers = workspace.paperImports.filter(p => 
@@ -45,18 +49,18 @@ function App() {
   const queuedPapers = workspace.paperImports.filter(p => p.status === 'queued');
   
   const getStatusMessage = () => {
-    if (workspace.isLoading) return 'Loading...';
+    if (workspace.isLoading) return t('Loading...');
     if (ingestingPapers.length > 0) {
       const paper = ingestingPapers[0];
-      const action = paper.status === 'validating' ? 'Validating' : 'Parsing';
+      const action = paper.status === 'validating' ? t('Preparing Preview') : t('Committing');
       const truncated = paper.title.length > 30 ? paper.title.slice(0, 30) + '...' : paper.title;
-      const more = ingestingPapers.length > 1 ? ` (+${ingestingPapers.length - 1} more)` : '';
+      const more = ingestingPapers.length > 1 ? ` (+${ingestingPapers.length - 1})` : '';
       return `${action} "${truncated}"${more}`;
     }
     if (queuedPapers.length > 0) {
-      return `${queuedPapers.length} paper${queuedPapers.length > 1 ? 's' : ''} queued`;
+      return `${t('Queued')} · ${queuedPapers.length}`;
     }
-    return 'Ready';
+    return t('Ready');
   };
 
   // Restore any existing login session on mount
@@ -291,8 +295,8 @@ function App() {
     selectedMetric ||
     workspace.selectedSubdomain
   );
-  const rootLabel = 'Home';
-  const workspaceNavLabel = workspace.workspace?.name || 'Workspace';
+  const rootLabel = t('Home');
+  const workspaceNavLabel = workspace.workspace?.name || t('Workspace');
   const selectWorkspaceContext = () => {
     if (workspace.currentWorkspaceId) {
       workspace.selectWorkspaceView(workspace.currentWorkspaceId);
@@ -332,11 +336,12 @@ function App() {
     if (isDetailContext) {
       return (
         <>
-          <button style={toolButtonStyle} onClick={toggleTheme} title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+          <LanguageSelector />
+          <button style={toolButtonStyle} onClick={toggleTheme} title={theme === 'dark' ? t('Switch to Light Mode') : t('Switch to Dark Mode')}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <button style={toolButtonStyle} onClick={handleLogout} title={`Sign out ${auth.user?.username || ''}`}>
-            Sign out
+          <button style={toolButtonStyle} onClick={handleLogout} title={t('Sign out {name}', { name: auth.user?.username || '' })}>
+            {t("Sign out")}
           </button>
         </>
       );
@@ -344,18 +349,19 @@ function App() {
 
     return (
       <>
+        <LanguageSelector />
         <IntentBranchSelector onBranchChange={handleBranchChange} />
         <button style={toolButtonStyle} onClick={() => setShowProfilePanel(!showProfilePanel)}>
-          Intents
+          {t("Intents")}
         </button>
         <button style={toolButtonStyle} onClick={() => workspace.refreshData()}>
-          Refresh
+          {t("Refresh")}
         </button>
-        <button style={toolButtonStyle} onClick={toggleTheme} title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+        <button style={toolButtonStyle} onClick={toggleTheme} title={theme === 'dark' ? t('Switch to Light Mode') : t('Switch to Dark Mode')}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <button style={toolButtonStyle} onClick={handleLogout} title={`Sign out ${auth.user?.username || ''}`}>
-          Sign out
+        <button style={toolButtonStyle} onClick={handleLogout} title={t('Sign out {name}', { name: auth.user?.username || '' })}>
+          {t("Sign out")}
         </button>
       </>
     );
@@ -375,7 +381,7 @@ function App() {
           fontSize: '14px'
         }}
       >
-        Connecting to OntoForge…
+        {t("Connecting to OntoForge…")}
       </div>
     );
   }
@@ -403,6 +409,11 @@ function App() {
       />
 
       {/* Main Content - 3 Column Layout */}
+      {workspace.workspaces.find(item => item.id === workspace.currentWorkspaceId)?.metadata?.type === 'demo' && (
+        <div role="status" style={{ padding: '8px 16px', background: '#72531c', color: '#fff' }}>
+          {t("Synthetic demo data — papers, assertions and coverage are generated examples, not real literature findings.")}
+        </div>
+      )}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Left Sidebar - Workspace Navigation */}
         {showSidebar && <WorkspaceSidebar onClose={() => setShowSidebar(false)} />}
@@ -452,6 +463,8 @@ function App() {
                 onOpenSubdomain={(subdomainId) => workspace.selectSubdomain({ namespace: selectedDomainPackView.namespace, id: subdomainId })}
                 onOpenPaper={(paperId) => workspace.selectPaper(paperId)}
                 onOpenPaperImport={(paperImportId) => workspace.selectPaperImport(paperImportId)}
+                onUploadPapers={(files) => workspace.enqueuePaperImports(selectedDomainPackView.namespace, files, 'file_picker')}
+                onConfigureModel={() => setShowLLMSettings(true)}
               />
             ) : selectedPaperImport ? (
               <PaperPreviewView
@@ -462,7 +475,7 @@ function App() {
                     config: { domain: { name: selectedPaperImport.domain_pack_namespace } }
                   },
                   {
-                    label: 'Papers',
+                    label: t('Papers'),
                     onClick: () => workspace.selectPaperImport(null)
                   },
                   selectedPaperImport.title || selectedPaperImport.file_name
@@ -472,6 +485,7 @@ function App() {
                   workspace.selectPaperImport(null);
                 }}
                 onRetry={(id) => workspace.retryPaperImport(id)}
+                onConfigureModel={() => setShowLLMSettings(true)}
                 onCancel={() => workspace.selectPaperImport(null)}
               />
             ) : selectedMetric && selectedMetricDomainPack ? (
@@ -483,7 +497,7 @@ function App() {
                 hierarchyItems={buildDomainHierarchy(
                   selectedMetricDomainPack,
                   {
-                    label: 'Metrics',
+                    label: t('Metrics'),
                     onClick: () => workspace.selectMetrics(selectedMetric.namespace, 'registry')
                   },
                   selectedMetric.name
@@ -498,10 +512,10 @@ function App() {
                 hierarchyItems={buildDomainHierarchy(
                   selectedMetricsDomainPack,
                   {
-                    label: 'Metrics',
+                    label: t('Metrics'),
                     onClick: () => workspace.selectMetrics(selectedMetricsDomainPack.namespace, 'registry')
                   },
-                  workspace.selectedMetricsMode === 'add' ? 'Add Metric' : undefined
+                  workspace.selectedMetricsMode === 'add' ? t("Add Metric") : undefined
                 )}
                 onOpenAdd={() => workspace.selectMetrics(selectedMetricsDomainPack.namespace, 'add')}
                 onAddMetric={(metric) => workspace.addMetric(selectedMetricsDomainPack.namespace, metric)}
@@ -517,7 +531,7 @@ function App() {
                 hierarchyItems={buildDomainHierarchy(
                   selectedSubdomainDomainPack,
                   {
-                    label: 'Subdomains',
+                    label: t('Subdomains'),
                     onClick: () => workspace.selectSubdomain(null)
                   },
                   workspace.selectedSubdomain.id.split('.').pop() || workspace.selectedSubdomain.id
@@ -614,12 +628,13 @@ function App() {
                     dry_run: true
                   });
                   alert(
-                    `Pattern preview complete. ${result.conflicts_resolved} conflicts and ` +
-                    `${result.assertions_locked} assertions match the current workspace.`
+                    t('Pattern preview: {conflicts} conflicts and {assertions} assertions.', {
+                      conflicts: result.conflicts_resolved, assertions: result.assertions_locked
+                    })
                   );
                 } catch (error) {
                   console.error('Failed to preview intent pattern:', error);
-                  alert('Could not preview this pattern.');
+                  alert(t("Could not preview this pattern."));
                 }
               }}
             />
@@ -645,8 +660,8 @@ function App() {
               fontSize: '13px'
             }}
             onClick={() => setShowSidebar(current => !current)}
-            title={showSidebar ? 'Hide workspace sidebar' : 'Show workspace sidebar'}
-            aria-label={showSidebar ? 'Hide workspace sidebar' : 'Show workspace sidebar'}
+            title={showSidebar ? t("Hide workspace sidebar") : t("Show workspace sidebar")}
+            aria-label={showSidebar ? t("Hide workspace sidebar") : t("Show workspace sidebar")}
           >
             <span
               style={{
@@ -694,23 +709,24 @@ function App() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <StatusIndicator
             status={backendStatus.status}
-            label="Backend"
+            label={t("Backend")}
             tooltip={backendStatus.message}
           />
+          <button style={toolButtonStyle} onClick={() => setShowLLMSettings(true)}>{t("模型接口")}</button>
           <StatusIndicator
             status={llmStatus.status}
-            label="LLM"
+            label={t("LLM")}
             tooltip={
               llmStatus.enabled 
-                ? `Backend → LLM Server: ${llmStatus.provider || 'Unknown'}${llmStatus.model ? ` (${llmStatus.model})` : ''} - ${llmStatus.message}` 
-                : 'Backend → LLM Server: Disabled (paper ingestion will use fallback classification)'
+                ? t('Model connection: {provider} {model} — {message}', { provider: llmStatus.provider || t('Unknown'), model: llmStatus.model || '', message: t(llmStatus.message || '') })
+                : t("Backend → LLM Server: Disabled (paper ingestion will use fallback classification)")
             }
           />
           {workspace.userIntentProfile && (
             <>
               <span style={{ marginLeft: '4px', opacity: 0.5 }}>|</span>
               <span style={{ opacity: 0.7, fontSize: '11px' }}>
-                {workspace.learnedPatterns.length} patterns learned
+                {t('Learned patterns')} · {workspace.learnedPatterns.length}
               </span>
             </>
           )}
@@ -722,13 +738,14 @@ function App() {
               marginLeft: '4px'
             }}
             onClick={toggleTheme}
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            title={theme === 'dark' ? t('Switch to Light Mode') : t('Switch to Dark Mode')}
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
       </footer>
 
+      {showLLMSettings && <LLMSettingsModal key={auth.user.user_id} onClose={() => setShowLLMSettings(false)} onChanged={() => { void refreshServiceStatus(); }} />}
       {/* Intent Declaration Modal */}
       <IntentDeclarationModal
         isOpen={showIntentModal}

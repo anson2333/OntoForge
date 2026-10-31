@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 /**
  * EvidenceCard Component
  * Displays individual evidence item with verification actions
@@ -34,11 +35,11 @@ export default function EvidenceCard({
 
   const getStatusBadge = (status: VerificationStatus) => {
     const badges = {
-      raw: { icon: '📥', label: 'Raw', color: 'gray' },
-      under_correction: { icon: '✏️', label: 'Editing', color: 'blue' },
-      pending_verification: { icon: '⏳', label: 'Pending Review', color: 'yellow' },
-      verified: { icon: '✓', label: 'Verified', color: 'green' },
-      rejected: { icon: '✗', label: 'Rejected', color: 'red' }
+      raw: { icon: '📥', label: t('Raw'), color: 'gray' },
+      under_correction: { icon: '✏️', label: t("Editing"), color: 'blue' },
+      pending_verification: { icon: '⏳', label: t("Pending Review"), color: 'yellow' },
+      verified: { icon: '✓', label: t('Verified'), color: 'green' },
+      rejected: { icon: '✗', label: t("Rejected"), color: 'red' }
     };
     return badges[status];
   };
@@ -49,13 +50,13 @@ export default function EvidenceCard({
         return (
           <>
             <button className="action-btn verify" onClick={() => onAction(evidence.id, 'verify')}>
-              ✓ Verify
+              {t("✓ Verify")}
             </button>
             <button className="action-btn correct" onClick={() => onEdit(evidence.id)}>
-              ✏️ Correct
+              {t("✏️ Correct")}
             </button>
             <button className="action-btn reject" onClick={() => onAction(evidence.id, 'reject')}>
-              ✗ Reject
+              {t("✗ Reject")}
             </button>
           </>
         );
@@ -63,20 +64,20 @@ export default function EvidenceCard({
         return (
           <div className="editing-notice">
             <span className="lock-icon">🔒</span>
-            <span>Currently being edited...</span>
+            <span>{t("Currently being edited...")}</span>
           </div>
         );
       case 'pending_verification':
         return (
           <>
             <button className="action-btn verify" onClick={() => onAction(evidence.id, 'verify')}>
-              ✓ Approve
+              {t("✓ Approve")}
             </button>
             <button className="action-btn correct" onClick={() => onEdit(evidence.id)}>
-              ✏️ Changes
+              {t("✏️ Changes")}
             </button>
             <button className="action-btn reject" onClick={() => onAction(evidence.id, 'reject')}>
-              ✗ Reject
+              {t("✗ Reject")}
             </button>
           </>
         );
@@ -84,10 +85,10 @@ export default function EvidenceCard({
         return (
           <>
             <button className="action-btn secondary" onClick={() => onEdit(evidence.id)}>
-              🔓 Reopen
+              {t("🔓 Reopen")}
             </button>
             <button className="action-btn secondary" onClick={() => onAction(evidence.id, 'request_review')}>
-              Flag
+              {t("Flag")}
             </button>
           </>
         );
@@ -95,7 +96,7 @@ export default function EvidenceCard({
         return (
           <>
             <button className="action-btn restore" onClick={() => onAction(evidence.id, 'restore')}>
-              ♻️ Restore
+              {t("♻️ Restore")}
             </button>
           </>
         );
@@ -133,10 +134,10 @@ export default function EvidenceCard({
                 {evidence.type === 'chunk' ? '📄' : '📐'}
               </span>
               <span className="evidence-id">
-                {evidence.type === 'chunk' ? 'Chunk' : 'Formula'} #{evidence.id.split('_').pop() || evidence.id.split('#')[1] || 'N/A'}
+                {evidence.type === 'chunk' ? t("Chunk") : t("Formula")} #{evidence.id.split('_').pop() || evidence.id.split('#')[1] || 'N/A'}
               </span>
               <span className="evidence-location">
-                Page {evidence.bounding_box.page}
+                {t("Page")} {evidence.bounding_box.page}
               </span>
             </div>
             <div className="evidence-badges">
@@ -147,7 +148,7 @@ export default function EvidenceCard({
                 {badge.icon} {badge.label}
               </span>
               {needsReview && (
-                <span className="warning-badge">Low confidence</span>
+                <span className="warning-badge">{t("Low confidence")}</span>
               )}
             </div>
           </div>
@@ -157,14 +158,14 @@ export default function EvidenceCard({
         <div className="evidence-preview">
           <div className="text-content">
             <pre className={evidence.type === 'formula' ? 'formula-text' : 'chunk-text'}>
-              {truncatedText || '(No text content available)'}
+              {truncatedText || t("(No text content available)")}
             </pre>
             {displayText && displayText.length > 150 && (
               <button 
                 className="toggle-text-btn"
                 onClick={() => setShowFullText(!showFullText)}
               >
-                {showFullText ? '▲ Show Less' : '▼ Show More'}
+                {showFullText ? t("▲ Show Less") : t("▼ Show More")}
               </button>
             )}
           </div>
@@ -174,27 +175,27 @@ export default function EvidenceCard({
       {/* Metadata */}
       {evidence.supporting_assertion_id && (
         <div className="evidence-metadata">
-          <span className="metadata-label">Supporting:</span>
+          <span className="metadata-label">{t("Supporting:")}</span>
           <span className="metadata-value">{evidence.supporting_assertion_id}</span>
         </div>
       )}
       
       {evidence.modification_count > 0 && (
         <div className="evidence-metadata">
-          <span className="metadata-label">Modified:</span>
+          <span className="metadata-label">{t("Modified:")}</span>
           <span className="metadata-value">
-            {evidence.modification_count} time(s)
+            {evidence.modification_count} {t("time(s)")}
           </span>
           {evidence.last_modified_by && (
             <>
               <span className="metadata-separator">|</span>
               <span className="metadata-value">
-                Last by: {evidence.last_modified_by} on {evidence.last_modified_at}
+                {t("Last by:")} {evidence.last_modified_by} {t("on")} {evidence.last_modified_at}
               </span>
             </>
           )}
           <button className="history-btn" onClick={() => onViewHistory(evidence.id)}>
-            📜 View History
+            {t("📜 View History")}
           </button>
         </div>
       )}

@@ -1,0 +1,24 @@
+{
+  "workspace_id": "workspace_cv目标检测___汇报验证集_保留_3be6e81d",
+  "papers": 3,
+  "assertions": 23,
+  "all_pending": true,
+  "all_have_evidence": true,
+  "sources": [
+    {
+      "paper_id": "paper_5074c792ebdf9c902abce277e22efd92491032aee63b8f246426e688d9b20f5e",
+      "title": "Fast R-CNN",
+      "sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646"
+    },
+    {
+      "paper_id": "paper_e98f7432131791419bd383a4673401ff0bf4997ac9356e36d01f0003c7503810",
+      "title": "Faster R-CNN: Towards Real-Time Object Detection",
+      "sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef"
+    },
+    {
+      "paper_id": "paper_e802b3e500223df35391a928f226b913dd36aacea84b80dcd676ac25c3341355",
+      "title": "You Only Look Once:",
+      "sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09"
+    }
+  ]
+}

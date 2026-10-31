@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Literal, Optional, Tuple
 
 import httpx
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SecretStr
 
 
 class LLMProviderConfig(BaseModel):
@@ -18,10 +19,15 @@ class LLMProviderConfig(BaseModel):
     model: Optional[str] = None
     api_base_url: Optional[str] = None
     api_key_env_var: Optional[str] = None
+    api_key: Optional[SecretStr] = Field(default=None, exclude=True, repr=False)
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     timeout_seconds: int = Field(default=60, ge=1)
     max_output_tokens: Optional[int] = Field(default=None, ge=1)
     enabled: bool = False
+    vendor: str = "custom"
+    profile_id: Optional[str] = Field(default=None, exclude=True)
+    profile_user_id: Optional[str] = Field(default=None, exclude=True, repr=False)
+    profile_revision: Optional[str] = Field(default=None, exclude=True, repr=False)
 
 
 class LLMProviderStatus(BaseModel):
@@ -66,6 +72,10 @@ class LLMProvider(ABC):
     def name(self) -> str:
         return self.config.provider
 
+    def record_connection(self, healthy: bool, message: str) -> None:
+        from backend.services.llm_profiles import record_connection
+        record_connection(self.config, healthy, message)
+
     def is_configured(self) -> bool:
         if not self.config.enabled:
             return False
@@ -73,6 +83,10 @@ class LLMProvider(ABC):
             return self.config.enabled
         if not self.config.model:
             return False
+        if self.config.api_key is not None:
+            if self.config.vendor in {"deepseek", "zhipu", "kimi", "claude"}:
+                return bool(self.config.api_key.get_secret_value())
+            return True  # Custom profiles may intentionally use a keyless local endpoint.
         if self.config.api_key_env_var:
             return bool(os.getenv(self.config.api_key_env_var))
         return True
@@ -132,6 +146,8 @@ class OpenAICompatibleProvider(LLMProvider):
     """Provider for OpenAI-compatible chat-completions APIs."""
 
     def _api_key(self) -> str:
+        if self.config.api_key is not None:
+            return self.config.api_key.get_secret_value()
         api_key_env_var = self.config.api_key_env_var or "ONTOFORGE_LLM_API_KEY"
         api_key = os.getenv(api_key_env_var)
         if not api_key:
@@ -142,10 +158,8 @@ class OpenAICompatibleProvider(LLMProvider):
         return (self.config.api_base_url or "https://api.openai.com/v1").rstrip("/")
 
     def _headers(self) -> Dict[str, str]:
-        return {
-            "Authorization": f"Bearer {self._api_key()}",
-            "Content-Type": "application/json",
-        }
+        key = self._api_key()
+        return {"Content-Type": "application/json", **({"Authorization": f"Bearer {key}"} if key else {})}
 
     def check_health(self) -> Tuple[bool, str]:
         configured, message = super().check_health()
@@ -170,11 +184,33 @@ class OpenAICompatibleProvider(LLMProvider):
             "temperature": self.config.temperature,
             "response_format": {"type": "json_object"},
         }
+        if (request.metadata.get("connection_probe") or request.metadata.get("flexible_output")):
+            payload.pop("response_format", None)
         if self.config.max_output_tokens is not None:
-            payload["max_tokens"] = self.config.max_output_tokens
+            token_parameter = "max_completion_tokens" if self.config.vendor == "kimi" and (self.config.model or "").startswith("kimi-k3") else "max_tokens"
+            payload[token_parameter] = self.config.max_output_tokens
+        if self.config.vendor in {"kimi", "deepseek", "zhipu"}:
+            payload.pop("temperature", None)
+        if self.config.vendor == "kimi":
+            if (self.config.model or "").startswith("kimi-k2.6"):
+                payload["thinking"] = {"type": "disabled"}
+            elif (self.config.model or "").startswith("kimi-k3"):
+                payload["reasoning_effort"] = "low"
+        if self.config.vendor == "zhipu" and (self.config.model or "").lower().startswith("glm-4.7"):
+            # Structured extraction needs answer tokens rather than spending the
+            # entire configured output budget on GLM-4.7's default thinking.
+            payload["thinking"] = {"type": "disabled"}
+        if self.config.vendor == "deepseek" and request.metadata.get("flexible_output"):
+            # Extraction needs the answer within the configured output budget.
+            payload["thinking"] = {"type": "disabled"}
 
         async with httpx.AsyncClient(timeout=self.config.timeout_seconds) as client:
-            response = await client.post(
+            post = client.post
+            if self.config.vendor == "zhipu":
+                from backend.services.llm.zhipu_requests import post_serialized
+                async def post(url, **kwargs):
+                    return await post_serialized(client, url, **kwargs)
+            response = await post(
                 f"{self._base_url()}/chat/completions",
                 headers=self._headers(),
                 json=payload,
@@ -182,9 +218,9 @@ class OpenAICompatibleProvider(LLMProvider):
             response.raise_for_status()
             body = response.json()
 
-        content = body["choices"][0]["message"].get("content") or "{}"
+        content = body["choices"][0]["message"].get("content") or ""
         try:
-            structured_output = json.loads(content)
+            structured_output = {} if (request.metadata.get("connection_probe") or request.metadata.get("flexible_output")) else json.loads(content)
         except json.JSONDecodeError as exc:
             raise RuntimeError(f"Provider returned non-JSON structured output: {exc}") from exc
 
@@ -196,6 +232,42 @@ class OpenAICompatibleProvider(LLMProvider):
             usage=body.get("usage", {}),
             finish_reason=body["choices"][0].get("finish_reason"),
         )
+
+
+class AnthropicProvider(OpenAICompatibleProvider):
+    """Claude's native Messages protocol; structured JSON is prompted and validated."""
+
+    def _base_url(self) -> str:
+        base = (self.config.api_base_url or "https://api.anthropic.com/v1").rstrip("/")
+        return base if base.endswith("/v1") else base + "/v1"
+
+    def _headers(self) -> Dict[str, str]:
+        key = self._api_key()
+        return {"Content-Type": "application/json", "anthropic-version": "2026-10-21",
+                **({"Authorization": f"Bearer {key}"} if key else {})}
+
+    async def invoke_structured(self, request: StructuredOutputRequest) -> StructuredOutputResult:
+        payload = {"model": self.config.model, "max_tokens": self.config.max_output_tokens or 4096,
+                   "system": request.system_prompt + "\nReturn only a valid JSON object matching this schema (no markdown):\n" + json.dumps(request.response_schema),
+                   "messages": [{"role": "user", "content": request.user_prompt}]}
+        if (request.metadata.get("connection_probe") or request.metadata.get("flexible_output")):
+            payload["system"] = request.system_prompt
+        async with httpx.AsyncClient(timeout=self.config.timeout_seconds) as client:
+            response = await client.post(f"{self._base_url()}/messages", headers=self._headers(), json=payload)
+            response.raise_for_status()
+            body = response.json()
+        if body.get("stop_reason") == "max_tokens":
+            raise RuntimeError("Model output was truncated; increase the output token limit")
+        content = "\n".join(block["text"] for block in body.get("content", []) if block.get("type") == "text").strip()
+        cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", content).strip()
+        try:
+            output = {} if (request.metadata.get("connection_probe") or request.metadata.get("flexible_output")) else json.loads(cleaned)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError("Claude did not return valid JSON") from exc
+        if not isinstance(output, dict):
+            raise RuntimeError("Claude must return a JSON object")
+        return StructuredOutputResult(provider=self.name, model=body.get("model", self.config.model),
+            structured_output=output, raw_text=content, usage=body.get("usage", {}), finish_reason=body.get("stop_reason"))
 
 
 class OllamaProvider(LLMProvider):
@@ -230,6 +302,8 @@ class OllamaProvider(LLMProvider):
                 "temperature": self.config.temperature,
             },
         }
+        if (request.metadata.get("connection_probe") or request.metadata.get("flexible_output")):
+            payload.pop("format", None)
         if self.config.max_output_tokens is not None:
             payload["options"]["num_predict"] = self.config.max_output_tokens
 
@@ -238,9 +312,9 @@ class OllamaProvider(LLMProvider):
             response.raise_for_status()
             body = response.json()
 
-        content = body.get("message", {}).get("content") or "{}"
+        content = body.get("message", {}).get("content") or ""
         try:
-            structured_output = json.loads(content)
+            structured_output = {} if (request.metadata.get("connection_probe") or request.metadata.get("flexible_output")) else json.loads(content)
         except json.JSONDecodeError as exc:
             raise RuntimeError(f"Provider returned non-JSON structured output: {exc}") from exc
 
@@ -260,6 +334,13 @@ class OllamaProvider(LLMProvider):
 def get_default_provider() -> LLMProvider:
     """Construct the default provider from environment configuration."""
 
+    from backend.services.auth_service import get_current_identity
+    from backend.services.llm_profiles import profile_configuration
+    identity = get_current_identity()
+    if identity is not None:
+        saved = profile_configuration(identity.user_id)
+        if saved is not None:
+            return provider_from_config(saved)
     provider_name = os.getenv("ONTOFORGE_LLM_PROVIDER", "disabled")
     config = LLMProviderConfig(
         provider=provider_name if provider_name in {"disabled", "openai_compatible", "anthropic", "ollama", "mock"} else "disabled",
@@ -272,10 +353,16 @@ def get_default_provider() -> LLMProvider:
         enabled=os.getenv("ONTOFORGE_LLM_ENABLED", "false").lower() == "true",
     )
 
+    return provider_from_config(config)
+
+
+def provider_from_config(config: LLMProviderConfig) -> LLMProvider:
     if config.provider == "mock":
         return MockLLMProvider(config)
     if config.provider == "openai_compatible":
         return OpenAICompatibleProvider(config)
+    if config.provider == "anthropic":
+        return AnthropicProvider(config)
     if config.provider == "ollama":
         return OllamaProvider(config)
     return NullLLMProvider(config)

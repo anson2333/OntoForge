@@ -1,0 +1,350 @@
+{
+  "paper": "faster_rcnn",
+  "paper_metadata": {
+    "title": "Faster R-CNN: Towards Real-Time Object Detection",
+    "authors": [
+      "Unknown authors"
+    ],
+    "year": 2015,
+    "venue": "Unknown venue",
+    "doi": null,
+    "provenance_hash": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef"
+  },
+  "source_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+  "diagnostics": {
+    "batch_count": 2,
+    "failed_batches": [],
+    "warnings": [],
+    "errors": [],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "completion_tokens": 1310,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens": 6655,
+        "prompt_tokens_details": {
+          "cached_tokens": 1570
+        },
+        "total_tokens": 7965
+      },
+      {
+        "completion_tokens": 4096,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens": 8256,
+        "prompt_tokens_details": {
+          "cached_tokens": 1564
+        },
+        "total_tokens": 12352
+      }
+    ],
+    "input_characters": 39241,
+    "output_formats": [
+      "json",
+      "json"
+    ],
+    "model_seconds": 210.574408,
+    "retryable": false,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "glm-4.7-flash",
+    "parse_seconds": 0.561252,
+    "total_seconds": 211.138261,
+    "pages": 10,
+    "chunks": 13,
+    "pdf_bytes": 2368067
+  },
+  "assertions": [
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "73.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG-16",
+        "training_data": "ImageNet pre-trained",
+        "input_resolution": "shorter side 600 pixels",
+        "evaluation_protocol": "standard VOC",
+        "hardware": "GPU",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 1.0,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "The abstract explicitly states '73.2% mAP on PASCAL VOC 2007' for the VGG-16 model."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 1.0
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.4",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG-16",
+        "training_data": "ImageNet pre-trained",
+        "input_resolution": "shorter side 600 pixels",
+        "evaluation_protocol": "standard VOC",
+        "hardware": "GPU",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 1.0,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "The abstract explicitly states '70.4% mAP on 2012' for the VGG-16 model."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 1.0
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b0_2",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "5",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "VGG-16",
+        "training_data": "ImageNet pre-trained",
+        "input_resolution": "shorter side 600 pixels",
+        "evaluation_protocol": "standard VOC",
+        "hardware": "GPU",
+        "timing_scope": "detector_only_excludes_proposals",
+        "result_role": "primary",
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "scenario",
+          "backbone",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "The abstract states 'frame rate of 5fps (including all steps) on a GPU'. This includes the RPN and detector, consistent with the 'detector_only_excludes_proposals' scope for the overall system performance."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_3",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "59.9",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "ZF",
+        "training_data": "ImageNet pre-trained",
+        "input_resolution": "shorter side 600 pixels",
+        "evaluation_protocol": "standard VOC",
+        "hardware": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Table 1 (top) explicitly lists RPN with Fast R-CNN (ZF) achieving an mAP of 59.9% on PASCAL VOC 2007."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_4",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "ZF",
+        "training_data": "ImageNet pre-trained",
+        "input_resolution": "shorter side 600 pixels",
+        "evaluation_protocol": "standard VOC",
+        "hardware": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "baseline",
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Table 1 (top) lists Selective Search (SS) with Fast R-CNN (ZF) achieving an mAP of 58.7% on PASCAL VOC 2007."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_5",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.6",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "ZF",
+        "training_data": "ImageNet pre-trained",
+        "input_resolution": "shorter side 600 pixels",
+        "evaluation_protocol": "standard VOC",
+        "hardware": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "baseline",
+        "backbone": "unknown",
+        "batch_size": "unknown",
+        "missing_context_keys": [
+          "backbone",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Table 1 (top) lists EdgeBoxes (EB) with Fast R-CNN (ZF) achieving an mAP of 58.6% on PASCAL VOC 2007."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Fast R-CNN",
+        "model_variant": "ZF, unshared",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "ZF",
+        "evaluation_protocol": "PASCAL VOC 2007 test set (trained on VOC 2007 trainval)",
+        "input_resolution": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "unknown",
+        "missing_context_keys": [
+          "input_resolution",
+          "hardware",
+          "batch_size",
+          "timing_scope",
+          "result_role"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Extracted from Table 1 row 'RPN+ZF, unshared 2k' in chunk_p6_0. The method is Fast R-CNN with ZF backbone (region_based), training on VOC 2007 trainval, testing on VOC 2007 test set (voc2007_test), with unshared features (model_variant)."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        }
+      ]
+    }
+  ],
+  "chunk_pages": {
+    "chunk_p1_0": 1,
+    "chunk_p2_0": 2,
+    "chunk_p3_0": 3,
+    "chunk_p4_0": 4,
+    "chunk_p5_0": 5,
+    "chunk_p6_0": 6,
+    "chunk_p7_0": 7,
+    "chunk_p8_0": 8,
+    "chunk_p8_1": 8,
+    "chunk_p8_2": 8,
+    "chunk_p8_3": 8,
+    "chunk_p9_0": 9,
+    "chunk_p10_0": 10
+  }
+}

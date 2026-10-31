@@ -10,6 +10,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from io import BytesIO
@@ -18,6 +19,7 @@ from typing import Any, Optional, Protocol
 from uuid import uuid4
 
 from pypdf import PdfReader
+from neo4j.exceptions import TransientError
 
 from backend.schemas.protocol import (
     CommitParsedPdfParams,
@@ -35,8 +37,10 @@ from backend.schemas.protocol import (
 from backend.schemas.domain_pack import DomainPackConfig
 from backend.schemas.edges import BelongsToEdge, ContainsEdge, ContainsPaperEdge, EvidencedByEdge
 from backend.schemas.nodes import AssertionNode, ChunkNode, FormulaNode, PaperNode
+from backend.database.ontology_repository import OntologyRepository
 from backend.services.llm import get_default_provider
 from backend.services.llm.semantic_extractor import create_semantic_extractor
+from backend.services.ontology_projection import persist_preview_projection
 
 
 UPLOAD_RETENTION_HOURS = int(os.getenv("ONTOFORGE_UPLOAD_RETENTION_HOURS", "24"))
@@ -107,6 +111,8 @@ def _upload_root() -> Path:
 
 
 def _metadata_path(upload_id: str) -> Path:
+    if not re.fullmatch(r"upload_[a-f0-9]{32}", upload_id):
+        raise ValueError("Invalid upload identifier")
     return _upload_root() / upload_id / "metadata.json"
 
 
@@ -205,6 +211,55 @@ def load_pdf_upload(upload_id: str) -> StoredUpload:
     if not upload.stored_path.exists():
         raise FileNotFoundError(f"Uploaded PDF for {upload_id} is missing")
     return upload
+
+
+def authorize_pdf_upload(upload_id: str, workspace_id: str, user_id: Optional[str]) -> StoredUpload:
+    """Check upload ownership at every entry point, including graph commit."""
+    from backend.services.auth_service import AuthError, CODE_FORBIDDEN
+    upload = load_pdf_upload(upload_id)
+    if upload.owner_id != user_id or upload.workspace_id != workspace_id:
+        raise AuthError(CODE_FORBIDDEN, "Upload belongs to another user or workspace")
+    return upload
+
+
+def _config_hash(namespace: str) -> str:
+    config = load_domain_pack_config(namespace)
+    return hashlib.sha256((config.model_dump_json() if config else "null").encode()).hexdigest()
+
+
+def paper_source_path(paper_id: str) -> Path:
+    if not re.fullmatch(r"paper_[a-f0-9]{64}", paper_id):
+        raise ValueError("Original PDF unavailable for this legacy or demo paper")
+    root = Path(os.getenv("ONTOFORGE_SOURCE_DIR", str(Path(__file__).resolve().parents[1] / "data/sources")))
+    root.mkdir(parents=True, exist_ok=True)
+    return root / f"{paper_id}.pdf"
+
+
+def _preview_path(upload_id: str, preview_id: str) -> Path:
+    if not re.fullmatch(r"preview_[a-f0-9]{32}", preview_id):
+        raise ValueError("Invalid preview identifier")
+    return _metadata_path(upload_id).parent / f"{preview_id}.json"
+
+
+def load_preview(request: CommitParsedPdfParams) -> ParsePdfWithDomainPackResponse:
+    upload = authorize_pdf_upload(request.upload_id, request.workspace_id, request.owner_id)
+    path = _preview_path(request.upload_id, request.preview_id)
+    if not path.exists():
+        raise ValueError("Preview expired or missing; preview the PDF again before committing")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if (data["sha256"] != upload.sha256 or data["config_hash"] != _config_hash(request.domain_pack_namespace)):
+        raise ValueError("Source or domain configuration changed; preview again")
+    result = ParsePdfWithDomainPackResponse.model_validate(data["result"])
+    if (result.workspace_id != request.workspace_id or result.domain_pack_namespace != request.domain_pack_namespace
+            or result.upload_id != request.upload_id or result.preview_id != request.preview_id):
+        raise ValueError("Preview does not belong to this import")
+    if result.status != "parsed" or not result.chunks:
+        raise ValueError("Preview needs review; resolve extraction failures and preview again")
+    valid_ids = {chunk.chunk_id for chunk in result.chunks} | {formula.formula_id for formula in result.formulas}
+    for assertion in result.assertions:
+        if not assertion.evidence_links or any(link.source_id not in valid_ids for link in assertion.evidence_links):
+            raise ValueError("Assertion references missing evidence")
+    return result
 
 
 def _first_non_empty_line(text: str) -> Optional[str]:
@@ -377,7 +432,7 @@ def _extract_assertions_heuristic(
 ) -> list[ExtractedAssertion]:
     """
     Heuristic-based assertion extraction using pattern matching.
-    
+
     This is the fallback method when LLM extraction is unavailable.
     Uses regex patterns to find metric mentions and nearby numeric values.
     """
@@ -438,7 +493,7 @@ def _extract_assertions(
     formulas: list[ExtractedFormula],
     config: Optional[DomainPackConfig],
     domain_pack_namespace: str,
-) -> tuple[list[ExtractedAssertion], str]:
+) -> tuple[list[ExtractedAssertion], str, dict[str, Any]]:
     """
     Extract assertions using LLM semantic extraction with heuristic fallback.
 
@@ -451,13 +506,17 @@ def _extract_assertions(
         (assertions, method) where method is "llm", "heuristic" or "none".
     """
     if config is None:
-        return [], "none"
+        return [], "none", {}
 
+    diagnostics: dict[str, Any] = {"model_called": False, "model_seconds": 0.0, "usage": []}
+    model_method = "llm"
     # Try LLM-based extraction first
     llm_assertions: list[ExtractedAssertion] = []
     try:
         llm_provider = get_default_provider()
         if llm_provider.is_configured():
+            provider_name = llm_provider.config.provider
+            model_method = "mock" if provider_name == "mock" else "llm"
             semantic_extractor = create_semantic_extractor(llm_provider)
             if semantic_extractor.is_available():
                 llm_assertions = semantic_extractor.extract_assertions_sync(
@@ -466,20 +525,23 @@ def _extract_assertions(
                     config=config,
                     domain_pack_namespace=domain_pack_namespace,
                 )
+                diagnostics = semantic_extractor.diagnostics
+                diagnostics.update({"model_called": True, "provider": provider_name, "model": llm_provider.config.model})
     except Exception as e:
+        diagnostics = {"failed_batches": [0], "warnings": [f"Model extraction failed ({type(e).__name__}); retry extraction"], "retryable": True}
         # Log but don't crash - will fall back to heuristic
         import logging
         logging.warning(f"LLM semantic extraction failed, falling back to heuristic: {e}")
 
     # If LLM extraction succeeded, return those results
     if llm_assertions:
-        return llm_assertions, "llm"
+        return llm_assertions, model_method, diagnostics
 
     # Fall back to heuristic extraction
     heuristic = _extract_assertions_heuristic(chunks, config, domain_pack_namespace)
     for assertion in heuristic:
         assertion.context_conditions["extraction_method"] = "heuristic"
-    return heuristic, "heuristic" if heuristic else "none"
+    return heuristic, "heuristic" if heuristic else "none", diagnostics
 
 
 def slugify(value: str) -> str:
@@ -502,10 +564,7 @@ def _chunk_page_text(page_number: int, text: str) -> list[ExtractedChunk]:
                 raw_text=normalized,
                 bounding_box={
                     "page": page_number,
-                    "x": 0,
-                    "y": index,
-                    "width": 1,
-                    "height": 1,
+                    "coordinate_precision": "page_only",
                 },
             )
         )
@@ -523,7 +582,10 @@ def _build_metadata(file_name: str, raw_bytes: bytes, extracted_text: str, reade
         title = Path(file_name).stem.replace("_", " ").replace("-", " ").strip() or file_name
 
     authors = _split_authors(metadata.get("/Author") if metadata else None)
-    year = _extract_year(extracted_text)
+    # Benchmark years in an abstract are not publication years. Prefer the
+    # explicit arXiv identifier in the supplied document (YYMM.number).
+    arxiv = re.search(r'arXiv:\s*(\d{2})(?:0[1-9]|1[0-2])\.\d{4,5}', extracted_text[:12000], re.I)
+    year = (1900 + int(arxiv[1]) if int(arxiv[1]) >= 91 else 2000 + int(arxiv[1])) if arxiv else _extract_year(extracted_text)
     if year is None and metadata:
         year = _extract_year(" ".join(str(value) for value in metadata.values() if value))
     if year is None:
@@ -628,13 +690,13 @@ def _marker_output_file(output_dir: Path, extension: str) -> Path:
     # For JSON files, try _meta.json pattern first (new Marker format)
     patterns = [f"*_meta.{extension}"] if extension == "json" else []
     patterns.append(f"*.{extension}")
-    
+
     # First try direct files (old CLI)
     for pattern in patterns:
         matches = sorted(output_dir.glob(pattern))
         if matches:
             return matches[0]
-    
+
     # Try subdirectories (new CLI creates a folder named after the PDF)
     subdirs = [d for d in output_dir.iterdir() if d.is_dir()]
     for subdir in subdirs:
@@ -642,7 +704,7 @@ def _marker_output_file(output_dir: Path, extension: str) -> Path:
             matches = sorted(subdir.glob(pattern))
             if matches:
                 return matches[0]
-    
+
     raise RuntimeError(f"Marker did not produce a .{extension} output file in {output_dir} or subdirectories")
 
 
@@ -719,7 +781,7 @@ class MarkerPdfExtractor:
         # Check marker version by running --help to detect CLI format
         help_result = subprocess.run([executable, "--help"], capture_output=True, text=True)
         uses_old_cli = "--output_dir" not in help_result.stdout
-        
+
         if uses_old_cli:
             # Old marker CLI (v0.2.6): marker_single filename output_folder
             # It outputs files directly to output_folder
@@ -742,7 +804,7 @@ class MarkerPdfExtractor:
                 output_format,
                 *self._build_base_args(request),
             ]
-        
+
         result = subprocess.run(full_command, capture_output=True, text=True)
         if result.returncode != 0:
             stderr = (result.stderr or "").strip()
@@ -764,20 +826,20 @@ class MarkerPdfExtractor:
                 uses_old_cli = "--output_dir" not in help_result.stdout
             else:
                 uses_old_cli = False
-            
+
             if uses_old_cli:
                 # Old CLI generates both formats in one run
                 output_dir = temp_root / "marker_output"
                 output_dir.mkdir(parents=True, exist_ok=True)
                 self._run_marker(pdf_path, output_dir, "both", request)
-                
+
                 markdown_text = _marker_output_file(output_dir, "md").read_text(encoding="utf-8")
                 marker_json = json.loads(_marker_output_file(output_dir, "json").read_text(encoding="utf-8"))
             else:
                 # New CLI (>=1.0): a markdown run normally also writes *_meta.json.
                 output_dir = temp_root / "marker_output"
                 output_dir.mkdir(parents=True, exist_ok=True)
-                
+
                 self._run_marker(pdf_path, output_dir, "markdown", request)
 
                 markdown_text = _marker_output_file(output_dir, "md").read_text(encoding="utf-8")
@@ -792,22 +854,22 @@ class MarkerPdfExtractor:
 
         # Detect Marker 1.10+ format (has 'table_of_contents' key instead of page blocks)
         is_new_marker_format = isinstance(marker_json, dict) and "table_of_contents" in marker_json
-        
+
         if is_new_marker_format:
             # New Marker 1.10+ format: JSON only has metadata, all text is in markdown
             # Parse markdown directly into chunks
             page_texts: list[str] = []
             chunks: list[ExtractedChunk] = []
             formulas: list[ExtractedFormula] = []
-            
+
             # Split markdown by paragraphs (double newline)
             paragraphs = [p.strip() for p in markdown_text.split("\n\n") if p.strip()]
-            
+
             for idx, paragraph in enumerate(paragraphs):
                 # Skip very short paragraphs (likely formatting artifacts)
                 if len(paragraph) < 10:
                     continue
-                
+
                 chunks.append(
                     ExtractedChunk(
                         chunk_id=f"chunk_md_{idx}",
@@ -824,10 +886,10 @@ class MarkerPdfExtractor:
                         },
                     )
                 )
-            
+
             # For new format, treat whole markdown as single page text
             page_texts = [markdown_text]
-            
+
         else:
             # Old Marker format: JSON contains page blocks with text
             pages = marker_json if isinstance(marker_json, list) else [marker_json]
@@ -902,6 +964,9 @@ def get_pdf_extractor() -> PdfExtractor:
 
 
 def parse_pdf_with_domain_pack(request: ParsePdfWithDomainPackParams) -> ParsePdfWithDomainPackResponse:
+    started = time.perf_counter()
+    if request.upload_id:
+        authorize_pdf_upload(request.upload_id, request.workspace_id, request.owner_id)
     config = load_domain_pack_config(request.domain_pack_namespace)
     source = _resolve_parse_source(request)
     extractor = get_pdf_extractor()
@@ -910,24 +975,31 @@ def parse_pdf_with_domain_pack(request: ParsePdfWithDomainPackParams) -> ParsePd
     combined_text = "\n\n".join(artifacts.page_texts).strip()
     markdown_text = _normalize_text_to_markdown(artifacts.page_texts)
     paper_metadata = _build_metadata(source.file_name, source.raw_bytes, combined_text, artifacts.reader)
-    assertions, assertion_method = _extract_assertions(
+    parse_seconds = time.perf_counter() - started
+    assertions, assertion_method, diagnostics = _extract_assertions(
         artifacts.chunks, artifacts.formulas, config, request.domain_pack_namespace
     )
-    warnings = list(artifacts.warnings)
+    warnings = list(artifacts.warnings) + diagnostics.get("warnings", [])
+    if artifacts.chunks and artifacts.extraction_method in {"pypdf", "raw_text"}:
+        warnings.append("Page-only source locations; precise PDF bounding boxes are unavailable.")
+    diagnostics.update({"parse_seconds": round(parse_seconds, 6), "total_seconds": round(time.perf_counter() - started, 6), "pages": len(artifacts.page_texts), "chunks": len(artifacts.chunks), "pdf_bytes": len(source.raw_bytes)})
 
     if not artifacts.chunks:
         warnings.append("No text chunks were extracted from the PDF.")
     if config is None:
         warnings.append("No backend domain-pack config was resolved for assertion grounding; preview includes metadata, markdown, and chunks only.")
-    elif not assertions:
+    elif not assertions and not diagnostics.get("failed_batches"):
         warnings.append("No domain-grounded assertions were extracted from the parsed chunks.")
     if assertion_method == "heuristic":
         warnings.append(
             "LLM extraction was unavailable; assertions were produced by the rule-based heuristic extractor."
         )
+    if assertion_method == "mock":
+        warnings.append("Simulated mock-provider assertions; this is not a real LLM extraction.")
 
-    return ParsePdfWithDomainPackResponse(
-        status="parsed" if artifacts.chunks else "needs_review",
+    result = ParsePdfWithDomainPackResponse(
+        status="parsed" if artifacts.chunks and not diagnostics.get("failed_batches") else "needs_review",
+        diagnostics=diagnostics,
         workspace_id=request.workspace_id,
         domain_pack_namespace=request.domain_pack_namespace,
         upload_id=source.upload.upload_id if source.upload else request.upload_id,
@@ -940,6 +1012,14 @@ def parse_pdf_with_domain_pack(request: ParsePdfWithDomainPackParams) -> ParsePd
         extraction_method=artifacts.extraction_method,
         assertion_extraction_method=assertion_method,
     )
+    if source.upload:
+        result.preview_id = f"preview_{uuid4().hex}"
+        path = _preview_path(source.upload.upload_id, result.preview_id)
+        payload = {"sha256": source.upload.sha256, "config_hash": _config_hash(request.domain_pack_namespace), "result": result.model_dump()}
+        pending = path.with_suffix(".tmp")
+        pending.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        pending.replace(path)
+    return result
 
 
 def commit_parsed_pdf(
@@ -948,25 +1028,80 @@ def commit_parsed_pdf(
     edge_repo: Any,
     workspace_exists: bool = True,
 ) -> CommitParsedPdfResponse:
-    parse_result = parse_pdf_with_domain_pack(
-        ParsePdfWithDomainPackParams(
-            workspace_id=request.workspace_id,
-            domain_pack_namespace=request.domain_pack_namespace,
-            upload_id=request.upload_id,
-            owner_id=request.owner_id,
-            parse_options=request.parse_options,
-        )
-    )
+    parse_result = load_preview(request)
+    for attempt in range(4):
+        try:
+            return _commit_atomic(request, parse_result, node_repo, edge_repo, workspace_exists)
+        except TransientError:
+            if attempt == 3:
+                raise
+            time.sleep(0.05 * 2 ** attempt)
 
+
+def _commit_atomic(request, parse_result, node_repo, edge_repo, workspace_exists):
+    with node_repo.db.transaction():
+        # Updating the existing workspace acquires a write lock until commit.
+        locked = node_repo.db.execute_query(
+            "MATCH (w:WorkspaceNode {id: $id}) SET w.ingest_revision = coalesce(w.ingest_revision, 0) + 1 RETURN w.id AS id",
+            {"id": request.workspace_id},
+        )
+        if not locked:
+            raise ValueError("Workspace no longer exists")
+        return _commit_preview(request, parse_result, node_repo, edge_repo, workspace_exists)
+
+
+def preserve_pdf_source(request, paper_id: str, expected_hash: str) -> None:
+    # Preserve the exact imported source beyond temporary upload expiry.
+    source = authorize_pdf_upload(request.upload_id, request.workspace_id, request.owner_id)
+    raw = source.stored_path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != expected_hash:
+        raise ValueError("Uploaded source changed after preview")
+    target = paper_source_path(paper_id)
+    pending = target.with_suffix(f".{uuid4().hex}.tmp")
+    pending.write_bytes(raw)
+    pending.replace(target)
+
+
+def _require_edge(create, edge):
+    if create(edge) is None:
+        raise ValueError("Graph relationship endpoint missing; transaction rolled back")
+
+
+def _commit_preview(request, parse_result, node_repo, edge_repo, workspace_exists):
     metadata = parse_result.paper_metadata
     if metadata is None:
         raise ValueError("Parsed PDF is missing paper metadata")
 
-    paper_id = f"paper_{slugify(metadata.title)}_{metadata.provenance_hash[:12]}"
+    identity = f"{request.workspace_id}\0{request.domain_pack_namespace}\0{metadata.provenance_hash}"
+    paper_id = "paper_" + hashlib.sha256(identity.encode()).hexdigest()
 
-    # Idempotent re-import: the same content hash always maps to the same paper id.
+    # Local parser ids repeat across papers. The ontology run also reuses this
+    # mapping so every EvidenceItem resolves to the immutable source node.
+    id_map: dict[str, str] = {}
+
+    def global_id(local_id: str) -> str:
+        if local_id not in id_map:
+            id_map[local_id] = f"{paper_id}::{local_id}"
+        return id_map[local_id]
+
+    config = load_domain_pack_config(request.domain_pack_namespace)
+
+    def persist_ontology() -> dict[str, Any]:
+        if config is None or not parse_result.preview_id:
+            return {}
+        return persist_preview_projection(
+            repo=OntologyRepository(node_repo.db), workspace_id=request.workspace_id,
+            paper_id=paper_id, provenance_hash=metadata.provenance_hash,
+            preview_id=parse_result.preview_id, parse_result=parse_result, config=config,
+            global_evidence_id=global_id,
+        )
+
+    # The source paper remains idempotent, while each immutable preview produces
+    # a separate ExtractionRun. This preserves re-extractions instead of silently
+    # discarding or overwriting them.
     existing_paper = node_repo.get_node_by_id(paper_id, "PaperNode")
     if existing_paper:
+        projection = persist_ontology()
         return CommitParsedPdfResponse(
             status="committed",
             workspace_id=request.workspace_id,
@@ -976,130 +1111,116 @@ def commit_parsed_pdf(
             chunks_created=0,
             formulas_created=0,
             assertions_created=0,
+            extraction_run_id=projection.get("run_id"),
+            experiments_created=projection.get("experiments_created", 0),
+            measurements_created=projection.get("measurements_created", 0),
+            constraint_violations=projection.get("constraint_violations", []),
             warnings=[
                 *parse_result.warnings,
                 "Paper was already committed; duplicate write skipped (idempotent import).",
             ],
         )
 
+    preserve_pdf_source(request, paper_id, metadata.provenance_hash)
+
     pdf_method = parse_result.extraction_method or "pypdf"
     assertion_method = parse_result.assertion_extraction_method or "heuristic"
 
-    # Local parser ids (chunk_p1_0, assert_llm_...) repeat across papers, so every
-    # persisted id is namespaced with the paper id to keep evidence unambiguous.
-    id_map: dict[str, str] = {}
-    created_ids: list[str] = []
+    paper_node = PaperNode(
+        id=paper_id,
+        doi=metadata.doi or "",
+        title=metadata.title,
+        authors=metadata.authors,
+        year=metadata.year,
+        venue=metadata.venue or "Unknown",
+        provenance_hash=metadata.provenance_hash,
+        import_status="verified",
+        domain_pack_namespace=request.domain_pack_namespace,
+        workspace_id=request.workspace_id,
+    )
+    node_repo.create_paper_node(paper_node)
 
-    def global_id(local_id: str) -> str:
-        if local_id not in id_map:
-            id_map[local_id] = f"{paper_id}::{local_id}"
-        return id_map[local_id]
+    if workspace_exists:
+        _require_edge(edge_repo.create_contains_paper_edge,
+            ContainsPaperEdge(from_node_id=request.workspace_id, to_node_id=paper_id)
+        )
 
-    try:
-        paper_node = PaperNode(
-            id=paper_id,
-            doi=metadata.doi or "",
-            title=metadata.title,
-            authors=metadata.authors,
-            year=metadata.year,
-            venue=metadata.venue or "Unknown",
-            provenance_hash=metadata.provenance_hash,
-            import_status="verified",
+    if config is not None:
+        node_repo.db.execute_query(
+            "MERGE (d:DomainNode {id: $id}) SET d.name = $name, d.domain_pack_id = $id, "
+            "d.domain_pack_version = $version, d.taxonomy_tree = $taxonomy, d.core_metrics = $metrics",
+            {"id": config.domain.id, "name": config.domain.name, "version": config.schema_version,
+             "taxonomy": json.dumps([d.model_dump() if hasattr(d, "model_dump") else d for d in config.domain.taxonomy_tree]),
+             "metrics": json.dumps([m.model_dump() for m in config.core_metrics])},
+        )
+        _require_edge(edge_repo.create_belongs_to_edge,
+            BelongsToEdge(
+                from_node_id=paper_id,
+                to_node_id=config.domain.id,
+                confidence=1.0,
+                primary=True,
+                classification_method="manual",
+            )
+        )
+
+    for chunk in parse_result.chunks:
+        chunk_id = global_id(chunk.chunk_id)
+        chunk_node = ChunkNode(
+            id=chunk_id,
+            raw_text=chunk.raw_text,
+            bounding_box=chunk.bounding_box,
+            verification_status="raw",
+        )
+        node_repo.create_chunk_node(chunk_node)
+        _require_edge(edge_repo.create_contains_edge,
+            ContainsEdge(from_node_id=paper_id, to_node_id=chunk_id, extraction_method=pdf_method)
+        )
+
+    for formula in parse_result.formulas:
+        formula_id = global_id(formula.formula_id)
+        formula_node = FormulaNode(
+            id=formula_id,
+            latex_string=formula.latex_string,
+            variables_map=formula.variables_map,
+            constraints={},
+            verification_status="raw",
+        )
+        node_repo.create_formula_node(formula_node)
+        _require_edge(edge_repo.create_contains_edge,
+            ContainsEdge(from_node_id=paper_id, to_node_id=formula_id, extraction_method=pdf_method)
+        )
+
+    for assertion in parse_result.assertions:
+        assertion_id = global_id(assertion.assertion_id)
+        assertion_node = AssertionNode(
+            id=assertion_id,
+            subject=assertion.subject,
+            predicate=assertion.predicate,
+            object=assertion.object,
+            unit=assertion.unit,
             domain_pack_namespace=request.domain_pack_namespace,
+            context_conditions=assertion.context_conditions,
+            status="pending",
             workspace_id=request.workspace_id,
         )
-        node_repo.create_paper_node(paper_node)
-        created_ids.append(paper_id)
-
-        if workspace_exists:
-            edge_repo.create_contains_paper_edge(
-                ContainsPaperEdge(from_node_id=request.workspace_id, to_node_id=paper_id)
+        node_repo.create_assertion_node(assertion_node)
+        _require_edge(edge_repo.create_contains_edge,
+            ContainsEdge(
+                from_node_id=paper_id,
+                to_node_id=assertion_id,
+                extraction_method=f"domain_pack_{assertion_method}",
             )
-
-        config = load_domain_pack_config(request.domain_pack_namespace)
-        if config is not None:
-            edge_repo.create_belongs_to_edge(
-                BelongsToEdge(
-                    from_node_id=paper_id,
-                    to_node_id=config.domain.id,
-                    confidence=1.0,
-                    primary=True,
-                    classification_method="manual",
-                )
-            )
-
-        for chunk in parse_result.chunks:
-            chunk_id = global_id(chunk.chunk_id)
-            chunk_node = ChunkNode(
-                id=chunk_id,
-                raw_text=chunk.raw_text,
-                bounding_box=chunk.bounding_box,
-                verification_status="raw",
-            )
-            node_repo.create_chunk_node(chunk_node)
-            created_ids.append(chunk_id)
-            edge_repo.create_contains_edge(
-                ContainsEdge(from_node_id=paper_id, to_node_id=chunk_id, extraction_method=pdf_method)
-            )
-
-        for formula in parse_result.formulas:
-            formula_id = global_id(formula.formula_id)
-            formula_node = FormulaNode(
-                id=formula_id,
-                latex_string=formula.latex_string,
-                variables_map=formula.variables_map,
-                constraints={},
-                verification_status="raw",
-            )
-            node_repo.create_formula_node(formula_node)
-            created_ids.append(formula_id)
-            edge_repo.create_contains_edge(
-                ContainsEdge(from_node_id=paper_id, to_node_id=formula_id, extraction_method=pdf_method)
-            )
-
-        for assertion in parse_result.assertions:
-            assertion_id = global_id(assertion.assertion_id)
-            assertion_node = AssertionNode(
-                id=assertion_id,
-                subject=assertion.subject,
-                predicate=assertion.predicate,
-                object=assertion.object,
-                unit=assertion.unit,
-                domain_pack_namespace=request.domain_pack_namespace,
-                context_conditions=assertion.context_conditions,
-                status="pending",
-                workspace_id=request.workspace_id,
-            )
-            node_repo.create_assertion_node(assertion_node)
-            created_ids.append(assertion_id)
-            edge_repo.create_contains_edge(
-                ContainsEdge(
-                    from_node_id=paper_id,
+        )
+        for evidence in assertion.evidence_links:
+            _require_edge(edge_repo.create_evidenced_by_edge,
+                EvidencedByEdge(
+                    from_node_id=global_id(evidence.source_id),
                     to_node_id=assertion_id,
-                    extraction_method=f"domain_pack_{assertion_method}",
+                    confidence_score=evidence.confidence_score,
                 )
             )
-            for evidence in assertion.evidence_links:
-                edge_repo.create_evidenced_by_edge(
-                    EvidencedByEdge(
-                        from_node_id=global_id(evidence.source_id),
-                        to_node_id=assertion_id,
-                        confidence_score=evidence.confidence_score,
-                    )
-                )
-    except Exception:
-        # Roll back partial writes so a failed commit does not leave orphan data.
-        db = getattr(node_repo, "db", None)
-        if db is not None and created_ids:
-            try:
-                db.execute_query(
-                    "MATCH (n) WHERE n.id IN $ids DETACH DELETE n",
-                    {"ids": created_ids},
-                )
-            except Exception:
-                pass
-        raise
 
+    projection = persist_ontology()
     return CommitParsedPdfResponse(
         status="committed" if parse_result.chunks else "needs_review",
         workspace_id=request.workspace_id,
@@ -1109,5 +1230,9 @@ def commit_parsed_pdf(
         chunks_created=len(parse_result.chunks),
         formulas_created=len(parse_result.formulas),
         assertions_created=len(parse_result.assertions),
+        extraction_run_id=projection.get("run_id"),
+        experiments_created=projection.get("experiments_created", 0),
+        measurements_created=projection.get("measurements_created", 0),
+        constraint_violations=projection.get("constraint_violations", []),
         warnings=parse_result.warnings,
     )

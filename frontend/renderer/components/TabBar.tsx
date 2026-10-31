@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * TabBar Component
  * Navigation tabs for switching between Matrix, Graph, and Timeline views
@@ -26,9 +27,9 @@ interface TabBarProps {
 
 export default function TabBar({ activeTab, onTabChange, title, subtitle, meta, rightContent }: TabBarProps) {
   const tabs: Tab[] = [
-    { id: 'graph', label: 'Graph', icon: '🕸️' },
-    { id: 'matrix', label: 'Matrix', icon: '📊' },
-    { id: 'coverage', label: 'Coverage' },
+    { id: 'graph', label: t('Graph'), icon: '🕸️' },
+    { id: 'matrix', label: t('Matrix'), icon: '📊' },
+    { id: 'coverage', label: t('Coverage') },
   ];
 
   return (

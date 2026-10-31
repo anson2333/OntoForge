@@ -1,0 +1,3010 @@
+{
+  "Zhipu request queue": [
+    "智谱请求会依次处理，避免免费模型并发受限；遇到限流会自动等待并最多重试三次。",
+    "Zhipu requests run one at a time. Rate-limited requests wait and retry up to three times."
+  ],
+  "Learned patterns": [
+    "已学习的规则",
+    "Learned patterns"
+  ],
+  "Graph": [
+    "关系图谱",
+    "Paper relationships"
+  ],
+  "Matrix": [
+    "论文指标对比",
+    "Compare papers"
+  ],
+  "Coverage": [
+    "研究覆盖与空白",
+    "Coverage & gaps"
+  ],
+  "Intents": [
+    "研究目标",
+    "Research goals"
+  ],
+  "Refresh": [
+    "刷新数据",
+    "Refresh data"
+  ],
+  "Sign out": [
+    "退出登录",
+    "Sign out"
+  ],
+  "Home": [
+    "首页",
+    "Home"
+  ],
+  "Workspace": [
+    "工作区",
+    "Workspace"
+  ],
+  "Workspaces": [
+    "我的工作区",
+    "Workspaces"
+  ],
+  "Domain Pack": [
+    "领域规则",
+    "Domain rules"
+  ],
+  "Domain Packs": [
+    "领域规则",
+    "Domain rules"
+  ],
+  "Add Domain Pack": [
+    "添加领域规则",
+    "Add domain rules"
+  ],
+  "Create Workspace": [
+    "新建工作区",
+    "Create workspace"
+  ],
+  "New Workspace": [
+    "新建工作区",
+    "New workspace"
+  ],
+  "Metrics": [
+    "提取指标",
+    "Metrics to extract"
+  ],
+  "Papers": [
+    "论文",
+    "Papers"
+  ],
+  "Subdomains": [
+    "研究方向",
+    "Research areas"
+  ],
+  "Ready": [
+    "就绪",
+    "Ready"
+  ],
+  "Loading...": [
+    "正在加载…",
+    "Loading…"
+  ],
+  "Sign in": [
+    "登录",
+    "Sign in"
+  ],
+  "Register": [
+    "注册",
+    "Register"
+  ],
+  "Create account": [
+    "创建账户",
+    "Create account"
+  ],
+  "Username": [
+    "用户名",
+    "Username"
+  ],
+  "Password": [
+    "密码",
+    "Password"
+  ],
+  "Display name (optional)": [
+    "显示名称（选填）",
+    "Display name (optional)"
+  ],
+  "Please wait...": [
+    "请稍候…",
+    "Please wait…"
+  ],
+  "Sign in to open your research workspaces.": [
+    "登录后，上传论文、对比指标，并回到原文核对结果。",
+    "Sign in to import papers, compare metrics, and check the original evidence."
+  ],
+  "Create an account to start building your evidence graph.": [
+    "创建账户，按研究主题整理自己的论文与证据。",
+    "Create an account to organize papers and evidence by research topic."
+  ],
+  "Connecting to OntoForge…": [
+    "正在连接 OntoForge…",
+    "Connecting to OntoForge…"
+  ],
+  "No workspaces have been created yet.": [
+    "还没有工作区。点击左侧“＋”新建，再添加领域规则并上传论文。",
+    "Create a workspace using + in the sidebar, add domain rules, then upload a PDF."
+  ],
+  "Queued": [
+    "等待处理",
+    "Queued"
+  ],
+  "Queued for preview": [
+    "等待提取论文内容",
+    "Waiting to extract paper content"
+  ],
+  "Preparing Preview": [
+    "正在提取",
+    "Extracting"
+  ],
+  "Preparing paper preview": [
+    "正在读取论文并提取指标",
+    "Reading the paper and extracting metrics"
+  ],
+  "Preview Ready": [
+    "待确认入库",
+    "Ready to review"
+  ],
+  "Preview ready": [
+    "提取完成，请检查后入库",
+    "Extraction ready — review before saving"
+  ],
+  "Committing": [
+    "正在入库",
+    "Saving"
+  ],
+  "Committing paper": [
+    "正在保存论文与证据",
+    "Saving paper and evidence"
+  ],
+  "Needs Attention": [
+    "需要处理",
+    "Needs attention"
+  ],
+  "Import failed": [
+    "导入未完成",
+    "Import incomplete"
+  ],
+  "This PDF has been added to the domain pack and is waiting for preview preparation.": [
+    "PDF 已加入队列。轮到它时，将按照领域规则提取论文信息与指标。",
+    "This PDF is queued for extraction using the selected domain rules."
+  ],
+  "OntoForge is uploading the PDF, extracting text, and matching the paper against this domain pack.": [
+    "正在上传 PDF、读取正文，并按当前领域规则提取指标。完成后请检查预览结果。",
+    "Uploading the PDF and extracting text and metrics using your domain rules. Review the preview when ready."
+  ],
+  "Review the extracted metadata and evidence summary, then commit the paper to the workspace.": [
+    "请核对论文信息、指标数量和提示，再点击“确认入库”。入库后可对比指标并查看原文证据。",
+    "Check the paper details, extracted metrics, and warnings, then save. You can then compare metrics and inspect source evidence."
+  ],
+  "OntoForge is writing the parsed paper, assertions, and evidence links into the workspace.": [
+    "正在保存论文、提取结果及对应原文证据，完成后会出现在工作区中。",
+    "Saving the paper, extracted results, and source evidence to your workspace."
+  ],
+  "The paper could not finish the current import step. Review the error details below.": [
+    "这一步未完成。请查看下方原因，检查模型接口或重试。",
+    "This step did not finish. Check the error below, review your model connection, or retry."
+  ],
+  "Import Error": [
+    "导入失败原因",
+    "Import error"
+  ],
+  "📊 Extraction Summary": [
+    "📊 提取结果概览",
+    "📊 Extraction summary"
+  ],
+  "Text Chunks": [
+    "原文片段",
+    "Source passages"
+  ],
+  "Formulas": [
+    "公式",
+    "Formulas"
+  ],
+  "Assertions": [
+    "指标结果",
+    "Extracted results"
+  ],
+  "Evidence Links": [
+    "原文证据",
+    "Source evidence"
+  ],
+  "📄 Paper Metadata": [
+    "📄 论文信息",
+    "📄 Paper details"
+  ],
+  "Title:": [
+    "标题：",
+    "Title:"
+  ],
+  "Authors:": [
+    "作者：",
+    "Authors:"
+  ],
+  "Year:": [
+    "年份：",
+    "Year:"
+  ],
+  "Venue:": [
+    "期刊 / 会议：",
+    "Venue:"
+  ],
+  "File:": [
+    "文件：",
+    "File:"
+  ],
+  "Added:": [
+    "添加时间：",
+    "Added:"
+  ],
+  "Source:": [
+    "上传方式：",
+    "Source:"
+  ],
+  "Drag and drop": [
+    "拖放上传",
+    "Drag and drop"
+  ],
+  "File picker": [
+    "选择文件",
+    "File picker"
+  ],
+  "Cancel": [
+    "取消",
+    "Cancel"
+  ],
+  "Close": [
+    "关闭",
+    "Close"
+  ],
+  "Retry": [
+    "重试",
+    "Retry"
+  ],
+  "Commit Paper": [
+    "确认入库",
+    "Save paper"
+  ],
+  "Commit to Workspace": [
+    "确认入库",
+    "Save to workspace"
+  ],
+  "Back": [
+    "返回",
+    "Back"
+  ],
+  "Description": [
+    "说明",
+    "Description"
+  ],
+  "Name": [
+    "名称",
+    "Name"
+  ],
+  "Evidence": [
+    "原文证据",
+    "Source evidence"
+  ],
+  "Approve": [
+    "确认正确",
+    "Approve evidence"
+  ],
+  "Reject": [
+    "标记有误",
+    "Reject evidence"
+  ],
+  "Request Review": [
+    "标记待复核",
+    "Request review"
+  ],
+  "Verified": [
+    "已核对",
+    "Verified"
+  ],
+  "Raw": [
+    "待核对",
+    "Unreviewed"
+  ],
+  "History": [
+    "修改记录",
+    "Edit history"
+  ],
+  "All": [
+    "全部",
+    "All"
+  ],
+  "Search": [
+    "搜索",
+    "Search"
+  ],
+  "Settings": [
+    "设置",
+    "Settings"
+  ],
+  "Coverage Analysis": [
+    "研究覆盖与候选空白",
+    "Coverage & research gaps"
+  ],
+  "Method × scenario × metric evidence in the current workspace": [
+    "查看已导入论文覆盖了哪些方法、场景和指标，寻找值得继续检索的组合。",
+    "See which methods, scenarios, and metrics your imported papers cover, and find combinations to investigate."
+  ],
+  "Domain pack": [
+    "领域规则",
+    "Domain rules"
+  ],
+  "Loading coverage…": [
+    "正在分析研究覆盖…",
+    "Analyzing coverage…"
+  ],
+  "No domain packs are available for this workspace.": [
+    "请先在左侧工作区添加领域规则，再导入论文。",
+    "Add domain rules to this workspace in the sidebar, then import papers."
+  ],
+  "Cells with evidence": [
+    "已有证据的组合",
+    "Combinations with evidence"
+  ],
+  "Supporting papers": [
+    "提供证据的论文",
+    "Supporting papers"
+  ],
+  "Candidate gaps": [
+    "待探索的组合",
+    "Candidate gaps"
+  ],
+  "Candidate Gaps": [
+    "值得继续探索的组合",
+    "Combinations to investigate"
+  ],
+  "Evidence Matrix": [
+    "方法 × 场景 × 指标",
+    "Methods × scenarios × metrics"
+  ],
+  "Method": [
+    "方法",
+    "Method"
+  ],
+  "Scenario": [
+    "应用场景",
+    "Scenario"
+  ],
+  "Metric": [
+    "指标",
+    "Metric"
+  ],
+  "Rank": [
+    "排序",
+    "Rank"
+  ],
+  "Score": [
+    "优先分数",
+    "Priority score"
+  ],
+  "Evidence signals": [
+    "排序依据",
+    "Ranking signals"
+  ],
+  "No uncovered combinations were found.": [
+    "当前范围内没有发现缺少证据的组合。可以导入更多论文后重新分析。",
+    "No uncovered combinations found in this scope. Import more papers and analyze again."
+  ],
+  "Ranked within the imported workspace corpus only": [
+    "仅基于本工作区已导入的论文排序，不代表整个领域尚无人研究。",
+    "Ranked only within imported papers; these are not claims of novelty across the field."
+  ],
+  "Include machine-checked facts": [
+    "纳入程序校验通过的事实",
+    "Include machine-checked facts"
+  ],
+  "Evidence-grounded research questions": [
+    "有证据路径的研究问题候选",
+    "Evidence-grounded research questions"
+  ],
+  "Only facts passing the selected quality policy are used": [
+    "只使用通过当前质量门槛的事实",
+    "Only facts passing the selected quality policy are used"
+  ],
+  "trusted measurements": ["条可信测量", "trusted measurements"],
+  "excluded or unresolved": ["条已排除或未决", "excluded or unresolved"],
+  "explainable candidates": ["个可解释候选", "explainable candidates"],
+  "Type": ["类型", "Type"],
+  "Rule": ["推导规则", "Rule"],
+  "Candidate and verification question": ["候选说明与验证问题", "Candidate and verification question"],
+  "Supporting paths": ["支撑路径", "Supporting paths"],
+  "Status": ["状态", "Status"],
+  "paths": ["条路径", "paths"],
+  "evidence references": ["项证据引用", "evidence references"],
+  "coverage_missing": ["当前语料覆盖缺失", "Corpus coverage missing"],
+  "alignment_or_conflict_issue": ["对齐或冲突待澄清", "Alignment or conflict issue"],
+  "research_hypothesis_candidate": ["可检验研究假设", "Testable research hypothesis"],
+  "candidate": ["候选", "Candidate"],
+  "needs_evidence": ["需要补充证据", "Needs evidence"],
+  "retracted": ["已撤销", "Retracted"],
+  "No candidate passed the current evidence quality policy.": [
+    "当前没有候选通过证据质量门槛；请先审核事实，或明确纳入程序校验记录。",
+    "No candidate passed the current evidence quality policy. Review facts or explicitly include machine-checked records."
+  ],
+  "Candidates are limited to this workspace corpus and do not establish global novelty.": [
+    "候选仅表示本工作区语料中的证据缺口，不证明整个领域从未研究。",
+    "Candidates are limited to this workspace corpus and do not establish global novelty."
+  ],
+  "Coverage-only leads": [
+    "仅按覆盖空格排序的线索",
+    "Coverage-only leads"
+  ],
+  "Within the selected, quality-filtered corpus, this model variant has neighboring evaluation evidence but no report on the target split. This is not a global novelty claim.": [
+    "在当前经过质量过滤的语料中，该模型变体在相邻评测设置上有证据，但目标数据划分上未找到报告；这不是全领域新颖性结论。",
+    "Within the selected, quality-filtered corpus, this model variant has neighboring evaluation evidence but no report on the target split. This is not a global novelty claim."
+  ],
+  "The component has supported results in another setting, while the target setting has neighboring evidence. Transfer effectiveness remains an untested hypothesis.": [
+    "该组件在另一设置中有受支持结果，目标设置也有相邻证据；迁移效果仍是待验证假设。",
+    "The component has supported results in another setting, while the target setting has neighboring evidence. Transfer effectiveness remains an untested hypothesis."
+  ],
+  "Has {model} been evaluated on {setting} under comparable conditions?": [
+    "是否已有 {model} 在可比条件下针对 {setting} 的评测？",
+    "Has {model} been evaluated on {setting} under comparable conditions?"
+  ],
+  "Does {component} retain its measured effect on {setting}?": [
+    "{component} 在 {setting} 上是否仍保持已测得的效果？",
+    "Does {component} retain its measured effect on {setting}?"
+  ],
+  "Workspace name": [
+    "工作区名称",
+    "Workspace name"
+  ],
+  "Root path": [
+    "资料位置（选填）",
+    "Source folder (optional)"
+  ],
+  "Example: Optical Transport Benchmark": [
+    "例如：目标检测文献对比",
+    "Example: Object detection literature review"
+  ],
+  "Optional summary of the research workspace": [
+    "可填写研究主题或整理这批论文的目的",
+    "Describe the topic or why you are collecting these papers"
+  ],
+  "Optional, e.g. file:///Users/me/research/project": [
+    "选填，不影响 PDF 上传",
+    "Optional; PDF uploads work without this"
+  ],
+  "Creating...": [
+    "正在创建…",
+    "Creating…"
+  ],
+  "Click + to create workspace": [
+    "点击 ＋ 新建工作区，再添加领域规则并上传论文",
+    "Click + to create a workspace, add domain rules, then upload papers"
+  ],
+  "Manage access": [
+    "管理成员权限",
+    "Manage access"
+  ],
+  "Delete workspace": [
+    "删除工作区",
+    "Delete workspace"
+  ],
+  "No domain packs loaded": [
+    "还没有领域规则，请点击 ＋ 添加",
+    "No domain rules yet. Click + to add them"
+  ],
+  "Taxonomy Filters": [
+    "按研究方向筛选",
+    "Filter by research area"
+  ],
+  "📁 Upload File": [
+    "📁 导入已有规则",
+    "📁 Import domain rules"
+  ],
+  "✨ Bootstrap from Proposal": [
+    "✨ 根据研究描述生成",
+    "✨ Generate from a research description"
+  ],
+  "Choose file...": [
+    "选择 YAML / JSON 规则文件…",
+    "Choose a YAML / JSON rules file…"
+  ],
+  "Describe your research domain or proposal. The system will generate a domain pack configuration automatically.": [
+    "说明你想研究什么、比较哪些指标，模型会据此生成提取规则。生成后请核对，再用于论文导入。",
+    "Describe your research topic and metrics to compare. The model generates extraction rules for you to review before importing papers."
+  ],
+  "The AI will analyze your text and extract domain concepts, metrics, and taxonomy structures.": [
+    "这一步生成的是提取规则。规则添加后，再进入领域详情上传论文 PDF。",
+    "This creates extraction rules. After adding them, open the domain to upload paper PDFs."
+  ],
+  "Generating...": [
+    "正在生成规则…",
+    "Generating rules…"
+  ],
+  "Bootstrap & Add": [
+    "生成并添加规则",
+    "Generate and add rules"
+  ],
+  "上传论文 PDF": [
+    "上传论文 PDF",
+    "Upload paper PDFs"
+  ],
+  "选择论文 PDF": [
+    "选择论文 PDF",
+    "Choose paper PDFs"
+  ],
+  "先配置模型接口，再上传 PDF；检查提取结果后确认入库。": [
+    "1. 检查模型接口 → 2. 上传 PDF → 3. 核对提取预览 → 4. 确认入库",
+    "1. Check model connection → 2. Upload PDFs → 3. Review extraction → 4. Save papers"
+  ],
+  "领域包是指标和分类规则（YAML / JSON），论文请在这里上传。支持一次选择多篇。": [
+    "按当前领域规则提取论文指标。支持多篇 PDF；每篇都需检查预览后确认入库。",
+    "Extract metrics using these domain rules. You can select several PDFs; review each preview before saving."
+  ],
+  "模型接口": [
+    "模型接口",
+    "Model connection"
+  ],
+  "检查模型接口": [
+    "检查模型接口",
+    "Check model connection"
+  ],
+  "Upload Reference Missing": [
+    "上传记录已失效",
+    "Upload expired"
+  ],
+  "This preview no longer has a backend upload reference. Retry the import before committing it.": [
+    "上传记录已失效，请重新上传并提取，再确认入库。",
+    "Upload the PDF again and regenerate its preview before saving."
+  ],
+  "Extraction Warning": [
+    "提取结果提示",
+    "Extraction notice"
+  ],
+  "Committing...": [
+    "正在入库…",
+    "Saving…"
+  ],
+  "Retry Preview": [
+    "重新提取预览",
+    "Retry extraction"
+  ],
+  "Back to Papers": [
+    "返回论文列表",
+    "Back to papers"
+  ],
+  "Backend": [
+    "后端服务",
+    "Backend"
+  ],
+  "LLM": [
+    "模型服务",
+    "Model"
+  ],
+  "Switch to Light Mode": [
+    "切换浅色界面",
+    "Switch to light mode"
+  ],
+  "Switch to Dark Mode": [
+    "切换深色界面",
+    "Switch to dark mode"
+  ],
+  "Synthetic demo data — papers, assertions and coverage are generated examples, not real literature findings.": [
+    "当前为模拟演示数据：论文、指标与覆盖结果均为示例。请在自己的工作区导入真实论文。",
+    "Demo data: papers, metrics, and coverage are generated examples. Import real papers into your own workspace."
+  ],
+  "Paper": [
+    "论文",
+    "Paper"
+  ],
+  "Year": [
+    "年份",
+    "Year"
+  ],
+  "No Active Context": [
+    "全部研究内容",
+    "All research"
+  ],
+  "Switch intent context": [
+    "切换研究主题；不选择时查看全部内容",
+    "Switch research topic; leave unselected to view everything"
+  ],
+  "Intent Contexts": [
+    "研究主题",
+    "Research topics"
+  ],
+  "Main Context": [
+    "全部研究内容",
+    "All research"
+  ],
+  "No active intent branch": [
+    "尚未选择单独的研究主题",
+    "No separate research topic selected"
+  ],
+  "+ Create New Branch": [
+    "＋ 新建研究主题",
+    "+ New research topic"
+  ],
+  "Create Intent Branch": [
+    "新建研究主题",
+    "New research topic"
+  ],
+  "No papers loaded. Click \"Load Workspace\" to begin.": [
+    "还没有可对比的论文。请在左侧打开工作区，添加领域规则，再上传 PDF 并确认入库。",
+    "No papers to compare yet. Open a workspace in the sidebar, add domain rules, upload a PDF, and save its preview."
+  ],
+  "Pending": [
+    "待核对",
+    "Unreviewed"
+  ],
+  "Conflict!": [
+    "结果有冲突",
+    "Conflicting results"
+  ],
+  "Locked": [
+    "已锁定",
+    "Locked"
+  ],
+  "配置模型接口": [
+    "检查模型接口",
+    "Check model connection"
+  ],
+  "领域包是指标和分类规则，上传 YAML / JSON。论文 PDF 请在领域详情页点击“上传论文 PDF”。": [
+    "导入用于提取指标和分类的 YAML / JSON 规则。若要导入论文，请关闭此窗口，在领域详情页上传 PDF。",
+    "Import YAML / JSON rules defining metrics and categories. To import a paper, close this dialog and upload the PDF from the domain page."
+  ],
+  "模型接口设置": [
+    "模型接口设置",
+    "Model connection settings"
+  ],
+  "保存多个接口，随时切换当前使用的模型。": [
+    "设置用于读取论文和提取指标的模型。可以保存多个接口，按需切换。",
+    "Choose the model used to read papers and extract metrics. Save several connections and switch when needed."
+  ],
+  "当前使用：": [
+    "当前使用：",
+    "Currently using:"
+  ],
+  "服务器 .env 配置": [
+    "服务器默认配置",
+    "Server defaults"
+  ],
+  "＋ 新增接口": [
+    "＋ 新增接口",
+    "+ Add connection"
+  ],
+  "尚未保存接口。先填写右侧配置。": [
+    "还没有保存的接口。请填写右侧配置并验证连接。",
+    "No saved connections. Fill in the form and verify the connection."
+  ],
+  "使用中": [
+    "使用中",
+    "Active"
+  ],
+  "使用服务器 .env 配置": [
+    "使用服务器默认配置",
+    "Use server defaults"
+  ],
+  "编辑接口": [
+    "编辑接口",
+    "Edit connection"
+  ],
+  "新增接口": [
+    "新增接口",
+    "Add connection"
+  ],
+  "厂商预设": [
+    "模型服务商",
+    "Model service"
+  ],
+  "自定义 / 第三方中转": [
+    "自定义 / 第三方中转",
+    "Custom / third-party gateway"
+  ],
+  "官方文档": [
+    "官方文档",
+    "Official documentation"
+  ],
+  "配置名称": [
+    "接口名称",
+    "Connection name"
+  ],
+  "例如：日常抽取 / 备用接口": [
+    "例如：日常抽取 / 备用接口",
+    "Example: Daily extraction / Backup"
+  ],
+  "接口类型": [
+    "接口协议",
+    "API protocol"
+  ],
+  "OpenAI 兼容接口": [
+    "OpenAI 兼容接口",
+    "OpenAI-compatible"
+  ],
+  "Claude / Anthropic 原生接口": [
+    "Claude / Anthropic 原生接口",
+    "Claude / Anthropic native"
+  ],
+  "填写服务根地址，不要附加 /chat/completions 或 /messages。保存时自动验证连接，切换不会重复调用模型。": [
+    "填写服务地址，不要附加 /chat/completions 或 /messages。保存时会验证连接。",
+    "Enter the service base URL without /chat/completions or /messages. Saving verifies the connection."
+  ],
+  "常用模型": [
+    "常用模型",
+    "Suggested models"
+  ],
+  "手动填写其他模型": [
+    "手动填写其他模型",
+    "Enter another model manually"
+  ],
+  "模型名称": [
+    "模型名称",
+    "Model ID"
+  ],
+  "填写服务商提供的完整模型 ID": [
+    "填写服务商提供的完整模型 ID",
+    "Enter the full model ID from your provider"
+  ],
+  "已保存密钥；留空保持不变": [
+    "已保存密钥；留空保持不变",
+    "Key saved; leave blank to keep it"
+  ],
+  "输入密钥；无需认证的本地服务可留空": [
+    "输入密钥；无需认证的本地服务可留空",
+    "Enter the key; leave blank for a local service without authentication"
+  ],
+  "已配置密钥。同一服务器下留空保留；更换服务器或协议需重新输入密钥。": [
+    "已保存密钥。留空可保留；更换服务器或协议后需重新输入。",
+    "A key is saved. Leave blank to keep it; enter a new key after changing the server or protocol."
+  ],
+  "密钥仅发给本机后端保存，不写入浏览器存储。": [
+    "密钥保存在本机后端，不写入浏览器存储。",
+    "The key is stored by the local backend, not in browser storage."
+  ],
+  "清除此接口已保存的密钥": [
+    "清除此接口已保存的密钥",
+    "Clear the saved key for this connection"
+  ],
+  "高级设置（通常无需修改）": [
+    "高级设置（通常无需修改）",
+    "Advanced settings (usually no changes needed)"
+  ],
+  "超时（秒）": [
+    "等待时间上限（秒）",
+    "Timeout (seconds)"
+  ],
+  "最大输出 tokens": [
+    "最大输出长度（tokens）",
+    "Maximum output tokens"
+  ],
+  "Temperature": [
+    "输出随机性",
+    "Temperature"
+  ],
+  "正在处理，请稍候…": [
+    "正在处理，请稍候…",
+    "Working, please wait…"
+  ],
+  "验证并保存配置": [
+    "验证并保存",
+    "Verify and save"
+  ],
+  "验证并启用": [
+    "验证并启用",
+    "Verify and activate"
+  ],
+  "切换到此接口": [
+    "使用此接口",
+    "Use this connection"
+  ],
+  "测试已保存接口": [
+    "测试连接",
+    "Test connection"
+  ],
+  "删除此接口": [
+    "删除此接口",
+    "Delete connection"
+  ],
+  "保存和测试都会发送一条小请求并消耗少量 tokens；验证失败不会覆盖或启用新配置。当前请求不受切换影响，新请求立即使用新接口。": [
+    "保存和测试会向模型发送小请求。验证成功后才会保存；切换接口后，新任务使用新接口。",
+    "Saving and testing send a small request to the model. Settings are saved only after verification. Switching applies to new tasks."
+  ],
+  "Declare Research Intent": [
+    "设置研究目标",
+    "Set research goals"
+  ],
+  "Intent Message": [
+    "你想研究什么？",
+    "What would you like to study?"
+  ],
+  "Step 1: describe the intent in plain language": [
+    "第一步：用自己的话说明研究问题、关注的指标或筛选条件",
+    "Step 1: describe your question, metrics, or filters in your own words"
+  ],
+  "E.g., find most cited papers in the recent 3 years in optical access networks": [
+    "例如：比较目标检测方法在 VOC 2007 上的准确率和推理速度",
+    "Example: Compare detection accuracy and inference speed on VOC 2007"
+  ],
+  "Analyzing...": [
+    "正在理解研究目标…",
+    "Analyzing your goals…"
+  ],
+  "Re-analyze": [
+    "重新分析",
+    "Analyze again"
+  ],
+  "Analyze with LLM": [
+    "让模型整理研究目标",
+    "Analyze research goals"
+  ],
+  "Parsed Intent": [
+    "模型整理的研究目标",
+    "Suggested research goals"
+  ],
+  "Step 2: review and edit before confirming": [
+    "第二步：检查并调整后再确认",
+    "Step 2: review and edit before confirming"
+  ],
+  "Ranked within the imported literature only": [
+    "仅基于本工作区已导入的论文排序，不代表整个领域尚无人研究。",
+    "Ranked only within imported papers; these are not claims of novelty across the field."
+  ],
+  "First run seeds a demo account:": [
+    "首次启动会创建演示账户：",
+    "First run seeds a demo account:"
+  ],
+  "Confidence": [
+    "置信度",
+    "Confidence"
+  ],
+  "methods ·": [
+    "种方法 ·",
+    "methods ·"
+  ],
+  "scenarios ·": [
+    "种场景 ·",
+    "scenarios ·"
+  ],
+  "metrics": [
+    "项指标",
+    "metrics"
+  ],
+  "metric ·": [
+    "项指标 ·",
+    "metric ·"
+  ],
+  "method ·": [
+    "种方法 ·",
+    "method ·"
+  ],
+  "scenario": [
+    "种场景",
+    "scenario"
+  ],
+  "Download original PDF": [
+    "下载原始 PDF",
+    "Download original PDF"
+  ],
+  "Loading evidence...": [
+    "正在加载原文证据…",
+    "Loading evidence..."
+  ],
+  "Retry evidence": [
+    "重新加载证据",
+    "Retry evidence"
+  ],
+  "No evidence found for this cell": [
+    "这项指标尚未找到原文证据",
+    "No evidence found for this cell"
+  ],
+  "Loading domain pack...": [
+    "正在加载领域规则…",
+    "Loading domain pack..."
+  ],
+  "Failed to load domain pack": [
+    "无法加载领域规则",
+    "Failed to load domain pack"
+  ],
+  "Domain Pack Configuration": [
+    "领域规则设置",
+    "Domain Pack Configuration"
+  ],
+  "(v": [
+    "（版本",
+    "(v"
+  ],
+  "Save": [
+    "保存",
+    "Save"
+  ],
+  "Edit JSON": [
+    "编辑 JSON 配置",
+    "Edit JSON"
+  ],
+  "Reload": [
+    "重新加载",
+    "Reload"
+  ],
+  "Core Metrics (": [
+    "提取指标（",
+    "Core Metrics ("
+  ],
+  "Type:": [
+    "类型：",
+    "Type:"
+  ],
+  "Aliases:": [
+    "别名：",
+    "Aliases:"
+  ],
+  "Domain Taxonomy": [
+    "研究方向分类",
+    "Domain Taxonomy"
+  ],
+  "Domain ID:": [
+    "领域标识：",
+    "Domain ID:"
+  ],
+  "Simple Taxonomy:": [
+    "分类列表：",
+    "Simple Taxonomy:"
+  ],
+  "Structured Taxonomy:": [
+    "分类结构：",
+    "Structured Taxonomy:"
+  ],
+  "Validation Rules": [
+    "结果校验规则",
+    "Validation Rules"
+  ],
+  "Required Context Keys:": [
+    "必需的实验条件字段：",
+    "Required Context Keys:"
+  ],
+  "Unit Normalization:": [
+    "单位规范：",
+    "Unit Normalization:"
+  ],
+  "Raw Configuration": [
+    "原始配置",
+    "Raw Configuration"
+  ],
+  "Filter by Taxonomy": [
+    "按研究方向筛选",
+    "Filter by Taxonomy"
+  ],
+  "Clear All": [
+    "清空筛选",
+    "Clear All"
+  ],
+  "Active filters:": [
+    "当前筛选：",
+    "Active filters:"
+  ],
+  "✓ Verify": [
+    "✓ 确认正确",
+    "✓ Verify"
+  ],
+  "✏️ Correct": [
+    "✏️ 修改内容",
+    "✏️ Correct"
+  ],
+  "✗ Reject": [
+    "✗ 标记有误",
+    "✗ Reject"
+  ],
+  "Currently being edited...": [
+    "正在编辑中…",
+    "Currently being edited..."
+  ],
+  "✓ Approve": [
+    "✓ 通过审核",
+    "✓ Approve"
+  ],
+  "✏️ Changes": [
+    "✏️ 继续修改",
+    "✏️ Changes"
+  ],
+  "🔓 Reopen": [
+    "🔓 重新审核",
+    "🔓 Reopen"
+  ],
+  "Flag": [
+    "标记待复核",
+    "Flag"
+  ],
+  "♻️ Restore": [
+    "♻️ 恢复内容",
+    "♻️ Restore"
+  ],
+  "Page": [
+    "页码",
+    "Page"
+  ],
+  "Low confidence": [
+    "置信度较低",
+    "Low confidence"
+  ],
+  "Supporting:": [
+    "支持的指标：",
+    "Supporting:"
+  ],
+  "Modified:": [
+    "修改次数：",
+    "Modified:"
+  ],
+  "time(s)": [
+    "次",
+    "time(s)"
+  ],
+  "Last by:": [
+    "最近修改人：",
+    "Last by:"
+  ],
+  "on": [
+    "时间：",
+    "on"
+  ],
+  "📜 View History": [
+    "📜 查看修改记录",
+    "📜 View History"
+  ],
+  "Editing": [
+    "编辑中",
+    "Editing"
+  ],
+  "Pending Review": [
+    "待复核",
+    "Pending Review"
+  ],
+  "Rejected": [
+    "已标记有误",
+    "Rejected"
+  ],
+  "Chunk": [
+    "原文片段",
+    "Chunk"
+  ],
+  "Formula": [
+    "公式",
+    "Formula"
+  ],
+  "(No text content available)": [
+    "（暂无原文内容）",
+    "(No text content available)"
+  ],
+  "▲ Show Less": [
+    "▲ 收起内容",
+    "▲ Show Less"
+  ],
+  "▼ Show More": [
+    "▼ 展开内容",
+    "▼ Show More"
+  ],
+  "Source Evidence": [
+    "原文证据",
+    "Source Evidence"
+  ],
+  "PDF page": [
+    "PDF 页码",
+    "PDF page"
+  ],
+  "Region:": [
+    "原文区域：",
+    "Region:"
+  ],
+  "unavailable (page only)": [
+    "仅有页码，暂无区域坐标",
+    "unavailable (page only)"
+  ],
+  "No extracted source text is available.": [
+    "暂无提取的原文内容。",
+    "No extracted source text is available."
+  ],
+  "Original Confidence:": [
+    "原始置信度：",
+    "Original Confidence:"
+  ],
+  "Edit Text": [
+    "修改提取内容",
+    "Edit Text"
+  ],
+  "Change Notes (Optional):": [
+    "修改说明（选填）：",
+    "Change Notes (Optional):"
+  ],
+  "Describe what you changed and why...": [
+    "说明修改了什么，以及修改依据…",
+    "Describe what you changed and why..."
+  ],
+  "Confidence in correction:": [
+    "对本次修改的把握：",
+    "Confidence in correction:"
+  ],
+  "Tags (Optional):": [
+    "标签（选填）：",
+    "Tags (Optional):"
+  ],
+  "Submit for review by another user": [
+    "提交给其他成员复核",
+    "Submit for review by another user"
+  ],
+  "↶ Cancel": [
+    "↶ 取消",
+    "↶ Cancel"
+  ],
+  "Saving...": [
+    "正在保存…",
+    "Saving..."
+  ],
+  "📤 Save & Request Review": [
+    "📤 保存并请求复核",
+    "📤 Save & Request Review"
+  ],
+  "✓ Save & Mark Verified": [
+    "✓ 保存并标记已核对",
+    "✓ Save & Mark Verified"
+  ],
+  "Change Preview": [
+    "修改前后对比",
+    "Change Preview"
+  ],
+  "- Original:": [
+    "－ 修改前：",
+    "- Original:"
+  ],
+  "+ Edited:": [
+    "＋ 修改后：",
+    "+ Edited:"
+  ],
+  "Revision History:": [
+    "修改记录：",
+    "Revision History:"
+  ],
+  "No revision history available.": [
+    "暂无修改记录。",
+    "No revision history available."
+  ],
+  "History is recorded when evidence is modified.": [
+    "修改证据后，会在这里记录每个版本。",
+    "History is recorded when evidence is modified."
+  ],
+  "(Current)": [
+    "（当前版本）",
+    "(Current)"
+  ],
+  "by": [
+    "修改人：",
+    "by"
+  ],
+  "Notes:": [
+    "修改说明：",
+    "Notes:"
+  ],
+  "Manual correction": [
+    "人工修改",
+    "Manual correction"
+  ],
+  "- Previous:": [
+    "－ 上一版本：",
+    "- Previous:"
+  ],
+  "+ Updated:": [
+    "＋ 修改后：",
+    "+ Updated:"
+  ],
+  "📥 Initial extraction (machine-generated)": [
+    "📥 初次提取（模型生成）",
+    "📥 Initial extraction (machine-generated)"
+  ],
+  "Confidence:": [
+    "置信度：",
+    "Confidence:"
+  ],
+  "This revision does not contain restorable text": [
+    "此版本没有可恢复的文本",
+    "This revision does not contain restorable text"
+  ],
+  "Restoring...": [
+    "正在恢复…",
+    "Restoring..."
+  ],
+  "Total Revisions:": [
+    "版本总数：",
+    "Total Revisions:"
+  ],
+  "Total Modifications:": [
+    "修改总次数：",
+    "Total Modifications:"
+  ],
+  "📋 All Evidence (": [
+    "📋 全部证据（",
+    "📋 All Evidence ("
+  ],
+  "🔍 Review Queue (": [
+    "🔍 待复核（",
+    "🔍 Review Queue ("
+  ],
+  "Filter:": [
+    "筛选：",
+    "Filter:"
+  ],
+  "Low Conf.": [
+    "低置信度",
+    "Low Conf."
+  ],
+  "Unverified": [
+    "待核对",
+    "Unverified"
+  ],
+  "Select All": [
+    "全选",
+    "Select All"
+  ],
+  "✓ Verify (": [
+    "✓ 确认正确（",
+    "✓ Verify ("
+  ],
+  "✗ Reject (": [
+    "✗ 标记有误（",
+    "✗ Reject ("
+  ],
+  "No evidence items match the current filter.": [
+    "当前筛选条件下没有证据。",
+    "No evidence items match the current filter."
+  ],
+  "Edited, needs review": [
+    "修改后待复核",
+    "Edited, needs review"
+  ],
+  "Modified, unverified": [
+    "已修改，尚未核对",
+    "Modified, unverified"
+  ],
+  "High Priority": [
+    "优先处理",
+    "High Priority"
+  ],
+  "Medium Priority": [
+    "常规处理",
+    "Medium Priority"
+  ],
+  "Low Priority": [
+    "稍后处理",
+    "Low Priority"
+  ],
+  "🔍 Review Queue": [
+    "🔍 待复核证据",
+    "🔍 Review Queue"
+  ],
+  "🔴 High:": [
+    "🔴 优先处理：",
+    "🔴 High:"
+  ],
+  "🟡 Medium:": [
+    "🟡 常规处理：",
+    "🟡 Medium:"
+  ],
+  "🟢 Low:": [
+    "🟢 稍后处理：",
+    "🟢 Low:"
+  ],
+  "Total:": [
+    "总计：",
+    "Total:"
+  ],
+  "All Caught Up!": [
+    "已处理完毕",
+    "All Caught Up!"
+  ],
+  "No evidence items need your attention right now.": [
+    "目前没有需要复核的证据。",
+    "No evidence items need your attention right now."
+  ],
+  "Review Now →": [
+    "开始复核 →",
+    "Review Now →"
+  ],
+  "No evidence found": [
+    "暂无原文证据",
+    "No evidence found"
+  ],
+  "Supporting Evidence (": [
+    "原文证据（",
+    "Supporting Evidence ("
+  ],
+  "∫ Formula": [
+    "∫ 公式",
+    "∫ Formula"
+  ],
+  "📝 Chunk": [
+    "📝 原文片段",
+    "📝 Chunk"
+  ],
+  "Layout:": [
+    "布局：",
+    "Layout:"
+  ],
+  "Hierarchical": [
+    "分层布局",
+    "Hierarchical"
+  ],
+  "Force-Directed (Coming Soon)": [
+    "力导向布局（暂未开放）",
+    "Force-Directed (Coming Soon)"
+  ],
+  "All Nodes": [
+    "全部节点",
+    "All Nodes"
+  ],
+  "Workspace Only": [
+    "仅工作区",
+    "Workspace Only"
+  ],
+  "Domains": [
+    "领域规则",
+    "Domains"
+  ],
+  "Active Domain Packs:": [
+    "已启用的领域规则：",
+    "Active Domain Packs:"
+  ],
+  "Namespace:": [
+    "领域标识：",
+    "Namespace:"
+  ],
+  "ID:": [
+    "标识：",
+    "ID:"
+  ],
+  "View in Matrix": [
+    "在指标对比中查看",
+    "View in Matrix"
+  ],
+  "Legend": [
+    "图例",
+    "Legend"
+  ],
+  "Domain Pack (Active)": [
+    "领域规则（已启用）",
+    "Domain Pack (Active)"
+  ],
+  "Subdomain": [
+    "研究方向",
+    "Subdomain"
+  ],
+  "Assertion": [
+    "指标结果",
+    "Assertion"
+  ],
+  "nodes": [
+    "个节点",
+    "nodes"
+  ],
+  "edges": [
+    "条关联",
+    "edges"
+  ],
+  "High": [
+    "高",
+    "High"
+  ],
+  "Medium": [
+    "中",
+    "Medium"
+  ],
+  "Low": [
+    "低",
+    "Low"
+  ],
+  "AI Suggested": [
+    "模型建议",
+    "AI Suggested"
+  ],
+  "AI-Suggested Resolution": [
+    "模型建议的处理方式",
+    "AI-Suggested Resolution"
+  ],
+  "Based on": [
+    "依据",
+    "Based on"
+  ],
+  "learned pattern(s)": [
+    "条已学习规则",
+    "learned pattern(s)"
+  ],
+  "Expand suggestion": [
+    "展开建议",
+    "Expand suggestion"
+  ],
+  "Reasoning": [
+    "建议依据",
+    "Reasoning"
+  ],
+  "Matched Patterns": [
+    "匹配的研究规则",
+    "Matched Patterns"
+  ],
+  "Recommended Assertion": [
+    "推荐的指标结果",
+    "Recommended Assertion"
+  ],
+  "You can review and override this suggestion if needed.": [
+    "请核对建议，也可以手动选择其他结果。",
+    "You can review and override this suggestion if needed."
+  ],
+  "Applying...": [
+    "正在应用…",
+    "Applying..."
+  ],
+  "Accept Suggestion": [
+    "采纳建议",
+    "Accept Suggestion"
+  ],
+  "Rejecting...": [
+    "正在处理…",
+    "Rejecting..."
+  ],
+  "Reject & Choose Manually": [
+    "忽略建议并手动选择",
+    "Reject & Choose Manually"
+  ],
+  "Clear Context": [
+    "查看全部研究内容",
+    "Clear Context"
+  ],
+  "Inherits from": [
+    "继承自",
+    "Inherits from"
+  ],
+  "Create & Switch": [
+    "创建并切换",
+    "Create & Switch"
+  ],
+  "Intent Type": [
+    "研究目标类型",
+    "Intent Type"
+  ],
+  "Correction": [
+    "纠错",
+    "Correction"
+  ],
+  "Preference": [
+    "偏好",
+    "Preference"
+  ],
+  "Priority": [
+    "优先级",
+    "Priority"
+  ],
+  "Constraint": [
+    "约束",
+    "Constraint"
+  ],
+  "Goal": [
+    "研究目标",
+    "Goal"
+  ],
+  "Scope": [
+    "应用范围",
+    "Scope"
+  ],
+  "Local": [
+    "仅当前论文",
+    "Local"
+  ],
+  "Pattern": [
+    "同类情况",
+    "Pattern"
+  ],
+  "Global": [
+    "全部论文",
+    "Global"
+  ],
+  "Constraints (JSON)": [
+    "约束条件（JSON）",
+    "Constraints (JSON)"
+  ],
+  "Active From": [
+    "生效时间",
+    "Active From"
+  ],
+  "Active Until": [
+    "失效时间",
+    "Active Until"
+  ],
+  "Confirming...": [
+    "正在确认…",
+    "Confirming..."
+  ],
+  "Confirm Intent": [
+    "确认研究目标",
+    "Confirm Intent"
+  ],
+  "Capture Intent": [
+    "记录研究决策",
+    "Capture Intent"
+  ],
+  "Correction - Tactical error fix": [
+    "纠错：修正当前结果",
+    "Correction - Tactical error fix"
+  ],
+  "Preference - Context-specific choice": [
+    "偏好：类似情况下优先选择",
+    "Preference - Context-specific choice"
+  ],
+  "Priority - Cross-paper pattern": [
+    "优先级：跨论文的比较规则",
+    "Priority - Cross-paper pattern"
+  ],
+  "Constraint - Absolute rule": [
+    "约束：必须遵守的条件",
+    "Constraint - Absolute rule"
+  ],
+  "Goal - Strategic objective": [
+    "目标：要解决的研究问题",
+    "Goal - Strategic objective"
+  ],
+  "Local - Apply to this paper only": [
+    "仅应用于当前论文",
+    "Local - Apply to this paper only"
+  ],
+  "Pattern - Generalizable to similar cases": [
+    "应用于同类情况",
+    "Pattern - Generalizable to similar cases"
+  ],
+  "Global - Apply to all future work": [
+    "应用于后续全部任务",
+    "Global - Apply to all future work"
+  ],
+  "Generalization Hint": [
+    "适用情况说明",
+    "Generalization Hint"
+  ],
+  "(optional)": [
+    "（选填）",
+    "(optional)"
+  ],
+  "Help the AI understand when to apply this pattern": [
+    "说明哪些情况下可以沿用这条规则",
+    "Help the AI understand when to apply this pattern"
+  ],
+  "Confidence Override": [
+    "手动设置置信度",
+    "Confidence Override"
+  ],
+  "Override AI confidence for this decision": [
+    "调整本次决策的置信度",
+    "Override AI confidence for this decision"
+  ],
+  "Tags": [
+    "标签",
+    "Tags"
+  ],
+  "Use default confidence": [
+    "使用默认置信度",
+    "Use default confidence"
+  ],
+  "Add tags (press Enter)": [
+    "输入标签后按回车添加",
+    "Add tags (press Enter)"
+  ],
+  "Add": [
+    "添加",
+    "Add"
+  ],
+  "Skip Intent Capture": [
+    "暂不记录",
+    "Skip Intent Capture"
+  ],
+  "Save Intent": [
+    "保存研究决策",
+    "Save Intent"
+  ],
+  "Applications": [
+    "应用次数",
+    "Applications"
+  ],
+  "Similar Arbitrations": [
+    "相似的冲突处理",
+    "Similar Arbitrations"
+  ],
+  "Last Used": [
+    "最近使用",
+    "Last Used"
+  ],
+  "Based on arbitrations:": [
+    "依据的冲突处理记录：",
+    "Based on arbitrations:"
+  ],
+  "more": [
+    "条更多记录",
+    "more"
+  ],
+  "Apply Pattern": [
+    "应用规则",
+    "Apply Pattern"
+  ],
+  "Apply this pattern to similar conflicts": [
+    "将这条规则应用于类似冲突",
+    "Apply this pattern to similar conflicts"
+  ],
+  "Delete": [
+    "删除",
+    "Delete"
+  ],
+  "Remove this learned pattern": [
+    "删除这条已学习规则",
+    "Remove this learned pattern"
+  ],
+  "Delete this learned pattern?": [
+    "确定删除这条已学习规则吗？",
+    "Delete this learned pattern?"
+  ],
+  "Loading profile...": [
+    "正在加载研究偏好…",
+    "Loading profile..."
+  ],
+  "Failed to load profile": [
+    "无法加载研究偏好",
+    "Failed to load profile"
+  ],
+  "Declare intent": [
+    "设置研究目标",
+    "Declare intent"
+  ],
+  "Total Intents:": [
+    "研究决策总数：",
+    "Total Intents:"
+  ],
+  "Patterns:": [
+    "已学习规则：",
+    "Patterns:"
+  ],
+  "Active Goals:": [
+    "当前研究目标：",
+    "Active Goals:"
+  ],
+  "Learned Patterns (": [
+    "已学习规则（",
+    "Learned Patterns ("
+  ],
+  "Active Goals (": [
+    "当前研究目标（",
+    "Active Goals ("
+  ],
+  "Preferences": [
+    "研究偏好",
+    "Preferences"
+  ],
+  "No learned patterns yet. Keep resolving conflicts to build patterns.": [
+    "暂无已学习规则。处理指标冲突时，可以记录决策依据。",
+    "No learned patterns yet. Keep resolving conflicts to build patterns."
+  ],
+  "% confidence": [
+    "% 置信度",
+    "% confidence"
+  ],
+  "Applied": [
+    "已应用",
+    "Applied"
+  ],
+  "times": [
+    "次",
+    "times"
+  ],
+  "Last used:": [
+    "最近使用：",
+    "Last used:"
+  ],
+  "No active goals. Declare an intent to create goals.": [
+    "暂无研究目标。点击上方按钮，说明你想研究什么。",
+    "No active goals. Declare an intent to create goals."
+  ],
+  "Constraints:": [
+    "约束条件：",
+    "Constraints:"
+  ],
+  "Unit Preferences": [
+    "单位偏好",
+    "Unit Preferences"
+  ],
+  "No unit preferences learned yet": [
+    "暂无单位偏好",
+    "No unit preferences learned yet"
+  ],
+  "Evidence Ranking": [
+    "证据优先级",
+    "Evidence Ranking"
+  ],
+  "No evidence preferences": [
+    "暂无证据偏好",
+    "No evidence preferences"
+  ],
+  "Subdomain Focus": [
+    "重点研究方向",
+    "Subdomain Focus"
+  ],
+  "No subdomain preferences": [
+    "暂无研究方向偏好",
+    "No subdomain preferences"
+  ],
+  "AI Suggestion Threshold": [
+    "模型建议的置信度门槛",
+    "AI Suggestion Threshold"
+  ],
+  "evidence ·": [
+    "条证据 ·",
+    "evidence ·"
+  ],
+  "% conf.": [
+    "% 置信度",
+    "% conf."
+  ],
+  "Domain": [
+    "领域",
+    "Domain"
+  ],
+  "aka:": [
+    "别名：",
+    "aka:"
+  ],
+  "Sort papers by domain pack label": [
+    "按领域名称排序",
+    "Sort papers by domain pack label"
+  ],
+  "Sort papers alphabetically": [
+    "按论文标题排序",
+    "Sort papers alphabetically"
+  ],
+  "Sort papers by publication year": [
+    "按发表年份排序",
+    "Sort papers by publication year"
+  ],
+  "本机密钥保护：": [
+    "本机密钥保护：",
+    "Local credential protection:"
+  ],
+  "。配置按登录用户隔离，重启后保留。": [
+    "。配置按账户分别保存，重启后保留。",
+    ". Settings are saved separately for each account and survive restarts."
+  ],
+  "No domain packs selected": [
+    "尚未选择领域规则",
+    "No domain packs selected"
+  ],
+  "1 domain pack": [
+    "1 项领域规则",
+    "1 domain pack"
+  ],
+  "Clear": [
+    "清空",
+    "Clear"
+  ],
+  "active •": [
+    "项已启用 ·",
+    "active •"
+  ],
+  "total metrics": [
+    "项指标合计",
+    "total metrics"
+  ],
+  "Domain pack actions": [
+    "领域规则操作",
+    "Domain pack actions"
+  ],
+  "Hide from matrix": [
+    "在指标对比中隐藏",
+    "Hide from matrix"
+  ],
+  "Show in matrix": [
+    "在指标对比中显示",
+    "Show in matrix"
+  ],
+  "Remove domain pack": [
+    "移除此领域规则",
+    "Remove domain pack"
+  ],
+  "Add PDF to this domain": [
+    "向此领域添加 PDF",
+    "Add PDF to this domain"
+  ],
+  "Awaiting preview metadata": [
+    "等待提取论文信息",
+    "Awaiting preview metadata"
+  ],
+  "Retry import preview": [
+    "重新提取预览",
+    "Retry import preview"
+  ],
+  "Remove paper from sidebar": [
+    "从侧栏移除论文",
+    "Remove paper from sidebar"
+  ],
+  "⚠️ LLM service disabled: Papers will be ingested with basic rule-based classification. For AI-powered subdomain classification, configure LLM in .env file.": [
+    "⚠️ 尚未启用模型，目前仅使用基础规则处理论文。请在右下角“模型接口”配置并启用模型。",
+    "⚠️ LLM service disabled: Papers will be ingested with basic rule-based classification. For AI-powered subdomain classification, configure LLM in .env file."
+  ],
+  "Drop PDF files here or use + to add a paper to this domain": [
+    "将 PDF 拖到这里，或点击 ＋ 添加论文",
+    "Drop PDF files here or use + to add a paper to this domain"
+  ],
+  "Add metric to this domain": [
+    "为此领域添加提取指标",
+    "Add metric to this domain"
+  ],
+  "Delete Paper": [
+    "删除论文",
+    "Delete Paper"
+  ],
+  "Close delete dialog": [
+    "关闭删除确认",
+    "Close delete dialog"
+  ],
+  "Number of evidences:": [
+    "关联证据数量：",
+    "Number of evidences:"
+  ],
+  "Deletion is not recoverable. Proceed?": [
+    "删除后无法恢复。确定继续吗？",
+    "Deletion is not recoverable. Proceed?"
+  ],
+  "Ingested:": [
+    "入库时间：",
+    "Ingested:"
+  ],
+  "Import date not available": [
+    "暂无入库时间",
+    "Import date not available"
+  ],
+  "Queued for processing": [
+    "等待处理",
+    "Queued for processing"
+  ],
+  "Validating and extracting preview": [
+    "正在读取论文并提取预览",
+    "Validating and extracting preview"
+  ],
+  "Ready to commit": [
+    "待确认入库",
+    "Ready to commit"
+  ],
+  "Committing to workspace": [
+    "正在入库",
+    "Committing to workspace"
+  ],
+  "Error:": [
+    "错误原因：",
+    "Error:"
+  ],
+  "Chunks": [
+    "原文片段",
+    "Chunks"
+  ],
+  "Size:": [
+    "文件大小：",
+    "Size:"
+  ],
+  "⏳ Extracting text and analyzing content...": [
+    "⏳ 正在读取正文并提取指标…",
+    "⏳ Extracting text and analyzing content..."
+  ],
+  "⚙️ Building knowledge graph...": [
+    "⚙️ 正在保存论文和证据关联…",
+    "⚙️ Building knowledge graph..."
+  ],
+  "No papers are attached to this domain pack.": [
+    "此领域还没有论文。请先上传 PDF。",
+    "No papers are attached to this domain pack."
+  ],
+  "Open": [
+    "查看详情",
+    "Open"
+  ],
+  "No subdomains are mapped in this domain pack.": [
+    "此领域规则尚未定义研究方向分类。",
+    "No subdomains are mapped in this domain pack."
+  ],
+  "Workspace hierarchy": [
+    "工作区导航",
+    "Workspace hierarchy"
+  ],
+  "Metric Registry": [
+    "提取指标列表",
+    "Metric Registry"
+  ],
+  "Add metric": [
+    "添加指标",
+    "Add metric"
+  ],
+  "Unit": [
+    "单位",
+    "Unit"
+  ],
+  "Type": [
+    "类型",
+    "Type"
+  ],
+  "Aliases": [
+    "别名",
+    "Aliases"
+  ],
+  "Actions": [
+    "操作",
+    "Actions"
+  ],
+  "Edit": [
+    "编辑",
+    "Edit"
+  ],
+  "None": [
+    "无",
+    "None"
+  ],
+  "Add Metric": [
+    "添加指标",
+    "Add Metric"
+  ],
+  "Expected Unit": [
+    "要求的单位",
+    "Expected Unit"
+  ],
+  "Value Type": [
+    "数值类型",
+    "Value Type"
+  ],
+  "Float": [
+    "小数",
+    "Float"
+  ],
+  "Integer": [
+    "整数",
+    "Integer"
+  ],
+  "String": [
+    "文本",
+    "String"
+  ],
+  "Boolean": [
+    "是 / 否",
+    "Boolean"
+  ],
+  "comma-separated aliases": [
+    "多个别名请用英文逗号分隔",
+    "comma-separated aliases"
+  ],
+  "Observed Papers": [
+    "有提取结果的论文",
+    "Observed Papers"
+  ],
+  "Edit Metric": [
+    "编辑指标",
+    "Edit Metric"
+  ],
+  "Save Changes": [
+    "保存修改",
+    "Save Changes"
+  ],
+  "Delete Metric": [
+    "删除指标",
+    "Delete Metric"
+  ],
+  "Definition": [
+    "指标定义",
+    "Definition"
+  ],
+  "Namespace": [
+    "领域标识",
+    "Namespace"
+  ],
+  "Resolved Values": [
+    "已确认的结果",
+    "Resolved Values"
+  ],
+  "of": [
+    "/",
+    "of"
+  ],
+  "Average Confidence": [
+    "平均置信度",
+    "Average Confidence"
+  ],
+  "No observations": [
+    "暂无提取结果",
+    "No observations"
+  ],
+  "Observed Values": [
+    "已提取的指标结果",
+    "Observed Values"
+  ],
+  "Value": [
+    "数值",
+    "Value"
+  ],
+  "Status": [
+    "状态",
+    "Status"
+  ],
+  "No extracted values for this metric yet.": [
+    "此指标尚未提取到结果。",
+    "No extracted values for this metric yet."
+  ],
+  "Paper Information": [
+    "论文信息",
+    "Paper Information"
+  ],
+  "Status:": [
+    "状态：",
+    "Status:"
+  ],
+  "Open PDF": [
+    "打开 PDF",
+    "Open PDF"
+  ],
+  "Queued for Processing": [
+    "等待处理",
+    "Queued for Processing"
+  ],
+  "Validating PDF": [
+    "正在检查 PDF",
+    "Validating PDF"
+  ],
+  "Your PDF is in the queue and will be processed shortly.": [
+    "PDF 已加入队列，轮到它时将自动开始处理。",
+    "Your PDF is in the queue and will be processed shortly."
+  ],
+  "Extracting text, formulas, and metadata from PDF...": [
+    "正在提取 PDF 正文、公式和论文信息…",
+    "Extracting text, formulas, and metadata from PDF..."
+  ],
+  "Unknown": [
+    "未知",
+    "Unknown"
+  ],
+  "This may take a few moments depending on PDF size and complexity": [
+    "处理时间取决于论文长度、内容复杂度和模型响应速度。",
+    "This may take a few moments depending on PDF size and complexity"
+  ],
+  "Import Failed": [
+    "导入未完成",
+    "Import Failed"
+  ],
+  "The PDF could not be processed. Please review the details below.": [
+    "未能完成 PDF 处理，请查看下方原因。",
+    "The PDF could not be processed. Please review the details below."
+  ],
+  "Error Details": [
+    "失败原因",
+    "Error Details"
+  ],
+  "File reference lost": [
+    "上传文件记录已失效",
+    "File reference lost"
+  ],
+  "What to do": [
+    "处理方法",
+    "What to do"
+  ],
+  "Close this dialog and click \"Dismiss\" to clear this failed import": [
+    "关闭此窗口，点击“移除记录”清理本次失败任务",
+    "Close this dialog and click \"Dismiss\" to clear this failed import"
+  ],
+  "Drop the PDF file into the workspace sidebar again": [
+    "重新将 PDF 拖入工作区侧栏",
+    "Drop the PDF file into the workspace sidebar again"
+  ],
+  "The import will restart from the beginning": [
+    "系统将重新上传并提取论文",
+    "The import will restart from the beginning"
+  ],
+  "Common Issues": [
+    "可能的原因",
+    "Common Issues"
+  ],
+  "PDF may be corrupted or password-protected": [
+    "PDF 损坏或设置了打开密码",
+    "PDF may be corrupted or password-protected"
+  ],
+  "PDF may not contain extractable text (scanned images)": [
+    "PDF 是扫描图片，暂时无法直接提取正文",
+    "PDF may not contain extractable text (scanned images)"
+  ],
+  "Backend service may be experiencing issues": [
+    "后端服务暂时不可用",
+    "Backend service may be experiencing issues"
+  ],
+  "Domain pack configuration may be invalid": [
+    "领域规则配置无效",
+    "Domain pack configuration may be invalid"
+  ],
+  "Dismiss": [
+    "移除记录",
+    "Dismiss"
+  ],
+  "Retry Import": [
+    "重新导入",
+    "Retry Import"
+  ],
+  "Committing to Workspace": [
+    "正在保存到工作区",
+    "Committing to Workspace"
+  ],
+  "Building knowledge graph and creating assertion nodes...": [
+    "正在保存论文、指标结果和原文证据关联…",
+    "Building knowledge graph and creating assertion nodes..."
+  ],
+  "Please wait while the paper is being committed...": [
+    "正在入库，请稍候…",
+    "Please wait while the paper is being committed..."
+  ],
+  "PDF has been successfully parsed and analyzed. Review the extracted content below.": [
+    "论文提取已完成，请检查下方内容后确认入库。",
+    "PDF has been successfully parsed and analyzed. Review the extracted content below."
+  ],
+  "Extracted Content": [
+    "提取结果",
+    "Extracted Content"
+  ],
+  "Click": [
+    "点击",
+    "Click"
+  ],
+  "\"Commit to Workspace\"": [
+    "“确认入库”",
+    "\"Commit to Workspace\""
+  ],
+  "to add this paper to your knowledge graph.": [
+    "将这篇论文和提取结果保存到工作区。",
+    "to add this paper to your knowledge graph."
+  ],
+  "Paper Import": [
+    "论文导入",
+    "Paper Import"
+  ],
+  "Paper Details": [
+    "论文详情",
+    "Paper Details"
+  ],
+  "Ingested": [
+    "已入库",
+    "Ingested"
+  ],
+  "Error": [
+    "处理失败",
+    "Error"
+  ],
+  "Mapped Taxonomy Values": [
+    "已关联的分类值",
+    "Mapped Taxonomy Values"
+  ],
+  "Domain Papers": [
+    "本领域论文",
+    "Domain Papers"
+  ],
+  "Available Metrics": [
+    "可用指标",
+    "Available Metrics"
+  ],
+  "Taxonomy Mapping": [
+    "分类对应关系",
+    "Taxonomy Mapping"
+  ],
+  "Dimension": [
+    "分类维度",
+    "Dimension"
+  ],
+  "No taxonomy values are explicitly mapped to this subdomain.": [
+    "此研究方向尚未关联分类值。",
+    "No taxonomy values are explicitly mapped to this subdomain."
+  ],
+  "Metrics In Scope": [
+    "本领域的提取指标",
+    "Metrics In Scope"
+  ],
+  "No metrics are currently available for this domain pack.": [
+    "此领域规则尚未定义提取指标。",
+    "No metrics are currently available for this domain pack."
+  ],
+  "Unknown year": [
+    "年份未知",
+    "Unknown year"
+  ],
+  "No ingested papers are attached to this domain pack yet.": [
+    "此领域还没有已入库论文。",
+    "No ingested papers are attached to this domain pack yet."
+  ],
+  "Workspace Access": [
+    "工作区成员与权限",
+    "Workspace Access"
+  ],
+  "Registered username": [
+    "输入已注册的用户名",
+    "Registered username"
+  ],
+  "Role": [
+    "权限",
+    "Role"
+  ],
+  "Viewer": [
+    "仅查看",
+    "Viewer"
+  ],
+  "Editor": [
+    "可编辑",
+    "Editor"
+  ],
+  "Loading…": [
+    "正在加载…",
+    "Loading…"
+  ],
+  "Active": [
+    "使用中",
+    "Active"
+  ],
+  "Create workspace": [
+    "新建工作区",
+    "Create workspace"
+  ],
+  "Hide workspace sidebar": [
+    "隐藏工作区侧栏",
+    "Hide workspace sidebar"
+  ],
+  "Show workspace sidebar": [
+    "展开工作区侧栏",
+    "Show workspace sidebar"
+  ],
+  "Workspace actions": [
+    "工作区操作",
+    "Workspace actions"
+  ],
+  "Clear all filters": [
+    "清空全部筛选",
+    "Clear all filters"
+  ],
+  "No subdomain mapping": [
+    "暂无研究方向分类",
+    "No subdomain mapping"
+  ],
+  "Pending Imports": [
+    "待处理论文",
+    "Pending Imports"
+  ],
+  "papers": [
+    "篇论文",
+    "papers"
+  ],
+  "No domain packs are attached to this workspace.": [
+    "此工作区尚未添加领域规则，请在侧栏点击 ＋ 添加。",
+    "No domain packs are attached to this workspace."
+  ],
+  "Could not preview this pattern.": [
+    "无法预览这条研究规则，请稍后重试。",
+    "Could not preview this pattern."
+  ],
+  "Backend → LLM Server: Disabled (paper ingestion will use fallback classification)": [
+    "尚未启用模型，论文导入将使用基础规则。",
+    "Backend → LLM Server: Disabled (paper ingestion will use fallback classification)"
+  ],
+  "Coverage analysis failed": [
+    "研究覆盖分析失败",
+    "Coverage analysis failed"
+  ],
+  "Coverage summary": [
+    "研究覆盖概览",
+    "Coverage summary"
+  ],
+  "Original PDF unavailable": [
+    "原始 PDF 暂不可用",
+    "Original PDF unavailable"
+  ],
+  "Invalid JSON format": [
+    "JSON 格式无效，请检查括号、逗号和引号。",
+    "Invalid JSON format"
+  ],
+  "No changes to save.": [
+    "尚未修改内容，无需保存。",
+    "No changes to save."
+  ],
+  "Enter a freeform intent description before analyzing it.": [
+    "请先描述研究问题或关注的指标，再点击分析。",
+    "Enter a freeform intent description before analyzing it."
+  ],
+  "This intent will be captured with your conflict resolution decision.": [
+    "这条研究决策会与本次冲突处理一起保存。",
+    "This intent will be captured with your conflict resolution decision."
+  ],
+  "This intent will be learned from your unit preference.": [
+    "系统会根据本次选择记录单位偏好。",
+    "This intent will be learned from your unit preference."
+  ],
+  "This intent will be associated with your subdomain classification.": [
+    "这条研究决策会与本次研究方向分类一起保存。",
+    "This intent will be associated with your subdomain classification."
+  ],
+  "Capture metadata about this research decision.": [
+    "记录本次研究决策的适用范围和依据。",
+    "Capture metadata about this research decision."
+  ],
+  "E.g., 'Apply to all WDM networking papers' or 'When comparing bandwidth metrics'": [
+    "例如：比较带宽指标时优先使用该单位",
+    "E.g., 'Apply to all WDM networking papers' or 'When comparing bandwidth metrics'"
+  ],
+  "Workspace name is required": [
+    "请填写工作区名称",
+    "Workspace name is required"
+  ],
+  "Online": [
+    "已连接",
+    "Online"
+  ],
+  "Degraded": [
+    "连接异常",
+    "Degraded"
+  ],
+  "Offline": [
+    "未连接",
+    "Offline"
+  ],
+  "Failed to load evidence": [
+    "无法加载证据，请重试。",
+    "Failed to load evidence"
+  ],
+  "Failed to save changes. Please try again.": [
+    "保存失败，请稍后重试。",
+    "Failed to save changes. Please try again."
+  ],
+  "Failed to verify evidence. See console for details.": [
+    "核对结果保存失败，请检查后端连接后重试。",
+    "Failed to verify evidence. See console for details."
+  ],
+  "Failed to correct evidence. See console for details.": [
+    "修改保存失败，请检查后端连接后重试。",
+    "Failed to correct evidence. See console for details."
+  ],
+  "Failed to reject evidence. See console for details.": [
+    "标记保存失败，请检查后端连接后重试。",
+    "Failed to reject evidence. See console for details."
+  ],
+  "Failed to perform action. Please try again.": [
+    "操作失败，请稍后重试。",
+    "Failed to perform action. Please try again."
+  ],
+  "Failed to verify selected evidence. Please try again.": [
+    "批量核对失败，请稍后重试。",
+    "Failed to verify selected evidence. Please try again."
+  ],
+  "Failed to reject selected evidence. Please try again.": [
+    "批量标记失败，请稍后重试。",
+    "Failed to reject selected evidence. Please try again."
+  ],
+  "Failed to create branch": [
+    "研究主题创建失败",
+    "Failed to create branch"
+  ],
+  "Failed to parse intent": [
+    "研究目标分析失败",
+    "Failed to parse intent"
+  ],
+  "Failed to declare intent": [
+    "研究目标保存失败",
+    "Failed to declare intent"
+  ],
+  "Failed to load domain pack file": [
+    "领域规则文件加载失败",
+    "Failed to load domain pack file"
+  ],
+  "Failed to bootstrap domain pack": [
+    "领域规则生成失败",
+    "Failed to bootstrap domain pack"
+  ],
+  "Failed to create workspace": [
+    "工作区创建失败",
+    "Failed to create workspace"
+  ],
+  "Failed to add metric": [
+    "添加指标失败",
+    "Failed to add metric"
+  ],
+  "Failed to update metric": [
+    "更新指标失败",
+    "Failed to update metric"
+  ],
+  "Failed to load workspace members": [
+    "成员列表加载失败",
+    "Failed to load workspace members"
+  ],
+  "Failed to add member": [
+    "添加成员失败",
+    "Failed to add member"
+  ],
+  "Failed to remove member": [
+    "移除成员失败",
+    "Failed to remove member"
+  ],
+  "Failed to delete workspace. See console for details.": [
+    "删除工作区失败，请检查后端连接后重试。",
+    "Failed to delete workspace. See console for details."
+  ],
+  "已填入厂商配置，请输入该厂商的 API Key；原有密钥不会自动带入。": [
+    "已填入服务商配置，请输入对应的 API Key，原密钥不会自动带入。",
+    "Provider settings filled in. Enter its API key; the previous key is not reused."
+  ],
+  "操作失败": [
+    "操作失败",
+    "Operation failed"
+  ],
+  "正在验证接口连接，验证通过后才会保存…": [
+    "正在验证连接，通过后才会保存…",
+    "Verifying the connection before saving…"
+  ],
+  "验证通过，已保存并启用。下一次模型请求将使用此接口。": [
+    "验证通过，已保存并启用。新任务将使用此接口。",
+    "Verified, saved, and activated. New tasks will use this connection."
+  ],
+  "连接验证通过，配置已保存。": [
+    "连接验证通过，配置已保存。",
+    "Connection verified and saved."
+  ],
+  "已切换当前接口，无需重启。": [
+    "已切换接口，新任务将使用此配置。",
+    "Connection switched. New tasks will use these settings."
+  ],
+  "已切换为服务器 .env 配置。": [
+    "已切换为服务器默认配置。",
+    "Switched to server defaults."
+  ],
+  "关闭接口设置": [
+    "关闭接口设置",
+    "Close model settings"
+  ],
+  "已保存接口": [
+    "已保存接口",
+    "Saved connections"
+  ],
+  "采样参数由模型默认处理，避免不兼容。模型列表为预设建议，具体可用性以你的厂商账户为准。": [
+    "采样参数使用模型默认值。预设模型能否使用，以服务商账户权限为准。",
+    "Sampling uses model defaults. Available models depend on your provider account."
+  ],
+  "接口已删除。删除当前接口后将使用服务器 .env 配置。": [
+    "接口已删除。如删除的是当前接口，将使用服务器默认配置。",
+    "Connection deleted. If it was active, server defaults will be used."
+  ],
+  "正在读取…": [
+    "正在读取…",
+    "Loading…"
+  ],
+  "领域包只接受 YAML / JSON 指标与分类规则。论文 PDF 请关闭此窗口，在领域详情页点击“上传论文 PDF”。": [
+    "这里只接受 YAML / JSON 规则。导入论文请关闭此窗口，在领域详情页上传 PDF。",
+    "Only YAML / JSON rules are accepted here. To import a paper, close this dialog and upload the PDF from the domain page."
+  ],
+  "论文导入": [
+    "论文导入",
+    "Paper import"
+  ],
+  "Enter your research proposal or domain description here...&#10;&#10;Example: I'm researching quantum network architectures for distributed computing. Key metrics include entanglement fidelity, quantum bit error rate, and decoherence time. The network will use different topologies like star and mesh configurations.": [
+    "描述研究主题和希望比较的指标。例如：比较目标检测方法在 VOC 数据集上的准确率和推理速度。",
+    "Describe your research topic and metrics. Example: Compare object detection accuracy and inference speed on VOC datasets."
+  ],
+  "Archived": [
+    "已归档",
+    "Archived"
+  ],
+  "Completed": [
+    "已完成",
+    "Completed"
+  ],
+  "Paused": [
+    "已暂停",
+    "Paused"
+  ],
+  "Owner": [
+    "所有者",
+    "Owner"
+  ],
+  "Unspecified": [
+    "未注明",
+    "Unspecified"
+  ],
+  "Includes": [
+    "包含",
+    "Includes"
+  ],
+  "Classified as": [
+    "分类为",
+    "Classified as"
+  ],
+  "Supported by": [
+    "证据支持",
+    "Supported by"
+  ],
+  "Typo": [
+    "文字错误",
+    "Typo"
+  ],
+  "Unit error": [
+    "单位错误",
+    "Unit error"
+  ],
+  "Extraction error": [
+    "提取错误",
+    "Extraction error"
+  ],
+  "Missing context": [
+    "缺少实验条件",
+    "Missing context"
+  ],
+  "Sign out {name}": [
+    "退出账户 {name}",
+    "Sign out {name}"
+  ],
+  "Pattern preview: {conflicts} conflicts and {assertions} assertions.": [
+    "规则预览完成：匹配 {conflicts} 个冲突、{assertions} 条指标结果。",
+    "Preview complete: {conflicts} conflicts and {assertions} assertions match."
+  ],
+  "Model connection: {provider} {model} — {message}": [
+    "模型接口：{provider} {model} · {message}",
+    "Model: {provider} {model} — {message}"
+  ],
+  "Subdomain: {name}": [
+    "研究方向：{name}",
+    "Research area: {name}"
+  ],
+  "Edit {type} text here...": [
+    "在这里修改{type}内容…",
+    "Edit {type} text here…"
+  ],
+  "Restore to version {version}?": [
+    "确定恢复到第 {version} 版吗？",
+    "Restore to version {version}?"
+  ],
+  "Restore to v{version}": [
+    "恢复到第 {version} 版",
+    "Restore to v{version}"
+  ],
+  "Verify {count} evidence items?": [
+    "确定将 {count} 条证据标记为已核对吗？",
+    "Verify {count} evidence items?"
+  ],
+  "Reject {count} evidence items? This action can be undone.": [
+    "确定将 {count} 条证据标记为有误吗？之后可以恢复。",
+    "Reject {count} evidence items? This action can be undone."
+  ],
+  "Restored from revision v{version}": [
+    "从第 {version} 版恢复",
+    "Restored from revision v{version}"
+  ],
+  "Low confidence: {value}%": [
+    "置信度较低：{value}%",
+    "Low confidence: {value}%"
+  ],
+  "Medium confidence: {value}%": [
+    "置信度中等：{value}%",
+    "Medium confidence: {value}%"
+  ],
+  "Remove {name}": [
+    "移除 {name}",
+    "Remove {name}"
+  ],
+  "Workspace: {name} • {count} active domain packs": [
+    "工作区：{name} · {count} 项已启用领域规则",
+    "Workspace: {name} • {count} active domain rules"
+  ],
+  "Aliases: {aliases}": [
+    "别名：{aliases}",
+    "Aliases: {aliases}"
+  ],
+  "{message} ({seconds} seconds)": [
+    "{message}（{seconds} 秒）",
+    "{message} ({seconds} seconds)"
+  ],
+  "Domain pack validation failed: {errors}": [
+    "领域规则校验失败：{errors}",
+    "Domain rules validation failed: {errors}"
+  ],
+  "All domain packs ({count})": [
+    "全部领域规则（{count}）",
+    "All domain rules ({count})"
+  ],
+  "{name} only": [
+    "仅 {name}",
+    "{name} only"
+  ],
+  "{active} of {total} domain packs": [
+    "已启用 {active} / {total} 项领域规则",
+    "{active} of {total} domain rules"
+  ],
+  "Remove domain pack \"{name}\"?": [
+    "确定移除领域规则“{name}”吗？",
+    "Remove domain rules \"{name}\"?"
+  ],
+  "Delete metric \"{name}\"? Existing extracted values for this metric will be removed from the current local view.": [
+    "确定删除指标“{name}”吗？此指标的已有提取结果将从当前本地视图中移除。",
+    "Delete metric \"{name}\"? Its extracted values will be removed from the current local view."
+  ],
+  "Delete workspace \"{name}\"? This removes all its domains, papers and assertions and cannot be undone.": [
+    "确定删除工作区“{name}”吗？其中的领域规则、论文和指标结果会一起删除，无法恢复。",
+    "Delete workspace \"{name}\"? This removes its domain rules, papers and results and cannot be undone."
+  ],
+  "Failed to update evidence. Please try again.": [
+    "证据更新失败，请检查服务连接后重试。",
+    "Evidence update failed. Please retry."
+  ],
+  "Checking...": [
+    "正在检查…",
+    "Checking…"
+  ],
+  "Backend and database connected": [
+    "后端与数据库均已连接",
+    "Backend and database connected"
+  ],
+  "Backend online, database disconnected": [
+    "后端已连接，数据库未连接",
+    "Backend online, database disconnected"
+  ],
+  "Backend server not responding": [
+    "后端服务未响应",
+    "Backend server not responding"
+  ],
+  "Unable to check LLM status": [
+    "无法读取模型连接状态",
+    "Unable to check model status"
+  ],
+  "Backend offline": [
+    "后端服务未连接",
+    "Backend offline"
+  ],
+  "LLM provider is disabled (paper ingestion will use fallback classification)": [
+    "尚未启用模型，论文将使用基础规则处理。",
+    "Model disabled; paper imports will use basic rules."
+  ],
+  "LLM provider is enabled but not fully configured": [
+    "模型配置不完整，请检查接口地址、模型名称和密钥。",
+    "Model settings are incomplete. Check the URL, model ID, and key."
+  ],
+  "LLM provider is configured": [
+    "模型配置已就绪",
+    "Model configured"
+  ],
+  "LLM provider is disabled": [
+    "尚未启用模型",
+    "Model disabled"
+  ],
+  "Configured; connection has not been tested": [
+    "已配置，尚未测试连接",
+    "Configured; connection has not been tested"
+  ],
+  "OpenAI-compatible provider is reachable": [
+    "模型接口可以连接",
+    "Model connection reachable"
+  ],
+  "Unknown authors": [
+    "作者未知",
+    "Unknown authors"
+  ],
+  "Unknown venue": [
+    "期刊 / 会议未知",
+    "Unknown venue"
+  ],
+  "network_error": [
+    "网络连接失败，请检查后端服务是否运行。",
+    "Network error. Check whether the backend is running."
+  ],
+  "Invalid username or password": [
+    "用户名或密码不正确",
+    "Invalid username or password"
+  ],
+  "Historical object detection (cutoff 2016-06-30)": [
+    "目标检测（历史文献，截至 2016-06-30）",
+    "Historical object detection (cutoff 2016-06-30)"
+  ],
+  "Optical Networks": [
+    "光网络",
+    "Optical Networks"
+  ],
+  "Wireless Networks": [
+    "无线网络",
+    "Wireless Networks"
+  ],
+  "Base URL": [
+    "接口基础地址",
+    "Base URL"
+  ],
+  "API Key": [
+    "API 密钥",
+    "API key"
+  ],
+  "Unitless": [
+    "无单位",
+    "Unitless"
+  ],
+  "OCR error": [
+    "文字识别错误",
+    "OCR error"
+  ],
+  "Numeric correction": [
+    "数值修正",
+    "Numeric correction"
+  ],
+  "Formula fix": [
+    "公式修正",
+    "Formula fix"
+  ],
+  "Unit correction": [
+    "单位修正",
+    "Unit correction"
+  ],
+  "Formatting fix": [
+    "格式修正",
+    "Formatting fix"
+  ],
+  "Missing text": [
+    "缺少文字",
+    "Missing text"
+  ],
+  "Password must be at least 8 characters long": [
+    "密码至少需要 8 个字符",
+    "Password must be at least 8 characters long"
+  ],
+  "Invalid credentials": [
+    "用户名或密码不正确",
+    "Invalid credentials"
+  ],
+  "Page-only source locations; precise PDF bounding boxes are unavailable.": [
+    "目前只能定位到 PDF 页码，无法显示精确的原文区域。",
+    "Only PDF page locations are available; precise source regions are unavailable."
+  ],
+  "DPAPI (Windows user)": [
+    "Windows 当前用户加密保护",
+    "DPAPI (Windows user)"
+  ],
+  "Login failed": [
+    "登录失败，请检查用户名和密码。",
+    "Sign-in failed. Check your username and password."
+  ],
+  "Registration failed": [
+    "注册失败，请检查输入内容后重试。",
+    "Registration failed. Check your details and retry."
+  ],
+  "contains": [
+    "包含",
+    "contains"
+  ],
+  "claims": [
+    "提取结果",
+    "claims"
+  ],
+  ")": [
+    "）",
+    ")"
+  ],
+  "Metric identifier example": [
+    "例如：reconfiguration_delay",
+    "e.g. reconfiguration_delay"
+  ],
+  "Unit example": [
+    "例如：ms",
+    "e.g. ms"
+  ],
+  "Failed to fetch": [
+    "网络连接失败，请检查后端服务是否运行。",
+    "Network connection failed. Check whether the backend is running."
+  ],
+  "Parsing used raw_text fallback instead of PDF bytes.": [
+    "本次使用提供的文本解析，未读取原始 PDF 文件。",
+    "Parsing used raw_text fallback instead of PDF bytes."
+  ],
+  "No text chunks were extracted from the PDF.": [
+    "没有从 PDF 中提取到正文片段。",
+    "No text chunks were extracted from the PDF."
+  ],
+  "No backend domain-pack config was resolved for assertion grounding; preview includes metadata, markdown, and chunks only.": [
+    "未找到可用的领域规则，本次预览只包含论文信息和正文片段。",
+    "No backend domain-pack config was resolved for assertion grounding; preview includes metadata, markdown, and chunks only."
+  ],
+  "No domain-grounded assertions were extracted from the parsed chunks.": [
+    "未提取到符合领域规则的指标结果，请核对规则与论文内容。",
+    "No domain-grounded assertions were extracted from the parsed chunks."
+  ],
+  "LLM extraction was unavailable; assertions were produced by the rule-based heuristic extractor.": [
+    "模型提取不可用，当前指标由基础规则生成，请人工核对。",
+    "LLM extraction was unavailable; assertions were produced by the rule-based heuristic extractor."
+  ],
+  "Simulated mock-provider assertions; this is not a real LLM extraction.": [
+    "当前是模拟接口生成的示例结果，不是真实模型提取。",
+    "Simulated mock-provider assertions; this is not a real LLM extraction."
+  ],
+  "Marker 1.10+ did not extract text chunks from markdown.": [
+    "解析器未能从文档中提取正文片段。",
+    "Marker 1.10+ did not extract text chunks from markdown."
+  ],
+  "Marker did not return any text-like blocks for this PDF.": [
+    "解析器未在此 PDF 中找到可提取的正文。",
+    "Marker did not return any text-like blocks for this PDF."
+  ],
+  "Re-upload the PDF if its temporary upload expired.": [
+    "上传记录如已过期，请重新上传 PDF。",
+    "Re-upload the PDF if its temporary upload expired."
+  ],
+  "Extraction needs review; see warnings.": [
+    "提取未完成，请查看下方提示并处理后重试。",
+    "Extraction needs review; see warnings."
+  ],
+  "Failed to read PDF payload.": [
+    "无法读取 PDF 文件，请重新选择文件。",
+    "Failed to read PDF payload."
+  ],
+  "Failed to prepare preview.": [
+    "预览准备失败，请重试。",
+    "Failed to prepare preview."
+  ],
+  "Re-upload the original PDF to retry.": [
+    "请重新上传原始 PDF 后重试。",
+    "Re-upload the original PDF to retry."
+  ],
+  "This paper import has no backend upload reference. Re-upload the file before committing.": [
+    "上传记录已失效，请重新上传文件后再确认入库。",
+    "This paper import has no backend upload reference. Re-upload the file before committing."
+  ],
+  "Failed to commit parsed PDF.": [
+    "论文入库失败，请检查后端连接后重试。",
+    "Failed to commit parsed PDF."
+  ],
+  "Metric name is required": [
+    "请填写指标名称。",
+    "Metric name is required"
+  ],
+  "Invalid upload identifier": [
+    "上传记录无效。",
+    "Invalid upload identifier"
+  ],
+  "Original PDF unavailable for this legacy or demo paper": [
+    "这篇历史或演示论文没有保存原始 PDF。",
+    "Original PDF unavailable for this legacy or demo paper"
+  ],
+  "Preview expired or missing; preview the PDF again before committing": [
+    "预览已过期或不存在，请重新提取预览后再确认入库。",
+    "Preview expired or missing; preview the PDF again before committing"
+  ],
+  "Source or domain configuration changed; preview again": [
+    "论文或领域规则已发生变化，请重新提取预览。",
+    "Source or domain configuration changed; preview again"
+  ],
+  "Preview needs review; resolve extraction failures and preview again": [
+    "提取尚未完整成功，请处理失败原因并重新预览。",
+    "Preview needs review; resolve extraction failures and preview again"
+  ],
+  "Import interrupted: File reference lost (app was restarted or file handle expired). Please drop the PDF again to retry ingestion.": [
+    "导入已中断，文件记录因重启或过期而失效。请重新上传 PDF。",
+    "Import interrupted: File reference lost (app was restarted or file handle expired). Please drop the PDF again to retry ingestion."
+  ],
+  "Metric result excluded: {metric} — {reason}": [
+    "已过滤指标 {metric}：{reason}",
+    "Metric result excluded: {metric} — {reason}"
+  ],
+  "missing evidence": [
+    "缺少原文证据",
+    "missing evidence"
+  ],
+  "unknown evidence ID": [
+    "原文证据标识无效",
+    "unknown evidence ID"
+  ],
+  "unsupported predicate": [
+    "不支持此比较关系",
+    "unsupported predicate"
+  ],
+  "low confidence": [
+    "置信度过低",
+    "low confidence"
+  ],
+  "incompatible unit (conversion is not implicit)": [
+    "单位不符合规则，系统不会自动换算",
+    "incompatible unit (conversion is not implicit)"
+  ],
+  "invalid numeric value": [
+    "数值格式无效",
+    "invalid numeric value"
+  ],
+  "reported value absent from cited evidence": [
+    "引用的原文中没有找到该数值",
+    "reported value absent from cited evidence"
+  ],
+  "Page {page} has no extractable text.": [
+    "第 {page} 页未提取到正文。",
+    "Page {page} has no extractable text."
+  ],
+  "Metric {name} already exists.": [
+    "指标 {name} 已存在。",
+    "Metric {name} already exists."
+  ],
+  "Domain rules {name} were not found.": [
+    "未找到领域规则 {name}。",
+    "Domain rules {name} were not found."
+  ],
+  "Operation failed: {action}. {detail}": [
+    "{action}失败。{detail}",
+    "Operation failed: {action}. {detail}"
+  ],
+  "parse PDF": [
+    "论文提取",
+    "parse PDF"
+  ],
+  "commit parsed PDF": [
+    "论文入库",
+    "commit parsed PDF"
+  ],
+  "upload PDF": [
+    "上传 PDF",
+    "upload PDF"
+  ],
+  "register user": [
+    "注册账户",
+    "register user"
+  ],
+  "log in": [
+    "登录",
+    "log in"
+  ],
+  "create workspace": [
+    "创建工作区",
+    "create workspace"
+  ],
+  "delete workspace": [
+    "删除工作区",
+    "delete workspace"
+  ],
+  "fetch papers": [
+    "读取论文",
+    "fetch papers"
+  ],
+  "fetch assertions": [
+    "读取指标",
+    "fetch assertions"
+  ],
+  "get evidence": [
+    "读取证据",
+    "get evidence"
+  ],
+  "fetch evidence": [
+    "读取证据",
+    "fetch evidence"
+  ],
+  "list workspace members": [
+    "读取成员列表",
+    "list workspace members"
+  ],
+  "add workspace member": [
+    "添加成员",
+    "add workspace member"
+  ],
+  "remove workspace member": [
+    "移除成员",
+    "remove workspace member"
+  ],
+  "目标检测：准确率与推理速度": [
+    "目标检测：准确率与推理速度",
+    "Object detection: accuracy and inference speed"
+  ],
+  "excluded result role": [
+    "该条属于被排除的基线或融合结果",
+    "excluded result role"
+  ],
+  "detector family does not match document": [
+    "结果中的检测方法与当前论文不一致",
+    "detector family does not match document"
+  ],
+  "excluded ensemble or comparison result": [
+    "该条属于被排除的融合或对比结果",
+    "excluded ensemble or comparison result"
+  ],
+  "value outside configured range": [
+    "数值超出规则允许范围",
+    "value outside configured range"
+  ],
+  "Rejected unknown metric": [
+    "已过滤未在领域规则中定义的指标",
+    "Rejected unknown metric"
+  ],
+  "模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。": [
+    "模型输出达到长度上限，本批结果不完整；请减小每批内容或增加最大输出长度。",
+    "The model hit its output limit. This batch is incomplete; reduce the batch size or increase the output limit."
+  ]
+}

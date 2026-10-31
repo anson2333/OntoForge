@@ -1,0 +1,122 @@
+[
+  {
+    "id": "rcnn",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1311.2524v1",
+    "status": "downloaded",
+    "sha256": "3cb7a18aa362f810665b5becd2581649116ead4933efd133038d59d255163fc6",
+    "bytes": 2760719,
+    "pages": 10,
+    "seconds": 4.5049
+  },
+  {
+    "id": "multibox",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1312.2249v1",
+    "status": "downloaded",
+    "sha256": "4da4b80c95aeb4e2b34ac42413e383c5fceb02a7f2a1f4ee8471a354fc1af645",
+    "bytes": 4427654,
+    "pages": 8,
+    "seconds": 4.6557
+  },
+  {
+    "id": "sppnet",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1406.4729v1",
+    "status": "downloaded",
+    "sha256": "772c38f3ebeeb9cd1300d0bbd85b4df1af0e01e7af6216ac6d265e3ea107a64f",
+    "bytes": 4092703,
+    "pages": 11,
+    "seconds": 3.7196
+  },
+  {
+    "id": "fast_rcnn",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1504.08083v1",
+    "status": "downloaded",
+    "sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+    "bytes": 728919,
+    "pages": 9,
+    "seconds": 3.1296
+  },
+  {
+    "id": "multi_region",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1505.01749v1",
+    "status": "downloaded",
+    "sha256": "5cbd975f6ebebbcb57f70898efcdf18e7de30e215ae3f75b5603a37895625a72",
+    "bytes": 8717534,
+    "pages": 17,
+    "seconds": 8.6256
+  },
+  {
+    "id": "faster_rcnn",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1506.01497v1",
+    "status": "downloaded",
+    "sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+    "bytes": 2368067,
+    "pages": 10,
+    "seconds": 3.1774
+  },
+  {
+    "id": "yolo",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1506.02640v1",
+    "status": "downloaded",
+    "sha256": "3469e880a5401ee6d1a53dcfe61d912c130d2f42473cabcae275e51cfe457f09",
+    "bytes": 5550305,
+    "pages": 9,
+    "seconds": 3.5643
+  },
+  {
+    "id": "ssd",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1512.02325v1",
+    "status": "downloaded",
+    "sha256": "466f0dd6e779211694b8b25382f2be038689cb56ee8286d81309272b25f22b6c",
+    "bytes": 552861,
+    "pages": 9,
+    "seconds": 3.2778
+  },
+  {
+    "id": "ion",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1512.04143v1",
+    "status": "downloaded",
+    "sha256": "743483ddbe73ac96e81c26d047372bd98630ff03f89c3012a32646abe225a423",
+    "bytes": 1763412,
+    "pages": 11,
+    "seconds": 3.7212
+  },
+  {
+    "id": "hypernet",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1604.00600v1",
+    "status": "downloaded",
+    "sha256": "de05fc538c917462f1cd3ae1d088e978335aa8868ab28eafef68437cd687a26f",
+    "bytes": 1827266,
+    "pages": 9,
+    "seconds": 3.3156
+  },
+  {
+    "id": "ohem",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1604.03540v1",
+    "status": "downloaded",
+    "sha256": "fce12351ec650d24b9c89ca9c98d76b719ddb03bfe50f854db19c617430e0ab7",
+    "bytes": 965877,
+    "pages": 9,
+    "seconds": 3.4232
+  },
+  {
+    "id": "rfcn",
+    "split": "historical",
+    "url": "https://arxiv.org/pdf/1605.06409v1",
+    "status": "downloaded",
+    "sha256": "ba07ca3b37f1698ee6bf69f48c6086603f3ef07c530401a5d061d1b2ea93b8fe",
+    "bytes": 9013379,
+    "pages": 11,
+    "seconds": 4.1996
+  }
+]

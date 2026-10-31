@@ -1,0 +1,1594 @@
+{
+  "date": "2026-10-30",
+  "transport": "HTTPX ASGI against normal JSON-RPC handlers; local account session",
+  "model": "glm-4.7-flash",
+  "provider": "openai_compatible",
+  "steps": [
+    {
+      "method": "createWorkspace",
+      "seconds": 0.078,
+      "ok": true
+    },
+    {
+      "method": "uploadPdf",
+      "seconds": 0.031,
+      "ok": true
+    },
+    {
+      "method": "parsePdfWithDomainPack",
+      "seconds": 49.437,
+      "ok": true
+    },
+    {
+      "method": "commitParsedPdf",
+      "seconds": 2.844,
+      "ok": true
+    },
+    {
+      "method": "getPapers",
+      "seconds": 0.14,
+      "ok": true
+    },
+    {
+      "method": "getAssertions",
+      "seconds": 0.172,
+      "ok": true
+    },
+    {
+      "method": "getCoverageAnalysis",
+      "seconds": 0.141,
+      "ok": true
+    },
+    {
+      "method": "getEvidence",
+      "seconds": 0.453,
+      "ok": true
+    },
+    {
+      "method": "getPaperSource",
+      "seconds": 0.063,
+      "ok": true
+    }
+  ],
+  "workspace_id": "workspace_真实模型全流程验收_2026_10_30_270e8f7d",
+  "paper_file": "fast_rcnn.pdf",
+  "source_sha256": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646",
+  "preview": {
+    "status": "parsed",
+    "workspace_id": "workspace_真实模型全流程验收_2026_10_30_270e8f7d",
+    "domain_pack_namespace": "cv_detection",
+    "upload_id": "upload_fc36bc94521d441d8713be2a4787da40",
+    "preview_id": "preview_0f9104494bc740fa9391f66576d2cb0a",
+    "diagnostics": {
+      "batch_count": 1,
+      "failed_batches": [],
+      "warnings": [
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+        "Rejected inference_latency: incompatible unit (conversion is not implicit)"
+      ],
+      "errors": [],
+      "skipped_batches": [],
+      "usage": [
+        {
+          "completion_tokens": 3962,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 13450,
+          "prompt_tokens_details": {
+            "cached_tokens": 13448
+          },
+          "total_tokens": 17412
+        }
+      ],
+      "input_characters": 43430,
+      "output_formats": [
+        "json"
+      ],
+      "model_seconds": 48.983613,
+      "retryable": false,
+      "model_called": true,
+      "provider": "openai_compatible",
+      "model": "glm-4.7-flash",
+      "parse_seconds": 0.42619,
+      "total_seconds": 49.417813,
+      "pages": 9,
+      "chunks": 9,
+      "pdf_bytes": 728919
+    },
+    "paper_metadata": {
+      "title": "Fast R-CNN",
+      "authors": [
+        "Unknown authors"
+      ],
+      "year": 2012,
+      "venue": "Unknown venue",
+      "doi": null,
+      "provenance_hash": "635404927e96bb914ac28207153244e928d604b7de279900e95bf4b61e127646"
+    },
+    "warnings": [
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Page-only source locations; precise PDF bounding boxes are unavailable."
+    ],
+    "extraction_method": "pypdf",
+    "assertion_extraction_method": "llm"
+  },
+  "assertion_sample": [
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "66.0",
+      "unit": "percent",
+      "context_conditions": {
+        "reported_conditions": "VOC12 trainval, using extra data (07+12), model VGG16",
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement comparing Fast R-CNN to R-CNN on PASCAL VOC 2012."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.0",
+      "unit": "percent",
+      "context_conditions": {
+        "reported_conditions": "VOC07 test, using enlarged training data (VOC07 trainval + VOC12 trainval)",
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement in text describing the improvement when augmenting training data."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p8_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_2",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "66.9",
+      "unit": "percent",
+      "context_conditions": {
+        "reported_conditions": "VOC07 test, model VGG16, single-scale training and testing",
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement in text summarizing main results."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.9
+        },
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        },
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_3",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "68.8",
+      "unit": "percent",
+      "context_conditions": {
+        "reported_conditions": "VOC07 test, using enlarged training data (07+12), model VGG16",
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement in text summarizing results with extra data."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_4",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "68.4",
+      "unit": "percent",
+      "context_conditions": {
+        "reported_conditions": "VOC2012 test, using enlarged training data (07+12), model VGG16",
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Direct statement in text summarizing results with extra data."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.9
+        }
+      ]
+    }
+  ],
+  "commit": {
+    "status": "committed",
+    "workspace_id": "workspace_真实模型全流程验收_2026_10_30_270e8f7d",
+    "domain_pack_namespace": "cv_detection",
+    "upload_id": "upload_fc36bc94521d441d8713be2a4787da40",
+    "paper_id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+    "chunks_created": 9,
+    "formulas_created": 0,
+    "assertions_created": 14,
+    "warnings": [
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Rejected inference_latency: incompatible unit (conversion is not implicit)",
+      "Page-only source locations; precise PDF bounding boxes are unavailable."
+    ]
+  },
+  "papers": {
+    "papers": [
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "doi": "",
+        "title": "Fast R-CNN",
+        "authors": [
+          "Unknown authors"
+        ],
+        "year": 2012,
+        "venue": "Unknown venue",
+        "domain_pack_namespace": "cv_detection",
+        "import_status": "verified"
+      }
+    ]
+  },
+  "assertions": {
+    "assertions": [
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_2",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:voc_map50",
+        "value": "66.9",
+        "unit": "percent",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 3,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_12",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "37.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_1",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:voc_map50",
+        "value": "70.0",
+        "unit": "percent",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_3",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:voc_map50",
+        "value": "68.8",
+        "unit": "percent",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_7",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "17.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_14",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "4.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_10",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "143.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_13",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "20.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_0",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:voc_map50",
+        "value": "66.0",
+        "unit": "percent",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_9",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "146.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_5",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "223.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_11",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "122.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_6",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:inference_latency",
+        "value": "320.0",
+        "unit": "ms",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_4",
+        "paperId": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+        "metricName": "cv_detection:voc_map50",
+        "value": "68.4",
+        "unit": "percent",
+        "status": "pending",
+        "confidence": 0.9,
+        "evidenceCount": 1,
+        "domain_pack_namespace": "cv_detection"
+      }
+    ]
+  },
+  "coverage": {
+    "coverage": {
+      "metrics": [
+        "voc_map50",
+        "coco_ap",
+        "coco_ap_small",
+        "coco_ap75",
+        "inference_fps",
+        "inference_latency"
+      ],
+      "methods": [
+        "region_based",
+        "dense_regression",
+        "multibox",
+        "unspecified"
+      ],
+      "scenarios": [
+        "voc2007_test",
+        "voc2012_test",
+        "coco_test_dev",
+        "coco_val",
+        "unspecified"
+      ],
+      "matrix": [
+        {
+          "method": "region_based",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "region_based",
+          "scenario": "unspecified",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "unspecified",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "multibox",
+          "scenario": "unspecified",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "unspecified",
+          "scenario": "voc2007_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "unspecified",
+          "scenario": "voc2012_test",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "unspecified",
+          "scenario": "coco_test_dev",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "unspecified",
+          "scenario": "coco_val",
+          "cells": {
+            "voc_map50": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            }
+          }
+        },
+        {
+          "method": "unspecified",
+          "scenario": "unspecified",
+          "cells": {
+            "voc_map50": {
+              "count": 5,
+              "assertion_ids": [
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_0",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_1",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_2",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_3",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_4"
+              ],
+              "paper_ids": [
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f"
+              ]
+            },
+            "coco_ap": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap_small": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "coco_ap75": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_fps": {
+              "count": 0,
+              "assertion_ids": [],
+              "paper_ids": []
+            },
+            "inference_latency": {
+              "count": 9,
+              "assertion_ids": [
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_5",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_6",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_7",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_9",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_10",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_11",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_12",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_13",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_inference_latency_b0_14"
+              ],
+              "paper_ids": [
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f",
+                "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f"
+              ]
+            }
+          }
+        }
+      ],
+      "coverage": {
+        "covered_cells": 2,
+        "total_cells": 120,
+        "ratio": 0.0167,
+        "by_metric": {
+          "voc_map50": {
+            "covered_cells": 1,
+            "total_cells": 20
+          },
+          "coco_ap": {
+            "covered_cells": 0,
+            "total_cells": 20
+          },
+          "coco_ap_small": {
+            "covered_cells": 0,
+            "total_cells": 20
+          },
+          "coco_ap75": {
+            "covered_cells": 0,
+            "total_cells": 20
+          },
+          "inference_fps": {
+            "covered_cells": 0,
+            "total_cells": 20
+          },
+          "inference_latency": {
+            "covered_cells": 1,
+            "total_cells": 20
+          }
+        },
+        "by_method": {
+          "region_based": {
+            "covered_cells": 0,
+            "total_cells": 30
+          },
+          "dense_regression": {
+            "covered_cells": 0,
+            "total_cells": 30
+          },
+          "multibox": {
+            "covered_cells": 0,
+            "total_cells": 30
+          },
+          "unspecified": {
+            "covered_cells": 2,
+            "total_cells": 30
+          }
+        },
+        "by_scenario": {
+          "voc2007_test": {
+            "covered_cells": 0,
+            "total_cells": 24
+          },
+          "voc2012_test": {
+            "covered_cells": 0,
+            "total_cells": 24
+          },
+          "coco_test_dev": {
+            "covered_cells": 0,
+            "total_cells": 24
+          },
+          "coco_val": {
+            "covered_cells": 0,
+            "total_cells": 24
+          },
+          "unspecified": {
+            "covered_cells": 2,
+            "total_cells": 24
+          }
+        }
+      },
+      "gaps": [
+        {
+          "method": "dense_regression",
+          "scenario": "coco_test_dev",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_test_dev",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_val",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "coco_val",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2007_test",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2007_test",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2012_test",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "dense_regression",
+          "scenario": "voc2012_test",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_test_dev",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_test_dev",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_val",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "coco_val",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2007_test",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2007_test",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2012_test",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "multibox",
+          "scenario": "voc2012_test",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_test_dev",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_test_dev",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_val",
+          "metric": "inference_latency",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        },
+        {
+          "method": "region_based",
+          "scenario": "coco_val",
+          "metric": "voc_map50",
+          "metric_demand": 1,
+          "method_activity": 0,
+          "scenario_activity": 0,
+          "score": 2
+        }
+      ],
+      "gap_count": 72
+    }
+  },
+  "evidence": {
+    "evidence": [
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::chunk_p7_0",
+        "type": "chunk",
+        "text": "S M L multi-task training? ✓ ✓ ✓ ✓ ✓ ✓ piecewise training? ✓ ✓ ✓ test-time bbox reg? ✓ ✓ ✓ ✓ ✓ ✓ VOC07 mAP 52.2 53.3 54.6 57.1 54.7 55.5 56.6 59.2 62.6 63.4 64.0 66.9 Table 6. Multi-task training (forth column per group) improves mAP over piecewise training (third column per group). 5. Design evaluation We conducted a set of basic experiments to understand how Fast R-CNN compares to traditional R-CNN and SPP- net, as well as to evaluate design decisions. We follow best practices and perform these control experiments on the PASCAL VOC07 dataset. 5.1. Does multi-task training help? Multi-task training is convenient because it avoids man- aging a pipeline of sequentially-trained tasks. But it also has the potential to improve results because the tasks inﬂuence each other through a shared representation (the ConvNet) [2]. Does multi-task training improve object detection ac- curacy in Fast R-CNN? To test this question, we train baseline networks that use only the classiﬁcation loss, Lcls, in Eq. 1 ( i.e., setting λ = 0). These baselines are printed for models S, M, and L in the ﬁrst column of each group in Table 6. Note that these models do not have bounding-box regressors. Next (second column per group), we take networks that were trained with the multi-task loss (Eq. 1,λ = 1), but we disable bounding- box regression at test time. This isolates the networks’ clas- siﬁcation accuracy and allows an apples-to-apples compar- ison with the baselines. Across all three networks we observe that multi-task training improves pure classiﬁcation accuracy relative to training for classiﬁcation alone. The improvement ranges from +0.8 to +1.1 mAP points, showing a consistent posi- tive effect from multi-task learning. Finally, we take the baseline models (trained with only the classiﬁcation loss), tack on the bounding-box regression layer, and train them withLloc while keeping all other net- work parameters frozen. The third column in each group shows the results of this piecewise training scheme: mAP improves over column one, but piecewise training under- performs multi-task training (forth column per group). 5.2. Scale invariance: to brute force or ﬁnesse? We compare two strategies for achieving scale-invariant object detection: brute-force learning (single scale) and im- age pyramids (multi-scale). In either case, we deﬁne the scales of an image to be the length of its shortest side. All single-scale experiments use s = 600 pixels;s may be less than 600 for some images as we cap the longest image side at 1000 pixels. These values were selected so that VGG16 ﬁts in GPU memory during ﬁne-tuning. The smaller models are not memory bound and can beneﬁt from larger values of s, however optimizing s for each model is not our main concern. We note that PASCAL images are typically 300× 500 pixels and thus the single-scale setting upsamples most images by a factor of two. The effective stride at the RoI pooling layer is≈ 8 pixels for our models. In the multi-scale setting, we use the same ﬁve scales speciﬁed in [10] (s∈{ 480, 576, 688, 864, 1200}) to facili- tate comparison with SPPnet. However, we cap the longest side at 2000 pixels to avoid over-running GPU memory. SPPnet ZF S M L scales 1 5 1 5 1 5 1 test rate (s/im) 0.14 0.38 0.10 0.39 0.15 0.64 0.32 VOC07 mAP 58.0 59.2 57.1 58.4 59.2 60.7 66.9 Table 7. Multi-scale vs. single scale. SPPnet ZF (similar to model S) results are from [10]. Larger networks with a single-scale offer the best speed / accuracy tradeoff. (L cannot use multi-scale in our implementation due to GPU memory constraints.) Table 7 shows models S and M when trained and tested with one or ﬁve scales. Perhaps the most surprising result in [10] was that single-scale detection performs almost as well as multi-scale detection. Our ﬁndings conﬁrm their result: deep ConvNets are adept at directly learning scale invariance. The multi-scale approach offers only a small increase in mAP at a large cost in compute time (Table 7). In the case of VGG16 (model L), we are limited to using a single scale by implementation details. Yet it achieves a mAP of 66.9%, which is slightly higher than the 66.0% reported for traditional R-CNN [8], even though R-CNN uses “inﬁnite” scales in the sense that each object proposal is warped to a canonical size. Since single-scale processing offers the best tradeoff be- tween speed and accuracy, especially for very deep models, all experiments outside of this sub-section use single-scale training and testing withs = 600 pixels. 5.3. Do we need more training data? An important property of an object detector is its ability to improve as more training data is supplied. In [23], Zhuet al. studied this issue in depth for DPMs [7] and found that they saturate after only a few hundred to thousand training examples. Here we perform a simple experiment were we 7",
+        "confidence": 0.9,
+        "bounding_box": {
+          "page": 7,
+          "coordinate_precision": "page_only"
+        },
+        "verification_status": "raw",
+        "modification_count": 0,
+        "last_modified_at": null
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::chunk_p6_0",
+        "type": "chunk",
+        "text": "4.3. VOC 2007 results On VOC07, we compare Fast R-CNN to R-CNN and SPPnet. All methods start from the same pre-trained VGG16 network and use bounding-box regression. The VGG16 SPPnet results were computed by the authors of [10] and provided in personal communication. SPPnet uses ﬁve scales during both training and testing. The im- provement of Fast R-CNN over SPPnet illustrates that even though Fast R-CNN uses single-scale training and testing, ﬁne-tuning the conv layers provides a large improvement in mAP (from 63.1% to 66.9%). Traditional R-CNN achieves a mAP of 66.0%. These results are pragmatically valuable given how much faster and easier Fast R-CNN is to train and test, which we discuss next. 4.4. Training and testing time Fast training and testing times are our second main re- sult. Table 4 compares training time (hours), testing rate (seconds per image), and mAP on VOC07 between Fast R- CNN, R-CNN, and SPPnet. For VGG16, Fast R-CNN pro- cessing images 146× faster than R-CNN without truncated SVD and 213× faster with it. Training time is reduced by 9×, from 84 hours to 9.5. Compared to SPPnet, Fast R- CNN trains VGG16 2.7× faster (in 9.5 vs. 25.5 hours) and tests 7× faster without truncated SVD or 10× faster with it. Fast R-CNN also reduces disk storage by hundreds of gigabytes, because it does not cache features. Fast R-CNN R-CNN SPPnet S M L S M L †L train time (h) 1.2 2.0 9.5 22 28 84 25 train speedup 18.3× 14.0× 8.8× 1× 1× 1× 3.4× test rate (s/im) 0.10 0.15 0.32 9.8 12.1 47.0 2.3 ⊿ with SVD 0.06 0.08 0.22 - - - - test speedup 98× 80× 146× 1× 1× 1× 20× ⊿ with SVD 169× 150× 213× - - - - VOC07 mAP 57.1 59.2 66.9 58.5 60.2 66.0 63.1 ⊿ with SVD 56.5 58.7 66.6 - - - - Table 4. Runtime comparison between the same models in Fast R- CNN, R-CNN, and SPPnet. Fast R-CNN uses single-scale mode. SPPnet uses the ﬁve scales speciﬁed in [10]. †Timing provided by the authors of [10]. Times were measured on an Nvidia K40 GPU. Truncated SVD. Truncated SVD can reduce detection time by more than 30% with only a small (0.3 percent- age point) drop in mAP and without needing to perform additional ﬁne-tuning after model compression. Figure 2 illustrates how using the top 1024 singular values from the 25088× 4096 matrix in VGG16’s fc6 layer and the top256 singular values from the4096×4096 fc7 layer reduces run- time with little loss in mAP. Further speed-ups are possi- ble with smaller drops in mAP if one ﬁne-tunes again after compression. roi_pool55.4% (17ms) other 3.5% (11ms) fc6 38.7% (122ms) conv 46.3% (146ms) fc76.2% (20ms) Forward pass timing mAP 66.9% @ 320ms / image roi_pool5 7.9% (17ms) other 5.1% (11ms) fc6 17.5% (37ms) conv 67.8% (143ms) fc71.7% (4ms) Forward pass timing (SVD) mAP 66.6% @ 223ms / image Figure 2. Timing for VGG16 before and after truncated SVD. Be- fore SVD, fully-connected layers fc6 and fc7 take 45% of the time. 4.5. Which layers to ﬁne-tune? For the less deep networks considered in the SPPnet pa- per [10], ﬁne-tuning only the fully-connected layers ap- peared to be sufﬁcient for good accuracy. We hypothesized earlier in this paper that this result would not hold for very deep networks. To validate that ﬁne-tuning the conv layers is important for VGG16, we use Fast R-CNN to ﬁne-tune, but freeze the thirteen conv layers so that only the fully- connected layers learn. This ablation emulates the SPP- net training restriction and decreases mAP from 66.9% to 61.4% (Table 5). This experiment veriﬁes our hypothesis: training through the RoI pooling layer is important for very deep nets. layers that are ﬁne-tuned in model L SPPnet L ≥ fc6 ≥ conv3 1 ≥ conv2 1 ≥ fc6 VOC07 mAP 61.4 66.9 67.2 63.1 test rate (s/im) 0.32 0.32 0.32 2.3 Table 5. Effect of restricting which layers are ﬁne-tuned for VGG16. Fine-tuning ≥ fc6 emulates the SPPnet training algo- rithm [10], but using a single scale. SPPnet L results were ob- tained using ﬁve scales, at a signiﬁcant speed cost. Does this mean thatall conv layers should be ﬁne-tuned? In short, no. In the smaller networks ( S and M) we ﬁnd that conv1 is generic and task independent (a well-known fact [13]). Allowing conv1 to learn, or not, has no mean- ingful effect on mAP. For VGG16, we found it only nec- essary to update layers from conv3 1 and up (9 of the 13 conv layers). This observation is pragmatic: (1) updating from conv2 1 slows training by 1.3× (12.5 vs. 9.5 hours) compared to learning from conv3 1; and (2) updating from conv1 1 over-runs GPU memory. The difference in mAP when learning from conv2 1 up was only +0.3 points (Ta- ble 5, last column). All Fast R-CNN results in this paper using VGG16 ﬁne-tune layers conv3 1 and up; all experi- ments with models S and M ﬁne-tune layers conv2 and up. 6",
+        "confidence": 0.9,
+        "bounding_box": {
+          "page": 6,
+          "coordinate_precision": "page_only"
+        },
+        "verification_status": "raw",
+        "modification_count": 0,
+        "last_modified_at": null
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::chunk_p5_0",
+        "type": "chunk",
+        "text": "method data aero bike bird boat bottle bus car cat chair cow table dog horse mbike persn plant sheep sofa train tv mAP SPPnet BB [10]† 07 73.9 72.3 62.5 51.5 44.4 74.4 73.0 74.4 42.3 73.6 57.7 70.3 74.6 74.3 54.2 34.0 56.4 56.4 67.9 73.5 63.1 R-CNN BB [8] 07 73.4 77.0 63.4 45.4 44.6 75.1 78.1 79.8 40.5 73.7 62.2 79.4 78.1 73.1 64.2 35.6 66.8 67.2 70.4 71.1 66.0 FRCN [our] 07 74.5 78.3 69.2 53.2 36.6 77.3 78.2 82.0 40.7 72.7 67.9 79.6 79.2 73.0 69.0 30.1 65.4 70.2 75.8 65.8 66.9 FRCN [ours] 07+12 77.0 78.1 69.3 59.4 38.3 81.6 78.6 86.7 42.8 78.8 68.9 84.7 82.0 76.6 69.9 31.8 70.1 74.8 80.4 70.4 70.0 Table 1. VOC 2007 test detection average precision (%). All methods use VGG16, including SPPnet. Training data key: “07”: VOC07 trainval, “07+12”: VOC07 trainval union with VOC12 trainval.†SPPnet VGG16 results were prepared by the authors of [10]. method data aero bike bird boat bottle bus car cat chair cow table dog horse mbike persn plant sheep sofa train tv mAP BabyLearning Prop. 77.7 73.8 62.3 48.8 45.4 67.3 67.0 80.3 41.3 70.8 49.7 79.5 74.7 78.6 64.5 36.0 69.9 55.7 70.4 61.7 63.8 R-CNN BB [8] 12 79.3 72.4 63.1 44.0 44.4 64.6 66.3 84.9 38.8 67.3 48.4 82.3 75.0 76.7 65.7 35.8 66.2 54.8 69.1 58.8 62.9 SegDeepM 12+seg 82.3 75.2 67.1 50.7 49.8 71.1 69.6 88.2 42.5 71.2 50.0 85.7 76.6 81.8 69.3 41.5 71.9 62.2 73.2 64.6 67.2 FRCN [ours]† 12 80.1 74.4 67.7 49.4 41.4 74.2 68.8 87.8 41.9 70.1 50.2 86.1 77.3 81.1 70.4 33.3 67.0 63.3 77.2 60.0 66.1 FRCN [ours]‡ 07++12 82.0 77.8 71.6 55.3 42.4 77.3 71.7 89.3 44.5 72.1 53.7 87.7 80.0 82.5 72.7 36.6 68.7 65.4 81.1 62.7 68.8 Table 2.VOC 2010 testdetection average precision (%). BabyLearning uses an unspeciﬁed network. All other methods use VGG16. Train- ing data key: “12”: VOC12 trainval, “Prop.”: proprietary dataset, “12+seg”: VOC12 trainval plus segmentation annotations, “07++12”: VOC07 trainval and test union with VOC12 trainval. Results: †http://goo.gl/f1vtls, ‡http://goo.gl/kyZcnW method data aero bike bird boat bottle bus car cat chair cow table dog horse mbike persn plant sheep sofa train tv mAP BabyLearning Prop. 78.0 74.2 61.3 45.7 42.7 68.2 66.8 80.2 40.6 70.0 49.8 79.0 74.5 77.9 64.0 35.3 67.9 55.7 68.7 62.6 63.2 NUS NIN c2000 ? 80.2 73.8 61.9 43.7 43.0 70.3 67.6 80.7 41.9 69.7 51.7 78.2 75.2 76.9 65.1 38.6 68.3 58.0 68.7 63.3 63.8 R-CNN BB [8] 12 79.6 72.7 61.9 41.2 41.9 65.9 66.4 84.6 38.5 67.2 46.7 82.0 74.8 76.0 65.2 35.6 65.4 54.2 67.4 60.3 62.4 FRCN [ours]† 12 80.3 74.7 66.9 46.9 37.7 73.9 68.6 87.7 41.7 71.1 51.1 86.0 77.8 79.8 69.8 32.1 65.5 63.8 76.4 61.7 65.7 FRCN [ours]‡ 07++12 82.3 78.4 70.8 52.3 38.7 77.8 71.6 89.3 44.2 73.0 55.0 87.5 80.5 80.8 72.0 35.1 68.3 65.7 80.4 64.2 68.4 Table 3.VOC 2012 testdetection average precision (%). BabyLearning and NUS NIN c2000 use unspeciﬁed networks. All other methods use VGG16. Training data key: see Table 2, “?”: unknown. Results: †http://goo.gl/weNq2Z, ‡http://goo.gl/o1tZ10 4. Main results Three main results support this paper’s contributions: 1. State-of-the-art mAP on VOC07, 2010, and 2012 2. Fast training and testing times compared to R-CNN and SPPnet 3. Fine-tuning conv layers in VGG16 is important 4.1. Experimental setup Our experiments use three pre-trained ImageNet models that are available online. 1 The ﬁrst is the CaffeNet (essen- tially AlexNet [13]) from R-CNN [9]. We alternatively refer to this CaffeNet as model S, for “small.” The second net- work is VGG CNN M 1024 from [3], which has the same depth as S, but is wider. We call this network model M, for “medium.” The ﬁnal network is the very deep VGG16 model from [19]. Since this model is the largest, we call it model L. In this section, all experiments use single-scale training and testing (see Section 5.2 for details). 4.2. VOC 2010 and 2012 results On these datasets, we compare against the top methods on the comp4 (outside data) track from the public leader- 1https://github.com/BVLC/caffe/wiki/Model-Zoo board.2 For the NUS NIN c2000 and BabyLearning meth- ods, there are no associated publications at this time and we could not ﬁnd information on the ConvNet architec- tures used; they are unspeciﬁed variants of the Network- in-Network design [16]. All other methods are initialized from the same pre-trained VGG16 network. Fast R-CNN achieves the top result on VOC12 with a mAP of 65.7% (and 68.4% with extra data). It is also two orders of magnitude faster than the other methods, which are all based on traditional R-CNN pipelines. On VOC10, SegDeepM [24] achieves a higher mAP than Fast R-CNN (67.2% vs. 66.1%). SegDeepM is trained on VOC12 train- val plus segmentation annotations; it is designed to boost R-CNN accuracy by using an MRF to reason over R-CNN detections and segmentations from the O 2P [1] semantic- segmentation method. Fast R-CNN can be swapped into SegDeepM, in place of traditional R-CNN, which may lead to better results. When using the enlarged “07++12” train- ing data (discussed in Section 5.3), Fast R-CNN’s mAP in- creases to 68.8%, surpassing SegDeepM. 2http://host.robots.ox.ac.uk:8080/leaderboard. Accessed April 18, 2015. 5",
+        "confidence": 0.9,
+        "bounding_box": {
+          "page": 5,
+          "coordinate_precision": "page_only"
+        },
+        "verification_status": "raw",
+        "modification_count": 0,
+        "last_modified_at": null
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::chunk_p8_0",
+        "type": "chunk",
+        "text": "augment the VOC07 trainval set with the VOC12 trainval set, roughly tripling the number of images to 16.5k. The expanded training set improves mAP on VOC07 test from 66.9% to 70.0% (Table 1). When training on this dataset we use 60k mini-batch iterations instead of 40k. We performed similar experiments for VOC10 and 2012, for which we construct an enlarged dataset of 21.5k images from VOC07 trainval and test union with VOC12 trainval. When training on this dataset we use 100k mini-batch itera- tions and lower the learning rate by0.1× each 40k iterations (instead of each 30k). For VOC10 and 2012, mAP improves from 66.1% to 68.8% and from 65.7% to 68.4%, respec- tively. Fast R-CNN, and presumably other deep ConvNet- based detectors, clearly have room to grow as more training data become available. 5.4. Does SVM outperform softmax? Fast R-CNN uses the softmax classiﬁer learnt during ﬁne-tuning instead of training one-vs-rest linear SVMs post hoc, as was done in R-CNN and SPPnet. To understand the impact of this choice, we implemented post-hoc SVM train- ing with hard negative mining in Fast R-CNN. We use the same training algorithm and hyper-parameters as in tradi- tional R-CNN. method classiﬁer S M L R-CNN [9, 8] SVM 58.5 60.2 66.0 FRCN [ours] SVM 56.3 58.7 66.8 FRCN [ours] softmax 57.1 59.2 66.9 Table 8. Fast R-CNN with softmax vs. SVM (VOC07 mAP). Table 8 shows softmax slightly outperforming SVM for all three networks, by +0.1 to +0.8 mAP points. This ef- fect is small, but it demonstrates that “one-shot” ﬁne-tuning is sufﬁcient compared to previous multi-stage training ap- proaches. We note that softmax, unlike one-vs-rest SVMs, introduces competition between classes when scoring a RoI. 5.5. Are more proposals always better? There are two types of object detectors (roughly speak- ing): those that use a sparse set of “object proposals” (e.g., selective search [20]) and those that use a dense set , i.e. sliding window. Hosang et al.’s recent meta-evaluation [11] of sparse proposal methods states “[sparse proposals] may improve detection quality by reducing spurious false posi- tives.” After years of use, this basic issue remains untested, likely due to slow detector training and testing. We ap- proach this issue from two angles using Fast R-CNN. More sparse proposals. Using selective search’s quality mode, we sweep from 1k to 10k proposals per image, each time re-training and re-testing model M. If proposals serve a purely computational role, increasing the number of pro- posals per image should not harm mAP, and may even im- prove it. 103 104 Number of object proposals 49 51 53 56 58 61 63 66mAP Sel. Search (SS) SS (2k) + Rand Dense SS replace Dense 45k Dense Softmax 45k Dense SVM 49 51 53 56 58 61 63 66 Average Recall SS Avg. Recall Figure 3. VOC07 test mAP and AR for various proposal schemes. We ﬁnd that mAP rises and then falls slightly as the pro- posal count increases (Figure 3, solid blue line). The state- of-the-art for measuring object proposal quality is Average Recall (AR) [11]. AR correlates well with mAP for several proposal methods using R-CNN,when using a ﬁxed number of boxes per image. Figure 3 shows that AR (solid red line) does not correlate well with mAP as the number of boxes per image is varied. AR must be used with care; higher AR due to more boxes does not imply that mAP will increase. Fast R-CNN enables efﬁcient, direct evaluation of ob- ject proposal mAP, which is preferable to proxy metrics. Re-training and re-testing with model M takes less than 2.5 hours. Dense proposals. We also investigate Fast R-CNN when using densely generated boxes (over scale, position, and as- pect ratio), at a rate of about 45k / image. This dense set is rich enough that when each selective search box is replaced by its closest (in IoU) dense box, mAP drops only 1 point (to 57.7%, Figure 3, blue triangle). The statistics of the dense boxes differ from those of selective search boxes. Starting with 2k selective search boxes, we test mAP when adding a random sample of 1000×{ 2, 4, 6, 8, 10, 32, 45} dense boxes. For each exper- iment we re-train and re-test model M. When these dense boxes are added, mAP falls more strongly than when adding more selective search boxes, eventually reaching 53.0%. We also train and test Fast R-CNN using only dense boxes (45k / image). This setting yields a mAP of 52.9% (blue diamond). We also check if SVMs with hard negative mining are needed to cope with the dense box distribution. SVMs do even worse: 49.3% (blue circle). Dense vs. sparse. Sparse object proposal methods are currently the speed bottleneck in Fast R-CNN. Replacing 8",
+        "confidence": 0.9,
+        "bounding_box": {
+          "page": 8,
+          "coordinate_precision": "page_only"
+        },
+        "verification_status": "raw",
+        "modification_count": 0,
+        "last_modified_at": null
+      },
+      {
+        "id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::chunk_p1_0",
+        "type": "chunk",
+        "text": "Fast R-CNN Ross Girshick Microsoft Research rbg@microsoft.com Abstract This paper proposes Fast R-CNN , a clean and fast framework for object detection. Compared to traditional R-CNN, and its accelerated version SPPnet, Fast R-CNN trains networks using a multi-task loss in a single training stage. The multi-task loss simpliﬁes learning and improves detection accuracy. Unlike SPPnet, all network layers can be updated during ﬁne-tuning. We show that this difference has practical ramiﬁcations for very deep networks, such as VGG16, where mAP suffers when only the fully-connected layers are updated. Compared to “slow” R-CNN, Fast R- CNN is 9× faster at training VGG16 for detection, 213 × faster at test-time, and achieves a signiﬁcantly higher mAP on PASCAL VOC 2012. Compared to SPPnet, Fast R-CNN trains VGG16 3× faster, tests 10× faster, and is more accu- rate. Fast R-CNN is implemented in Python and C++ and is available under the open-source MIT License athttps: //github.com/rbgirshick/fast-rcnn. 1. Introduction The use of deep ConvNets [15, 17] for image classiﬁ- cation [13] and object detection [9, 18] has led to signiﬁ- cant gains in accuracy. However, compared to image clas- siﬁation, the greater difﬁculty of object detection has re- sulted in approaches of greater complexity. These methods (e.g., [9, 10, 18, 24]) train networks in multi-stage pipelines, which makes training difﬁcult and time consuming. Detection requires the accurate localization of objects, creating two primary challenges. First, numerous candi- date object locations need to be evaluated. In order to make detection efﬁcient, the convolutional features need to be shared between locations [10, 18]. Unfortunately, the approach of [10] restricts the back-propagation of errors through the network during training, potentially limiting ac- curacy. Second, the candidate object locations need to be reﬁned to achieve high accuracy. Previous reﬁnement pro- cesses [9, 18] have been trained in a separate learning stage. In this paper, we signiﬁcantly simplify the learning pro- cess for state-of-the-art object detectors. A single-stage training algorithm is proposed that simultaneously learns to classify object proposals and reﬁne their spatial locations. In addition, we propose a new method for sharing con- volutional features during training that allows for the full back-propagation of errors through the network, leading to increased accuracy. Several improvements are also made to increase runtime efﬁciency, such as the use of truncated SVD, which is particularly effective for object detection. The result is a method that can train very deep detection networks in a single stage 9× faster than R-CNN [9] and 3× faster than SPPnet [10]. During runtime, the network processes images in 0.3s (excluding object proposal time) while achieving top accuracy on PASCAL VOC 2012 with a mAP of 66% (vs. 62% for R-CNN). 1.1. R-CNN and SPPnet R-CNN [9] has excellent object detection accuracy. However, it also has notable drawbacks: 1. Training is a multi-stage pipeline. One ﬁrst ﬁne- tunes a ConvNet for detection using cross-entropy loss. Then, linear SVMs are ﬁt to ConvNet features com- puted on warped object proposals. In the third training stage, bounding-box regressors are learned. 2. Training is expensive in space and time. For SVM and regressor training, features are extracted from each warped object proposal in each image and written to disk. With very deep networks, such as VGG16 [19], this process takes 2.5 GPU days for the 5k images of the VOC07 trainval set. These features require hun- dreds of gigabytes of storage. 3. Test-time detection is slow. At test-time, features are extracted from each warped object proposal in each test image. Detection with VGG16 takes 47s / image. R-CNN is slow because it warps and then processes each object proposal independently. SPPnet [10] was proposed to speed up R-CNN. In SPPnet, proposal warping is shifted to just after the ConvNet’s last convolutional layer. This re- organization allows the whole input image to be efﬁciently processed into a deep feature map (or pyramid), indepen- dent of the object proposals. To classify a proposal, the fea- 1 arXiv:1504.08083v1 [cs.CV] 30 Apr 2015",
+        "confidence": 0.9,
+        "bounding_box": {
+          "page": 1,
+          "coordinate_precision": "page_only"
+        },
+        "verification_status": "raw",
+        "modification_count": 0,
+        "last_modified_at": null
+      }
+    ],
+    "assertion": {
+      "assertion_id": "paper_015bf9e8975335267d29aa67940b84a38b058d089634312b7a51cb98d2d2456f::assert_llm_voc_map50_b0_2",
+      "value": "66.9",
+      "unit": "percent",
+      "status": "pending",
+      "confidence": 0.9
+    }
+  },
+  "source_bytes_preserved": true,
+  "complete": true
+}

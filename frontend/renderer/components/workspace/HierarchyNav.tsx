@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 /**
  * Hierarchy Nav
  * Breadcrumb control for moving across the workspace hierarchy.
@@ -17,7 +18,7 @@ interface HierarchyNavProps {
 
 export const HierarchyNav: React.FC<HierarchyNavProps> = ({ items }) => {
   return (
-    <nav className="hierarchy-nav" aria-label="Workspace hierarchy">
+    <nav className="hierarchy-nav" aria-label={t("Workspace hierarchy")}>
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (

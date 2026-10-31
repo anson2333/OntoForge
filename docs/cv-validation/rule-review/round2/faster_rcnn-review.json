@@ -1,0 +1,145 @@
+[
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "73.2",
+    "unit": "percent",
+    "reference_ids": [
+      "R18"
+    ],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "review_source_pdf_pages": [
+      1,
+      2,
+      7
+    ],
+    "reason_zh": "数值及当前论文方法归属有原文支持；未知训练条件和评估细节继续保留未知，不据此进行无条件比较。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b0_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "70.4",
+    "unit": "percent",
+    "reference_ids": [
+      "R20"
+    ],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "review_source_pdf_pages": [
+      1,
+      2,
+      7
+    ],
+    "reason_zh": "数值及当前论文方法归属有原文支持；未知训练条件和评估细节继续保留未知，不据此进行无条件比较。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_fps_b0_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:inference_fps",
+    "value": "5",
+    "unit": "fps",
+    "reference_ids": [
+      "R22"
+    ],
+    "source_pdf_pages": [
+      1,
+      2
+    ],
+    "review_source_pdf_pages": [
+      1,
+      7
+    ],
+    "reason_zh": "5 FPS数值和完整方法正确，但原文明确including all steps，模型仍反向标为排除proposal。应改为端到端；表4补充K40硬件。",
+    "suggested_context_corrections": {
+      "timing_scope": "end_to_end",
+      "hardware": "Nvidia K40 GPU"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_inference_latency_b0_3",
+    "verdict": "exclude",
+    "metric": "cv_detection:inference_latency",
+    "value": "10",
+    "unit": "ms",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      2
+    ],
+    "review_source_pdf_pages": [
+      2,
+      7
+    ],
+    "reason_zh": "10ms是额外计算候选框的边际开销，不是完整检测器单图延迟。数值存在仍不能保证指标含义正确。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_0",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.9",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      5,
+      6
+    ],
+    "reason_zh": "第6页表1的RPN+ZF shared主方法为59.9%，归属、训练集与测试集一致。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_1",
+    "verdict": "supported",
+    "metric": "cv_detection:voc_map50",
+    "value": "58.7",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "第6页表1的RPN+ZF unshared消融为58.7%，变体和训练/测试集一致。",
+    "suggested_context_corrections": {},
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  },
+  {
+    "assertion_id": "assert_llm_voc_map50_b1_2",
+    "verdict": "needs_correction",
+    "metric": "cv_detection:voc_map50",
+    "value": "59.2",
+    "unit": "percent",
+    "reference_ids": [],
+    "source_pdf_pages": [
+      6
+    ],
+    "review_source_pdf_pages": [
+      6
+    ],
+    "reason_zh": "59.2%对应以RPN+VGG生成proposal，但固定检测器仍是SS+ZF。表1下方正文明确仍使用原来的检测器。应区分proposal backbone和detector backbone，不能把VGG写成整个检测器骨干。",
+    "suggested_context_corrections": {
+      "model_variant": "RPN-VGG proposals + fixed SS-trained Fast R-CNN-ZF detector",
+      "backbone": "ZF",
+      "proposal_backbone": "VGG16",
+      "result_role": "ablation"
+    },
+    "reviewer": "AI-assisted comparison against rendered local v1 PDF; not independent human annotation"
+  }
+]

@@ -6,6 +6,7 @@ Handles connection pooling and session management.
 from typing import Optional
 from neo4j import GraphDatabase, Driver, Session
 from contextlib import contextmanager
+from contextvars import ContextVar
 
 
 class Neo4jConnection:
@@ -24,6 +25,7 @@ class Neo4jConnection:
         self._user = user
         self._password = password
         self._driver: Optional[Driver] = None
+        self._transaction = ContextVar(f"neo4j_transaction_{id(self)}", default=None)
 
     def connect(self) -> None:
         """Establish connection to Neo4j database."""
@@ -88,9 +90,30 @@ class Neo4jConnection:
         Returns:
             List of records from query result
         """
+        transaction = self._transaction.get()
+        if transaction is not None:
+            return [record.data() for record in transaction.run(query, parameters or {})]
         with self.session(database=database) as session:
             result = session.run(query, parameters or {})
             return [record.data() for record in result]
+
+    @contextmanager
+    def transaction(self, database: str = "neo4j"):
+        """Make repository calls on this connection part of one atomic write."""
+        if self._transaction.get() is not None:
+            raise RuntimeError("Nested graph transactions are not supported")
+        with self.session(database) as session:
+            tx = session.begin_transaction()
+            token = self._transaction.set(tx)
+            try:
+                yield self
+                tx.commit()
+            except BaseException:
+                tx.rollback()
+                raise
+            finally:
+                self._transaction.reset(token)
+                tx.close()
 
     def execute_write(self, query: str, parameters: dict = None, database: str = "neo4j"):
         """

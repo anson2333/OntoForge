@@ -45,7 +45,7 @@ class EdgeRepository:
         result = self.db.execute_query(query, edge.model_dump())
         return result[0]["props"] if result else {}
 
-    def create_contains_paper_edge(self, edge: ContainsPaperEdge) -> Dict[str, Any]:
+    def create_contains_paper_edge(self, edge: ContainsPaperEdge) -> Dict[str, Any] | None:
         """Create a CONTAINS_PAPER relationship linking workspace to paper."""
         query = """
         MATCH (from_node:WorkspaceNode {id: $from_node_id})
@@ -54,7 +54,7 @@ class EdgeRepository:
         RETURN properties(r) as props
         """
         result = self.db.execute_query(query, edge.model_dump())
-        return result[0]["props"] if result else {}
+        return result[0]["props"] if result else None
 
     def create_has_branch_edge(self, edge: HasBranchEdge) -> Dict[str, Any]:
         """Create a HAS_BRANCH relationship."""
@@ -67,7 +67,7 @@ class EdgeRepository:
         result = self.db.execute_query(query, edge.model_dump())
         return result[0]["props"] if result else {}
 
-    def create_belongs_to_edge(self, edge: BelongsToEdge) -> Dict[str, Any]:
+    def create_belongs_to_edge(self, edge: BelongsToEdge) -> Dict[str, Any] | None:
         """Create a BELONGS_TO relationship with confidence and classification metadata."""
         query = """
         MATCH (from_node {id: $from_node_id})
@@ -80,7 +80,7 @@ class EdgeRepository:
         RETURN properties(r) as props
         """
         result = self.db.execute_query(query, edge.model_dump())
-        return result[0]["props"] if result else {}
+        return result[0]["props"] if result else None
 
     def create_cites_edge(self, edge: CitesEdge) -> Dict[str, Any]:
         """Create a CITES relationship."""
@@ -93,7 +93,7 @@ class EdgeRepository:
         result = self.db.execute_query(query, edge.model_dump())
         return result[0]["props"] if result else {}
 
-    def create_contains_edge(self, edge: ContainsEdge) -> Dict[str, Any]:
+    def create_contains_edge(self, edge: ContainsEdge) -> Dict[str, Any] | None:
         """Create a CONTAINS relationship with optional extraction_method property."""
         query = """
         MATCH (from_node {id: $from_node_id})
@@ -102,9 +102,9 @@ class EdgeRepository:
         RETURN properties(r) as props
         """
         result = self.db.execute_query(query, edge.model_dump())
-        return result[0]["props"] if result else {}
+        return result[0]["props"] if result else None
 
-    def create_evidenced_by_edge(self, edge: EvidencedByEdge) -> Dict[str, Any]:
+    def create_evidenced_by_edge(self, edge: EvidencedByEdge) -> Dict[str, Any] | None:
         """Create an EVIDENCED_BY relationship with confidence_score."""
         query = """
         MATCH (from_node {id: $from_node_id})
@@ -115,7 +115,7 @@ class EdgeRepository:
         RETURN properties(r) as props
         """
         result = self.db.execute_query(query, edge.model_dump())
-        return result[0]["props"] if result else {}
+        return result[0]["props"] if result else None
 
     def create_contradicts_edge(self, edge: ContradictsEdge) -> Dict[str, Any]:
         """Create a CONTRADICTS relationship with conflict_id."""

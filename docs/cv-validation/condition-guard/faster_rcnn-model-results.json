@@ -1,0 +1,988 @@
+{
+  "paper": "faster_rcnn",
+  "paper_metadata": {
+    "title": "Faster R-CNN: Towards Real-Time Object Detection",
+    "authors": [
+      "Unknown authors"
+    ],
+    "year": 2015,
+    "venue": "Unknown venue",
+    "doi": null,
+    "provenance_hash": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef"
+  },
+  "source_sha256": "9d72de197c6c8e76f32602fc447406d6a43f37b5b019933dd4d873463061a6ef",
+  "diagnostics": {
+    "batch_count": 4,
+    "failed_batches": [],
+    "warnings": [],
+    "errors": [],
+    "skipped_batches": [],
+    "usage": [
+      {
+        "prompt_tokens": 4764,
+        "completion_tokens": 643,
+        "total_tokens": 5407,
+        "prompt_tokens_details": {
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 3100
+      },
+      {
+        "prompt_tokens": 5314,
+        "completion_tokens": 1782,
+        "total_tokens": 7096,
+        "prompt_tokens_details": {
+          "cached_tokens": 1792
+        },
+        "prompt_cache_hit_tokens": 1792,
+        "prompt_cache_miss_tokens": 3522
+      },
+      {
+        "prompt_tokens": 6569,
+        "completion_tokens": 1424,
+        "total_tokens": 7993,
+        "prompt_tokens_details": {
+          "cached_tokens": 1792
+        },
+        "prompt_cache_hit_tokens": 1792,
+        "prompt_cache_miss_tokens": 4777
+      },
+      {
+        "prompt_tokens": 2993,
+        "completion_tokens": 340,
+        "total_tokens": 3333,
+        "prompt_tokens_details": {
+          "cached_tokens": 1792
+        },
+        "prompt_cache_hit_tokens": 1792,
+        "prompt_cache_miss_tokens": 1201
+      }
+    ],
+    "input_characters": 39241,
+    "finish_reasons": [
+      "stop",
+      "stop",
+      "stop",
+      "stop"
+    ],
+    "output_formats": [
+      "json",
+      "json",
+      "json",
+      "json"
+    ],
+    "model_seconds": 25.941578,
+    "retryable": false,
+    "model_called": true,
+    "provider": "openai_compatible",
+    "model": "deepseek-flash",
+    "parse_seconds": 0.875035,
+    "total_seconds": 26.81817,
+    "pages": 10,
+    "chunks": 13,
+    "pdf_bytes": 2368067
+  },
+  "assertions": [
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "73.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "VGG-16",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Abstract states 73.2% mAP on VOC 2007 with VGG-16."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.9
+        },
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b0_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.4",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "VGG-16",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Abstract states 70.4% mAP on PASCAL VOC 2012."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.85
+        },
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b0_2",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "5",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "VGG-16",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "GPU",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 0,
+        "model_output_format": "json",
+        "reasoning": "Abstract reports 5fps including all steps on a GPU."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p1_0",
+          "confidence_score": 0.9
+        },
+        {
+          "source_id": "chunk_p2_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "59.9",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF, shared (300 proposals)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "unknown",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "ZF net",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.95,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Main RPN+Faster R-CNN result, ZF shared, 300 proposals."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.95
+        },
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.95
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF, unshared (300 proposals)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "unknown",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "ZF net",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Unshared ablation variant, 58.7% quoted in text and table."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_2",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "56.8",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS-trained detector, RPN+ZF test proposals (300)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "unknown",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "ZF net",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Disentanglement ablation, SS train / RPN+ZF 300 test."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_3",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "55.1",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS-trained detector, RPN+ZF test proposals (100)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "unknown",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "ZF net",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "Ablation with top-100 RPN proposals at test."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_4",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "59.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS+ZF detector, RPN+VGG test proposals (300)",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "unknown",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "ZF net (detector), VGG-16 (RPN)",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "RPN+VGG proposals with SS+ZF detector, 59.2%."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b1_5",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "58.7",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "SS proposals (2k) with ZF detector",
+        "training_data": "VOC 2007 trainval",
+        "backbone": "unknown",
+        "input_resolution": "shorter side 600",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "ablation",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "ZF net",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 1,
+        "model_output_format": "json",
+        "reasoning": "SS 2k/2k row used as ablation baseline."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p6_0",
+          "confidence_score": 0.85
+        },
+        {
+          "source_id": "chunk_p5_0",
+          "confidence_score": 0.85
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b2_0",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "73.2",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared, 300 proposals",
+        "training_data": "VOC 2007 trainval + VOC 2012 trainval (07+12)",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.92,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 2 RPN+VGG shared 07+12 VOC07 test mAP."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.92
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_voc_map50_b2_1",
+      "subject": "cv_detection:voc_map50",
+      "predicate": "equals",
+      "object": "70.4",
+      "unit": "percent",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2012_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared, 300 proposals",
+        "training_data": "VOC 2007 trainval+test + VOC 2012 trainval (07++12)",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "not_applicable",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "not_applicable",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size"
+        ],
+        "review_required": true,
+        "confidence": 0.92,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 3 RPN+VGG shared 07++12 VOC12 test mAP."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.92
+        },
+        {
+          "source_id": "chunk_p9_0",
+          "confidence_score": 0.92
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b2_2",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "196",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared, 300 proposals",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU (Caffe)",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.9,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 total 196 ms for both proposal and detection."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.9
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b2_3",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "5",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+VGG shared, 300 proposals",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU (Caffe)",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.88,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 rate 5 fps for VGG RPN+Fast R-CNN."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.88
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_fps_b2_4",
+      "subject": "cv_detection:inference_fps",
+      "predicate": "equals",
+      "object": "15",
+      "unit": "fps",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF shared, 300 proposals",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU (Caffe)",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "ZF",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.88,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 ZF system rate 15 fps."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.88
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b2_5",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "68",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "unknown",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN+ZF shared, 300 proposals",
+        "training_data": "unknown",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "Nvidia K40 GPU (Caffe)",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "ZF",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "scenario",
+          "training_data",
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.88,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 2,
+        "model_output_format": "json",
+        "reasoning": "Table 4 ZF total 68 ms for proposal and detection."
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p7_0",
+          "confidence_score": 0.88
+        }
+      ]
+    },
+    {
+      "assertion_id": "assert_llm_inference_latency_b3_0",
+      "subject": "cv_detection:inference_latency",
+      "predicate": "equals",
+      "object": "196",
+      "unit": "ms",
+      "context_conditions": {
+        "method": "region_based",
+        "scenario": "voc2007_test",
+        "detector_family": "Faster R-CNN",
+        "model_variant": "RPN + Fast R-CNN with shared features",
+        "training_data": "07+12 trainval",
+        "backbone": "unknown",
+        "input_resolution": "unknown",
+        "evaluation_protocol": "unknown",
+        "hardware": "unknown",
+        "batch_size": "unknown",
+        "timing_scope": "unknown",
+        "result_role": "primary",
+        "reported_experiment_conditions": {
+          "timing_scope": "end_to_end",
+          "backbone": "VGG-16",
+          "detector_backbone": "unknown",
+          "proposal_backbone": "unknown"
+        },
+        "detector_backbone": "unknown",
+        "proposal_backbone": "unknown",
+        "condition_validation_issues": [
+          "timing_scope_evidence_missing_or_inconsistent",
+          "detector_backbone_evidence_missing_or_inconsistent"
+        ],
+        "condition_validation": "needs_review",
+        "missing_context_keys": [
+          "backbone",
+          "input_resolution",
+          "evaluation_protocol",
+          "hardware",
+          "batch_size",
+          "timing_scope"
+        ],
+        "review_required": true,
+        "confidence": 0.85,
+        "source": "llm_structured",
+        "extraction_method": "llm",
+        "batch_index": 3,
+        "model_output_format": "json",
+        "reasoning": "Per-image runtime explicitly stated including all steps"
+      },
+      "evidence_links": [
+        {
+          "source_id": "chunk_p10_0",
+          "confidence_score": 0.85
+        }
+      ]
+    }
+  ],
+  "chunk_pages": {
+    "chunk_p1_0": 1,
+    "chunk_p2_0": 2,
+    "chunk_p3_0": 3,
+    "chunk_p4_0": 4,
+    "chunk_p5_0": 5,
+    "chunk_p6_0": 6,
+    "chunk_p7_0": 7,
+    "chunk_p8_0": 8,
+    "chunk_p8_1": 8,
+    "chunk_p8_2": 8,
+    "chunk_p8_3": 8,
+    "chunk_p9_0": 9,
+    "chunk_p10_0": 10
+  }
+}
